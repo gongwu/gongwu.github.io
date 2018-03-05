@@ -7,7 +7,7 @@
 
 <html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
@@ -144,7 +144,7 @@
 
 
 
-  <title>跨域问题 | 宫悟桑的小屋</title>
+  <title>跨域问题 | 宫悟桑的小屋</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -163,7 +163,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail ">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -360,7 +360,7 @@
       
 
       
-        <h1 id="旧站迁移：关于项目中的跨域问题"><a href="#旧站迁移：关于项目中的跨域问题" class="headerlink" title="旧站迁移：关于项目中的跨域问题"></a>旧站迁移：关于项目中的跨域问题</h1><p>在这次龙翔微信社区的项目中，因为对方将后台进行了封装，只以API形式提供数据，因此遇到了ajax传输数据的跨域<br>问题。总结一下ajax跨域的几种解决方案：</p>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="旧站迁移：关于项目中的跨域问题"><a href="#旧站迁移：关于项目中的跨域问题" class="headerlink" title="旧站迁移：关于项目中的跨域问题"></a>旧站迁移：关于项目中的跨域问题</h1><p>在这次龙翔微信社区的项目中，因为对方将后台进行了封装，只以API形式提供数据，因此遇到了ajax传输数据的跨域<br>问题。总结一下ajax跨域的几种解决方案：</p>
 <p>问题：JavaScript因为同源策略是有跨域限制的</p>
 <p>数据是可以发送过去的</p>
 <p><img src="http://cdn.sinacloud.net/myblog-image/2015/12-07/01.jpg" alt="数据是可以发送成功的"></p>
@@ -493,7 +493,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -504,7 +504,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -515,7 +515,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -573,7 +573,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -690,7 +690,24 @@
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
 

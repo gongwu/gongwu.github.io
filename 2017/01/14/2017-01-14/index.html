@@ -7,7 +7,7 @@
 
 <html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
@@ -144,7 +144,7 @@
 
 
 
-  <title>中文分词原理之最大长度匹配法 | 宫悟桑的小屋</title>
+  <title>中文分词原理之最大长度匹配法 | 宫悟桑的小屋</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -163,7 +163,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail ">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -360,7 +360,7 @@
       
 
       
-        <h2 id="最大长度匹配法"><a href="#最大长度匹配法" class="headerlink" title="最大长度匹配法"></a>最大长度匹配法</h2><p>最常见的分词方法为查找词典算法，其中最常用就是最大长度匹配法——从字符串的指定位置开始，匹配词典，找出最长词。</p>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="最大长度匹配法"><a href="#最大长度匹配法" class="headerlink" title="最大长度匹配法"></a>最大长度匹配法</h2><p>最常见的分词方法为查找词典算法，其中最常用就是最大长度匹配法——从字符串的指定位置开始，匹配词典，找出最长词。</p>
 <h3 id="正向最大长度匹配法"><a href="#正向最大长度匹配法" class="headerlink" title="正向最大长度匹配法"></a>正向最大长度匹配法</h3><p>人们用句的时候往往更倾向与使用更短的词，只有在必要的情况下才会用长词来表述，比如大学和大学生，如果大学能够表示大学生，那么人们更倾向与用短词，既然长词出现，那么就肯定是有含义的，需要优先匹配。这便是最大长度匹配法。最大长度匹配法常用前缀树（标准Trie树)进行匹配。</p>
 <h3 id="逆向最大长度匹配法"><a href="#逆向最大长度匹配法" class="headerlink" title="逆向最大长度匹配法"></a>逆向最大长度匹配法</h3><p>我们会发现正向最大长度匹配的精度不高，会出现歧义，比如大学生活丰富多彩，切分结果为大学生/活/丰富多彩，而采用逆向最大长度匹配的结果为大学/生活/丰富多彩，可见逆向最大长度匹配可以消除部分歧义，精度稍高。逆向最大长度匹配常用后缀树进行匹配。</p>
 <h3 id="标准Trie树（前缀树）"><a href="#标准Trie树（前缀树）" class="headerlink" title="标准Trie树（前缀树）"></a>标准Trie树（前缀树）</h3><p><img src="http://cdn.sinacloud.net/myblog-image/2017/01-14/01.png" alt="标准Trie树"></p>
@@ -492,7 +492,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -503,7 +503,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -514,7 +514,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -572,7 +572,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -689,7 +689,24 @@
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
 

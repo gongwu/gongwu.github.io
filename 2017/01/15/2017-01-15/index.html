@@ -7,7 +7,7 @@
 
 <html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
@@ -140,7 +140,7 @@
 
 
 
-  <title>网络爬虫之HttpClient | 宫悟桑的小屋</title>
+  <title>网络爬虫之HttpClient | 宫悟桑的小屋</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -159,7 +159,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail ">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -356,7 +356,7 @@
       
 
       
-        <p>今天网络爬虫开始入门，看了《自己动手写网络爬虫》第一章，作者文中提出了使用httpclient-4.1.2.jar,结果在示例中自己用的httpclient-4.3.0以上的版本，在小节最后的总结程序Java网页抓取示例程序中又用了commons-httpclient的jar包，这三者在写法上有很大差别，尤其是commons-httpclient，已经是遗留版本，官方不推荐使用了，于是我就索性学习了下httpclient最新的文档，把Java网页抓取示例程序重写了一遍。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public class RetrievePage &#123;</div><div class="line">	private static HttpClient httpClient = HttpClients.createDefault();</div><div class="line">	public static boolean downloadPage(String path) throws ClientProtocolException, IOException &#123;</div><div class="line">		HttpPost httpPost = new HttpPost(path); </div><div class="line">//		HttpHost proxy = new HttpHost(&quot;172.17.18.84&quot;,8080,&quot;http&quot;);</div><div class="line">//	    RequestConfig rq = RequestConfig.custom().setProxy(proxy).build();</div><div class="line">//		httpPost.setConfig(rq);</div><div class="line">		InputStream input = null;</div><div class="line">		OutputStream output = null;</div><div class="line">//		HttpGet httpGet = new HttpGet(path);</div><div class="line">		List&lt;NameValuePair&gt; nameValuePairs = new ArrayList&lt;NameValuePair&gt;(2);</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;name&quot;, &quot;lietu&quot;));</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;password&quot;, &quot;*****&quot;));</div><div class="line">		httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,&quot;UTF-8&quot;));</div><div class="line">		HttpResponse response = httpClient.execute(httpPost);</div><div class="line">		int statusCode = response.getStatusLine().getStatusCode();</div><div class="line">		System.out.println(statusCode);</div><div class="line">		if(statusCode == HttpStatus.SC_OK) &#123;</div><div class="line">			String bodyAsString = EntityUtils.toString(response.getEntity(),&quot;utf-8&quot;);</div><div class="line">			input = new ByteArrayInputStream(bodyAsString.getBytes());</div><div class="line">			String filename = path.substring(path.lastIndexOf(&apos;/&apos;)+1);</div><div class="line">			System.out.println(filename);</div><div class="line">			output = new FileOutputStream(filename);</div><div class="line">			int tempByte = -1;</div><div class="line">			while((tempByte = input.read()) &gt; 0) &#123;</div><div class="line">				output.write(tempByte);</div><div class="line">			&#125;</div><div class="line">			if(input != null) &#123;</div><div class="line">				input.close();</div><div class="line">			&#125;</div><div class="line">			if(output != null) &#123;</div><div class="line">				output.close();</div><div class="line">			&#125;</div><div class="line">			return true;</div><div class="line">		&#125;</div><div class="line">		return false;</div><div class="line">	&#125;</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		try &#123;</div><div class="line">			RetrievePage.downloadPage(&quot;http://www.lietu.com&quot;);</div><div class="line">		&#125; catch (IOException e) &#123;</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>今天网络爬虫开始入门，看了《自己动手写网络爬虫》第一章，作者文中提出了使用httpclient-4.1.2.jar,结果在示例中自己用的httpclient-4.3.0以上的版本，在小节最后的总结程序Java网页抓取示例程序中又用了commons-httpclient的jar包，这三者在写法上有很大差别，尤其是commons-httpclient，已经是遗留版本，官方不推荐使用了，于是我就索性学习了下httpclient最新的文档，把Java网页抓取示例程序重写了一遍。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public class RetrievePage &#123;</div><div class="line">	private static HttpClient httpClient = HttpClients.createDefault();</div><div class="line">	public static boolean downloadPage(String path) throws ClientProtocolException, IOException &#123;</div><div class="line">		HttpPost httpPost = new HttpPost(path); </div><div class="line">//		HttpHost proxy = new HttpHost(&quot;172.17.18.84&quot;,8080,&quot;http&quot;);</div><div class="line">//	    RequestConfig rq = RequestConfig.custom().setProxy(proxy).build();</div><div class="line">//		httpPost.setConfig(rq);</div><div class="line">		InputStream input = null;</div><div class="line">		OutputStream output = null;</div><div class="line">//		HttpGet httpGet = new HttpGet(path);</div><div class="line">		List&lt;NameValuePair&gt; nameValuePairs = new ArrayList&lt;NameValuePair&gt;(2);</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;name&quot;, &quot;lietu&quot;));</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;password&quot;, &quot;*****&quot;));</div><div class="line">		httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,&quot;UTF-8&quot;));</div><div class="line">		HttpResponse response = httpClient.execute(httpPost);</div><div class="line">		int statusCode = response.getStatusLine().getStatusCode();</div><div class="line">		System.out.println(statusCode);</div><div class="line">		if(statusCode == HttpStatus.SC_OK) &#123;</div><div class="line">			String bodyAsString = EntityUtils.toString(response.getEntity(),&quot;utf-8&quot;);</div><div class="line">			input = new ByteArrayInputStream(bodyAsString.getBytes());</div><div class="line">			String filename = path.substring(path.lastIndexOf(&apos;/&apos;)+1);</div><div class="line">			System.out.println(filename);</div><div class="line">			output = new FileOutputStream(filename);</div><div class="line">			int tempByte = -1;</div><div class="line">			while((tempByte = input.read()) &gt; 0) &#123;</div><div class="line">				output.write(tempByte);</div><div class="line">			&#125;</div><div class="line">			if(input != null) &#123;</div><div class="line">				input.close();</div><div class="line">			&#125;</div><div class="line">			if(output != null) &#123;</div><div class="line">				output.close();</div><div class="line">			&#125;</div><div class="line">			return true;</div><div class="line">		&#125;</div><div class="line">		return false;</div><div class="line">	&#125;</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		try &#123;</div><div class="line">			RetrievePage.downloadPage(&quot;http://www.lietu.com&quot;);</div><div class="line">		&#125; catch (IOException e) &#123;</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>注释掉的地方是设置代理，以及Get通信方式，可以根据需要使用。个人感悟：IT方面更新太快，一切都要以官方文档为主要依据。</p>
 
       
@@ -470,7 +470,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -481,7 +481,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -492,7 +492,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -534,7 +534,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -651,7 +651,24 @@
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
 
 

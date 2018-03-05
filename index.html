@@ -360,7 +360,38 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css">
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="ACL17-Get-To-The-Point-Summarization-with-Pointer-Generator-Networks"><a href="#ACL17-Get-To-The-Point-Summarization-with-Pointer-Generator-Networks" class="headerlink" title="ACL17-Get To The Point: Summarization with Pointer-Generator Networks"></a>ACL17-Get To The Point: Summarization with Pointer-Generator Networks</h2><p>  <a href="">PDF</a>, <a href="">Blog</a></p>
+<ul>
+<li>[<strong>Experiment Tasks and Datasets</strong>]<ul>
+<li>Reading Comprehension (<strong>bAbI</strong>)</li>
+<li>Sentiment Classification (<strong>Stanford Sentiment TreeBank</strong>)</li>
+<li>Sequence Modeling - POS tagging (<strong>WSJ-PTB</strong>)</li>
+</ul>
+</li>
+<li><p>[<strong>Model</strong>]</p>
+<ul>
+<li><strong>Input Module</strong></li>
+<li><strong>Question Module</strong></li>
+<li><strong>Episodic Memory Module</strong></li>
+<li><strong>Answer Module</strong></li>
+</ul>
+</li>
+<li><p>[<strong>Dynamic Memory Networks V.S. Memory Networks</strong>]</p>
+<ol>
+<li>Sentence Encoding: RNN, Position-Encoding</li>
+<li>Dynamic: Episodic Memory Module(When attention probbility is in the <eos> position), Multi-Hops</eos></li>
+</ol>
+</li>
+<li>[<strong>Motivation for Memory Module</strong>]:<blockquote>
+<p><strong>Episodic Memory Module</strong>: Given a collection of input representations, the episodic memory module chooses which parts of the inputs to focus on through the attention mechanism. It then produces a ”memory” vector representation taking into account the question as well as the previous memory. Each iteration provides the module with newly relevant information about the input. In other words, the module has the ability to retrieve new information, in the form of input representations, which were thought to be irrelevant in previous iterations. </p>
+</blockquote>
+</li>
+<li>[<strong>Motivation for Dynamic Part</strong>]:<blockquote>
+<p><strong>Need for Multiple Episodes</strong>: The iterative nature of this module allows it to attend to different inputs during each pass. It also allows for a type of transitive inference, since the first pass may uncover the need to retrieve additional facts. For instance, in the example in Fig. 3, we are asked Where is the football? In the first iteration, the model ought attend to sentence 7 (John put down the football.), as the question asks about the football. Only once the model sees that John is relevant can it reason that the second iteration should retrieve where John was. Similarly, a second pass may help for sentiment analysis as we show in the experiments section below.</p>
+</blockquote>
+</li>
+</ul>
+
           
         
       

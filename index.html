@@ -361,7 +361,23 @@
         
           
             <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="ACL17-Get-To-The-Point-Summarization-with-Pointer-Generator-Networks"><a href="#ACL17-Get-To-The-Point-Summarization-with-Pointer-Generator-Networks" class="headerlink" title="ACL17-Get To The Point: Summarization with Pointer-Generator Networks"></a>ACL17-Get To The Point: Summarization with Pointer-Generator Networks</h2><p>  <a href="">PDF</a>, <a href="">Blog</a></p>
+<p>这是我本周要讲的论文，发表在17年ACL会议上。本文针对长文本生成式摘要中出现的上下文不连贯、事实错误以及未登录词的问题，提出了Pointer-Generator模型，将复制与生成相结合，同时针对重复生成句子的问题，提出了覆盖机制。</p>
+<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><ul>
+<li>Extractive methods： assemble summaries exclusively from passages</li>
+<li>Abstractive methods:  generate novel words and phrases not featured in the source text</li>
+</ul>
+<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p><strong>Two shortcomings(multi-sentence summaries):</strong></p>
 <ul>
+<li>reproduce factual details inaccurately and inability to deal with out-of-vocabulary</li>
+<li>tend to repeat themselves</li>
+</ul>
+<p><strong>Two solution:</strong></p>
+<ul>
+<li>copying words from the source text via pointing </li>
+<li>coverage vector</li>
+</ul>
+<h2 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;% asset_img 01.jpg  Pointer-Generator%&#125;</div></pre></td></tr></table></figure>
+<h2 id="Experiment-Tasks-and-Datasets"><a href="#Experiment-Tasks-and-Datasets" class="headerlink" title="Experiment Tasks and Datasets"></a>Experiment Tasks and Datasets</h2><ul>
 <li>[<strong>Experiment Tasks and Datasets</strong>]<ul>
 <li>Reading Comprehension (<strong>bAbI</strong>)</li>
 <li>Sentiment Classification (<strong>Stanford Sentiment TreeBank</strong>)</li>

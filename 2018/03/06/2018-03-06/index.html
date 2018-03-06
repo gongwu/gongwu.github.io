@@ -103,7 +103,7 @@
 <meta property="og:description" content="ACL17-Get To The Point: Summarization with Pointer-Generator Networks  PDF, Blog 这是我本周要讲的论文，发表在17年ACL会议上。本文针对长文本生成式摘要中出现的上下文不连贯、事实错误以及未登录词的问题，提出了Pointer-Generator模型，将复制与生成相结合，同时针对重复生成句子的问题，提出了覆盖机制。 Ba">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2018/03/06/2018-03-06/01.png">
-<meta property="og:updated_time" content="2018-03-06T16:22:26.853Z">
+<meta property="og:updated_time" content="2018-03-06T17:17:50.231Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ACL17-Get To The Point: Summarization with Pointer-Generator Networks">
 <meta name="twitter:description" content="ACL17-Get To The Point: Summarization with Pointer-Generator Networks  PDF, Blog 这是我本周要讲的论文，发表在17年ACL会议上。本文针对长文本生成式摘要中出现的上下文不连贯、事实错误以及未登录词的问题，提出了Pointer-Generator模型，将复制与生成相结合，同时针对重复生成句子的问题，提出了覆盖机制。 Ba">
@@ -376,10 +376,9 @@
 </ul>
 <h2 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h2><img src="/2018/03/06/2018-03-06/01.png" alt="01.png" title="">
 <ul>
-<li><p>Sequence-to-sequence attentional model</p>
-<p>$$e_i^t= v^Ttanh(w_hh_i+h_ss<em>t+b</em>{attn})$$</p>
-<p>$$a^t = softmax(e^t)$$</p>
-<p>context vector: $$h_t^* = \sum{a^t_ih_i}$$</p>
+<li><p>Sequence-to-sequence attentional model<br>$$<br>e^t_i = v^Ttanh(W_h h_i + W_s s<em>t + b</em>{attn})<br>$$</p>
+<p>$$<br>a^t = softmax(e^t)<br>$$</p>
+<p>$$<br>h_t^* = \sum{a^t_ih_i}<br>$$</p>
 </li>
 <li><p>Pointer-generator network</p>
 <p>​</p>

@@ -378,10 +378,9 @@
 </ul>
 <h2 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h2><img src="/2018/03/06/2018-03-06/01.png" alt="01.png" title="">
 <ul>
-<li><p>Sequence-to-sequence attentional model</p>
-<p>$$e_i^t= v^Ttanh(w_hh_i+h_ss<em>t+b</em>{attn})$$</p>
-<p>$$a^t = softmax(e^t)$$</p>
-<p>context vector: $$h_t^* = \sum{a^t_ih_i}$$</p>
+<li><p>Sequence-to-sequence attentional model<br>$$<br>e^t_i = v^Ttanh(W_h h_i + W_s s<em>t + b</em>{attn})<br>$$</p>
+<p>$$<br>a^t = softmax(e^t)<br>$$</p>
+<p>$$<br>h_t^* = \sum{a^t_ih_i}<br>$$</p>
 </li>
 <li><p>Pointer-generator network</p>
 <p>​</p>

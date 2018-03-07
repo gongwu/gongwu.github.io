@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="在了解了如何通过httpclient获取到相关网页的源代码后，作为主题爬虫，还需要获取网页源代码中的相关信息以及下一跳的URL地址。这就需要用到正则表达式，这里总结一下处理网页源代码时用到的一些技巧。  分组在我们获取网页中关键信息时，我们或许会使用多次正则，而如何获取我们所指定位置的正则所匹配的信息，我们就需要对正则表达式进行分组。比如  12String CHAPTER = &amp;quot;&amp;lt">
+<meta name="description" content="在了解了如何通过httpclient获取到相关网页的源代码后，作为主题爬虫，还需要获取网页源代码中的相关信息以及下一跳的URL地址。这就需要用到正则表达式，这里总结一下处理网页源代码时用到的一些技巧。  分组 在我们获取网页中关键信息时，我们或许会使用多次正则，而如何获取我们所指定位置的正则所匹配的信息，我们就需要对正则表达式进行分组。 比如  12String CHAPTER = &amp;qu">
 <meta name="keywords" content="Java,网络爬虫,正则">
 <meta property="og:type" content="article">
 <meta property="og:title" content="网络爬虫之正则表达式">
 <meta property="og:url" content="http://yoursite.com/2017/08/11/2017-01-23/index.html">
 <meta property="og:site_name" content="宫悟桑的小屋">
-<meta property="og:description" content="在了解了如何通过httpclient获取到相关网页的源代码后，作为主题爬虫，还需要获取网页源代码中的相关信息以及下一跳的URL地址。这就需要用到正则表达式，这里总结一下处理网页源代码时用到的一些技巧。  分组在我们获取网页中关键信息时，我们或许会使用多次正则，而如何获取我们所指定位置的正则所匹配的信息，我们就需要对正则表达式进行分组。比如  12String CHAPTER = &amp;quot;&amp;lt">
+<meta property="og:description" content="在了解了如何通过httpclient获取到相关网页的源代码后，作为主题爬虫，还需要获取网页源代码中的相关信息以及下一跳的URL地址。这就需要用到正则表达式，这里总结一下处理网页源代码时用到的一些技巧。  分组 在我们获取网页中关键信息时，我们或许会使用多次正则，而如何获取我们所指定位置的正则所匹配的信息，我们就需要对正则表达式进行分组。 比如  12String CHAPTER = &amp;qu">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-08-11T10:29:17.511Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="网络爬虫之正则表达式">
-<meta name="twitter:description" content="在了解了如何通过httpclient获取到相关网页的源代码后，作为主题爬虫，还需要获取网页源代码中的相关信息以及下一跳的URL地址。这就需要用到正则表达式，这里总结一下处理网页源代码时用到的一些技巧。  分组在我们获取网页中关键信息时，我们或许会使用多次正则，而如何获取我们所指定位置的正则所匹配的信息，我们就需要对正则表达式进行分组。比如  12String CHAPTER = &amp;quot;&amp;lt">
+<meta name="twitter:description" content="在了解了如何通过httpclient获取到相关网页的源代码后，作为主题爬虫，还需要获取网页源代码中的相关信息以及下一跳的URL地址。这就需要用到正则表达式，这里总结一下处理网页源代码时用到的一些技巧。  分组 在我们获取网页中关键信息时，我们或许会使用多次正则，而如何获取我们所指定位置的正则所匹配的信息，我们就需要对正则表达式进行分组。 比如  12String CHAPTER = &amp;qu">
 
 
 
@@ -358,15 +358,13 @@
       
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>在了解了如何通过httpclient获取到相关网页的源代码后，作为主题爬虫，还需要获取网页源代码中的相关信息以及下一跳的URL地址。这就需要用到正则表达式，这里总结一下处理网页源代码时用到的一些技巧。</p>
 <ul>
-<li>分组<br>在我们获取网页中关键信息时，我们或许会使用多次正则，而如何获取我们所指定位置的正则所匹配的信息，我们就需要对正则表达式进行分组。<br>比如</li>
+<li>分组 在我们获取网页中关键信息时，我们或许会使用多次正则，而如何获取我们所指定位置的正则所匹配的信息，我们就需要对正则表达式进行分组。 比如</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">String CHAPTER = &quot;&lt;td class=\&quot;chapterBean\&quot; chapterId=\&quot;\\d*\&quot; chapterName=\&quot;(.*?)\&quot; chapterLevel=\&quot;\\d*\&quot; wordNum=\&quot;(.*?)\&quot; updateTime=\&quot;(\\d*?)\&quot;&gt;&lt;a href=\&quot;(.*?)\&quot; title=\&quot;.*?\&quot;&gt;&quot;;</div></pre></td></tr></table></figure>
 <p>我们要获取chapterName处的内容，就是group(1)，wordNum处的内容，就是group(2)，updateTime处的内容，就是group(3)。第0组group(0)或者不写值group()即是匹配整个字符串，从左往右起第一个左括号即是分组1，以此类推。</p>
 <ul>
-<li><p>贪婪模式<br>贪婪模式即是匹配尽可能多的字符串，比如.*或者.+,同样上面例子中的chapterName=\”(.+)\”，将会匹配从chapterName=”开始，直到找到最后一个”才匹配结束。所以我们在处理网页时更常用的是懒惰模式。</p>
-</li>
-<li><p>懒惰模式<br>懒惰模式是在能使整个匹配成功的前提下使用最少的重复。比如.*？或者.+？，同样上面例子中的chapterName=\”(.+？)\”，将会匹配从chapterName=”开始，找到第一个”就匹配结束。</p>
-</li>
+<li><p>贪婪模式 贪婪模式即是匹配尽可能多的字符串，比如.*或者.+,同样上面例子中的chapterName=”(.+)”，将会匹配从chapterName=”开始，直到找到最后一个”才匹配结束。所以我们在处理网页时更常用的是懒惰模式。</p></li>
+<li><p>懒惰模式 懒惰模式是在能使整个匹配成功的前提下使用最少的重复。比如.*？或者.+？，同样上面例子中的chapterName=”(.+？)”，将会匹配从chapterName=”开始，找到第一个”就匹配结束。</p></li>
 </ul>
 
       
@@ -504,7 +502,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -724,6 +722,8 @@
   
 
   
+  
+
 
   
 

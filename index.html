@@ -360,135 +360,127 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="ACL17-Get-To-The-Point-Summarization-with-Pointer-Generator-Networks"><a href="#ACL17-Get-To-The-Point-Summarization-with-Pointer-Generator-Networks" class="headerlink" title="ACL17-Get To The Point: Summarization with Pointer-Generator Networks"></a>ACL17-Get To The Point: Summarization with Pointer-Generator Networks</h2><p>  <a href="https://arxiv.org/abs/1704.04368" target="_blank" rel="external">PDF</a>, <a href="http://www.abigailsee.com/2017/04/16/taming-rnns-for-better-summarization.html" target="_blank" rel="external">Blog</a></p>
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="acl17-get-to-the-point-summarization-with-pointer-generator-networks">ACL17-Get To The Point: Summarization with Pointer-Generator Networks</h2>
+<p><a href="https://arxiv.org/abs/1704.04368" target="_blank" rel="external">PDF</a>, <a href="http://www.abigailsee.com/2017/04/16/taming-rnns-for-better-summarization.html" target="_blank" rel="external">Blog</a></p>
 <p>这是我本周要讲的论文，发表在17年ACL会议上。本文针对长文本生成式摘要中出现的两个问题：（1）事实错误以及未登录词的问题（2）解码时生成重复句子。问题1作者提出结合point network来解决，问题2作者引入了Coverage mechanism来解决。</p>
-<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><ul>
+<h2 id="background">Background</h2>
+<ul>
 <li>Extractive methods： assemble summaries exclusively from passages</li>
-<li>Abstractive methods:  generate novel words and phrases not featured in the source text</li>
+<li>Abstractive methods: generate novel words and phrases not featured in the source text</li>
 </ul>
-<h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p><strong>Two shortcomings(multi-sentence summaries):</strong></p>
+<h2 id="motivation">Motivation</h2>
+<p><strong>Two shortcomings(multi-sentence summaries):</strong></p>
 <ul>
 <li>reproduce factual details inaccurately and inability to deal with out-of-vocabulary</li>
 <li>tend to repeat themselves</li>
 </ul>
 <p><strong>Two solution:</strong></p>
 <ul>
-<li>copying words from the source text via pointing </li>
+<li>copying words from the source text via pointing</li>
 <li>coverage vector</li>
 </ul>
-<h2 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h2><img src="/2018/03/06/2018-03-06/01.png" alt="01.png" title="">
-<p><img src="/D:/Hexo/source/_posts/2018-03-06/01.png" alt="01"></p>
+<h2 id="model">Model</h2>
+<img src="/2018/03/06/2018-03-06/01.png" alt="01.png" title="">
 <ul>
-<li><p>[<strong>Sequence-to-sequence attentional model</strong>]<br>$$e^t_i = v^Ttanh(W_h h_i + W_s s<em>t + b</em>{attn})$$</p>
-<p>$$a^t = softmax(e^t)$$</p>
-<p>$$h_t^* = \sum{a^t_ih_i}$$</p>
-<p>$$P_{vocab} = softmax(V^{‘}(V[h_t^*,s_t] + b)+b^{‘})$$</p>
-<p>$$P(w) = P_{vocab}(w)$$</p>
-<p>$$loss_t = -log P(w^*)$$</p>
-<p>context vector：$h_t^*$   attention distribution: $a^t$ decoder state: $s_t$</p>
-<p>vocabulary distribution: $P_{vocab}$  target word：$w^*$</p>
-</li>
-<li><p>[<strong>Pointer-generator network</strong>]</p>
-<p>$$p<em>{gen} = \sigma(w</em>{h^<em>}^T h_t^</em> + w_{s_t}^Ts<em>t +  w</em>{x_t}^T x<em>t + b</em>{gen})$$</p>
-<p>decoder input: $x<em>t$ soft switch: $p</em>{gen} \in[0,1]$</p>
-<p>$$P(w) = p<em>{gen}P</em>{vocab}(w) + (1 - p<em>{gen})\sum</em>{i:w_i=w}a^t_i$$</p>
-<p>note: 这边作者将源文本中的相同词的attention值进行了累加，$\sum_{i:w_i=w}a^t_i$这一项的值永远在[0,1]</p>
+<li>[<strong>Sequence-to-sequence attentional model</strong>] <span class="math display">\[e^t_i = v^Ttanh(W_h h_i + W_s s_t + b_{attn})\]</span></li>
+</ul>
+<p><span class="math display">\[a^t = softmax(e^t)\]</span></p>
+<p><span class="math display">\[h_t^* = \sum{a^t_ih_i}\]</span></p>
+<p><span class="math display">\[P_{vocab} = softmax(V^{&#39;}(V[h_t^*,s_t] + b)+b^{&#39;})\]</span></p>
+<p><span class="math display">\[P(w) = P_{vocab}(w)\]</span></p>
+<p><span class="math display">\[loss_t = -log P(w^*)\]</span></p>
+<p>context vector：<span class="math inline">\(h_t^{*}\)</span> attention distribution: <span class="math inline">\(a^t\)</span> decoder state: <span class="math inline">\(s_t\)</span></p>
+<p>vocabulary distribution: <span class="math inline">\(P_{vocab}\)</span> target word：<span class="math inline">\(w^*\)</span></p>
+<ul>
+<li>[<strong>Pointer-generator network</strong>]</li>
+</ul>
+<p><span class="math display">\[p_{gen} = \sigma(w_{h^*}^T h_t^* + w_{s_t}^Ts_t +  w_{x_t}^T x_t + b_{gen})\]</span></p>
+<p>decoder input: <span class="math inline">\(x_{t}\)</span> soft switch: <span class="math inline">\(p_{gen} \in[0,1]\)</span></p>
+<p><span class="math display">\[P(w) = p_{gen}P_{vocab}(w) + (1 - p_{gen})\sum_{i:w_i=w}a^t_i\]</span></p>
+<p>note: 这边作者将源文本中的相同词的attention值进行了累加，<span class="math inline">\(\sum_{i:w_i=w}a^t_i\)</span>这一项的值永远在[0,1]</p>
 <p>这样对于在源文本中经常出现的词会增加其解码时的概率？</p>
-</li>
-<li><p>[<strong>Coverage mechanism</strong>]</p>
-<p>$$c<em>t = \sum</em>{t^{‘}=0}^{t-1}a_{t^{‘}}$$</p>
-<p>$$e^t_i = v^Ttanh(W_h h_i + W_s s_t + w_cc<em>i^t + b</em>{attn})$$</p>
-<p>:-)This ensures that the attention mechanism’s current decision (choosing where to attend<br>next) is informed by a reminder of its previous decisions(summarized in $c_t$ ).</p>
-<p>尽管这样说，但是不加入loss函数的话没啥效果</p>
-<p>$$covloss_i = \sum_imin(a_i^t, c_i^t)$$</p>
-<p>:-)coverage loss is bounded, in particular $covloss_t &lt;= \sum_ia_i^t =1$.</p>
-<p>这里$covloss$正常情况下等于1， 只有当一个词之前一直没有被关注，突然被关注的情况下回小于1，相当于是奖励关注那些之前一直没被关注的词，惩罚只关注与某一些词。</p>
-<p>$$loss_t = -log P(w^*) + \lambda\sum_imin(a_i^t, c_i^t)$$</p>
-<p>最终设置$\lambda = 1$</p>
-</li>
-</ul>
-<h2 id="Related-Work-and-Datasets"><a href="#Related-Work-and-Datasets" class="headerlink" title="Related Work and Datasets"></a>Related Work and Datasets</h2><ul>
-<li><p>[<strong>Experiment Tasks and Datasets</strong>]</p>
 <ul>
-<li><p>CNN/Daily Mail dataset</p>
-<p>only two published results on the full dataset</p>
-</li>
+<li>[<strong>Coverage mechanism</strong>]</li>
 </ul>
-</li>
-<li><p>[<strong><a href="https://arxiv.org/abs/1603.06393" target="_blank" rel="external">CopyNet</a> model V.S. Pointer-generator network</strong>]</p>
-<ol>
-<li><p>explicit switch probability $p_{gen}$ V.S shared softmax function</p>
+<p><span class="math display">\[c_t = \sum_{t^{&#39;}=0}^{t-1}a_{t^{&#39;}}\]</span></p>
+<p><span class="math display">\[e^t_i = v^Ttanh(W_h h_i + W_s s_t + w_cc_i^t + b_{attn})\]</span></p>
+<p>:-)This ensures that the attention mechanism’s current decision (choosing where to attend next) is informed by a reminder of its previous decisions(summarized in <span class="math inline">\(c_t\)</span> ).</p>
+<p>尽管这样说，但是不加入loss函数的话没啥效果</p>
+<p><span class="math display">\[covloss_i = \sum_imin(a_i^t, c_i^t)\]</span></p>
+<p>:-)coverage loss is bounded, in particular <span class="math inline">\(covloss_t &lt;= \sum_ia_i^t =1\)</span>.</p>
+<p>这里<span class="math inline">\(covloss\)</span>正常情况下等于1， 只有当一个词之前一直没有被关注，突然被关注的情况下回小于1，相当于是奖励关注那些之前一直没被关注的词，惩罚只关注与某一些词。</p>
+<p><span class="math display">\[loss_t = -log P(w^*) + \lambda\sum_imin(a_i^t, c_i^t)\]</span></p>
+<p>最终设置<span class="math inline">\(\lambda = 1\)</span></p>
+<h2 id="related-work-and-datasets">Related Work and Datasets</h2>
+<ul>
+<li>[<strong>Experiment Tasks and Datasets</strong>]
+<ul>
+<li>CNN/Daily Mail dataset</li>
+</ul>
+<p>only two published results on the full dataset</p></li>
+<li>[<strong><a href="https://arxiv.org/abs/1603.06393" target="_blank" rel="external">CopyNet</a> model V.S. Pointer-generator network</strong>]
+<ol style="list-style-type: decimal">
+<li>explicit switch probability <span class="math inline">\(p_{gen}\)</span> V.S shared softmax function</li>
+</ol>
 <blockquote>
 <p>reason: calculating an explicit pgen usefully enables us to raise or lower the probability of all generated words or all copy words at once, rather than individually.</p>
 </blockquote>
-</li>
-<li><p>copy distribution: recycle the attention distribution V.S two separate distributions</p>
+<ol start="2" style="list-style-type: decimal">
+<li>copy distribution: recycle the attention distribution V.S two separate distributions</li>
+</ol>
 <blockquote>
 <p>reason: the two distributions serve such similar purposes that we find our simpler approach suffices.</p>
 </blockquote>
-</li>
-<li><p>word appears multiple times: sum probability mass from all corresponding parts of the attention distribution</p>
-</li>
-</ol>
-</li>
-<li><p>[<strong>Motivation for Coverage</strong>]:</p>
+<ol start="3" style="list-style-type: decimal">
+<li>word appears multiple times: sum probability mass from all corresponding parts of the attention distribution</li>
+</ol></li>
+<li></li>
+</ul>
 <blockquote>
 <p>similar to <a href="http://www.ijcai.org/Proceedings/16/Papers/391.pdf" target="_blank" rel="external">distraction</a></p>
 </blockquote>
-</li>
-<li><p>[<strong>Temporal attention V.S Coverage</strong>]:</p>
-<blockquote>
-<p>Temporal attention: each attention distribution is divided by the sum of the previous</p>
+<ul>
+<li><blockquote>
 <p>early intervention method such as coverage is preferable to a post hoc method such as temporal attention</p>
-</blockquote>
-</li>
+</blockquote></li>
 </ul>
-<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><ul>
-<li>[<strong>Setting</strong>]<ul>
+<h2 id="experiments">Experiments</h2>
+<ul>
+<li>[<strong>Setting</strong>]</li>
 <li>Adagrad initial accumulator: 0.1</li>
 <li>learning rate: 0.15</li>
 <li>truncate length: article 400 tokens, summary 100 tokens(train) 120(test)</li>
-<li>batch size of 16 </li>
+<li>batch size of 16</li>
 <li>beam size 4 (test)</li>
-</ul>
-</li>
-<li>[<strong>Trips</strong>]<ul>
+<li>[<strong>Trips</strong>]</li>
 <li>start with highly-truncated sequences, then raise the maximum length once converged.</li>
-<li>added the coverage mechanism with coverage loss weighted to $\lambda = 1$ further 3000 iterations</li>
+<li>added the coverage mechanism with coverage loss weighted to <span class="math inline">\(\lambda = 1\)</span> further 3000 iterations</li>
 </ul>
-</li>
-</ul>
-<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><ul>
-<li><p>[<strong>Baseline</strong>]</p>
+<h2 id="results">Results</h2>
 <ul>
-<li><p>lead-3 baseline: first three sentences of the article as a summary</p>
-</li>
-<li><p>only existing abstractive (Nallapati et al.,2016) and extractive (Nallapati et al., 2017) models<br>on the full dataset.</p>
-<p>note: </p>
-</li>
-</ul>
-</li>
-<li><p>[<strong>Metric</strong>]</p>
-<ul>
+<li><p>[<strong>Baseline</strong>]</p></li>
+<li><p>lead-3 baseline: first three sentences of the article as a summary</p></li>
+<li><p>only existing abstractive (Nallapati et al.,2016) and extractive (Nallapati et al., 2017) models on the full dataset.</p>
+<p>note:</p></li>
+<li><p>[<strong>Metric</strong>]</p></li>
 <li>ROUGE metric: F1 scores for ROUGE-1, ROUGE-2 and ROUGE-L</li>
-<li>METEOR metric</li>
+<li><p>METEOR metric</p></li>
+<li><p>[<strong>Observations</strong>]</p></li>
 </ul>
-</li>
-<li><p>[<strong>Observations</strong>]</p>
-<p><img src="/02.png" alt="02"></p>
+<p>​ ​ <img src="/2018/03/06/2018-03-06/02.png" alt="02.png" title=""> ​</p>
 <ul>
-<li>convincingly surpassing the best abstractive model </li>
-<li>does not quite surpass the ROUGE scores of the lead-3 baseline, nor the current best extrac<br>tive model</li>
+<li>convincingly surpassing the best abstractive model</li>
+<li><p>does not quite surpass the ROUGE scores of the lead-3 baseline, nor the current best extractive model</p></li>
+<li><p>[<strong>Discussion</strong>]</p></li>
+<li><p>How abstractive is our model?</p>
+<div class="image-size-200" style="width:80%; text-align: center">
+
+<p>​ <img src="/2018/03/06/2018-03-06/04.png" alt="04.png" title=""></p></div></li>
 </ul>
-</li>
-<li><p>[<strong>Discussion</strong>]</p>
-<ul>
-<li>How abstractive is our model?</li>
-</ul>
-</li>
-</ul>
-<p><img src="/04.png" width="500px"></p>
-<p>copies whole article sentences 35%</p>
+​
+
+<p>​ copies whole article sentences 35%</p>
+<p>​</p>
 
           
         
@@ -632,15 +624,13 @@
           
             <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>在了解了如何通过httpclient获取到相关网页的源代码后，作为主题爬虫，还需要获取网页源代码中的相关信息以及下一跳的URL地址。这就需要用到正则表达式，这里总结一下处理网页源代码时用到的一些技巧。</p>
 <ul>
-<li>分组<br>在我们获取网页中关键信息时，我们或许会使用多次正则，而如何获取我们所指定位置的正则所匹配的信息，我们就需要对正则表达式进行分组。<br>比如</li>
+<li>分组 在我们获取网页中关键信息时，我们或许会使用多次正则，而如何获取我们所指定位置的正则所匹配的信息，我们就需要对正则表达式进行分组。 比如</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">String CHAPTER = &quot;&lt;td class=\&quot;chapterBean\&quot; chapterId=\&quot;\\d*\&quot; chapterName=\&quot;(.*?)\&quot; chapterLevel=\&quot;\\d*\&quot; wordNum=\&quot;(.*?)\&quot; updateTime=\&quot;(\\d*?)\&quot;&gt;&lt;a href=\&quot;(.*?)\&quot; title=\&quot;.*?\&quot;&gt;&quot;;</div></pre></td></tr></table></figure>
 <p>我们要获取chapterName处的内容，就是group(1)，wordNum处的内容，就是group(2)，updateTime处的内容，就是group(3)。第0组group(0)或者不写值group()即是匹配整个字符串，从左往右起第一个左括号即是分组1，以此类推。</p>
 <ul>
-<li><p>贪婪模式<br>贪婪模式即是匹配尽可能多的字符串，比如.*或者.+,同样上面例子中的chapterName=\”(.+)\”，将会匹配从chapterName=”开始，直到找到最后一个”才匹配结束。所以我们在处理网页时更常用的是懒惰模式。</p>
-</li>
-<li><p>懒惰模式<br>懒惰模式是在能使整个匹配成功的前提下使用最少的重复。比如.*？或者.+？，同样上面例子中的chapterName=\”(.+？)\”，将会匹配从chapterName=”开始，找到第一个”就匹配结束。</p>
-</li>
+<li><p>贪婪模式 贪婪模式即是匹配尽可能多的字符串，比如.*或者.+,同样上面例子中的chapterName=”(.+)”，将会匹配从chapterName=”开始，直到找到最后一个”才匹配结束。所以我们在处理网页时更常用的是懒惰模式。</p></li>
+<li><p>懒惰模式 懒惰模式是在能使整个匹配成功的前提下使用最少的重复。比如.*？或者.+？，同样上面例子中的chapterName=”(.+？)”，将会匹配从chapterName=”开始，找到第一个”就匹配结束。</p></li>
 </ul>
 
           
@@ -785,11 +775,10 @@
           
             <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>今天看论文资料看到了DeepQA深度问答系统，而国内的图灵机器人正是基于DeepQA实现的，对中文语义理解的准确率挺高。就尝试做了个基于微信图灵机器人。之前开发微信一直用的PHP，这次尝试用Java开发。</p>
 <ul>
-<li>首先编写servlet进行消息验证<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line">		String signature = request.getParameter(&quot;signature&quot;);</div><div class="line">		String timestamp = request.getParameter(&quot;timestamp&quot;);</div><div class="line">		String nonce = request.getParameter(&quot;nonce&quot;);</div><div class="line">		String echostr = request.getParameter(&quot;echostr&quot;);</div><div class="line">		PrintWriter out = response.getWriter();</div><div class="line">		if(CheckUtil.checkSignature(signature, timestamp, nonce)) &#123;</div><div class="line">			out.print(echostr);</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-</li>
+<li>首先编写servlet进行消息验证 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line">		String signature = request.getParameter(&quot;signature&quot;);</div><div class="line">		String timestamp = request.getParameter(&quot;timestamp&quot;);</div><div class="line">		String nonce = request.getParameter(&quot;nonce&quot;);</div><div class="line">		String echostr = request.getParameter(&quot;echostr&quot;);</div><div class="line">		PrintWriter out = response.getWriter();</div><div class="line">		if(CheckUtil.checkSignature(signature, timestamp, nonce)) &#123;</div><div class="line">			out.print(echostr);</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">	&#125;</div></pre></td></tr></table></figure></li>
 </ul>
-<p>将token、timestamp、nonce三个参数进行字典序排序，再将三个参数字符串拼接成一个字符串进行sha1加密，加密后的字符串可与signature对比，标识该请求来源于微信，若确认此次GET请求来自微信服务器，请原样返回echostr参数内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public static boolean checkSignature(String signature,String timestamp,String nonce) &#123;</div><div class="line">		String arr[] = new String[]&#123;token,timestamp,nonce&#125;;</div><div class="line">		//排序</div><div class="line">		Arrays.sort(arr);</div><div class="line">		//生成字符串</div><div class="line">		StringBuffer content = new StringBuffer();</div><div class="line">		for(int i = 0;i &lt; arr.length;i++) &#123;</div><div class="line">			content.append(arr[i]);</div><div class="line">		&#125;</div><div class="line">		//sha1加密</div><div class="line">		String temp = getSha1(content.toString());</div><div class="line">		return temp.equals(signature);</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>附：sha1加密算法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">public static String getSha1(String str)&#123;</div><div class="line">		   if (null == str || 0 == str.length())&#123;</div><div class="line">		       return null;</div><div class="line">		   &#125;</div><div class="line">		   char[] hexDigits = &#123; &apos;0&apos;, &apos;1&apos;, &apos;2&apos;, &apos;3&apos;, &apos;4&apos;, &apos;5&apos;, &apos;6&apos;, &apos;7&apos;, &apos;8&apos;, &apos;9&apos;, </div><div class="line">		           &apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;, &apos;e&apos;, &apos;f&apos;&#125;;</div><div class="line">		   try &#123;</div><div class="line">		       MessageDigest mdTemp = MessageDigest.getInstance(&quot;SHA1&quot;);</div><div class="line">		       mdTemp.update(str.getBytes(&quot;UTF-8&quot;));</div><div class="line">		        </div><div class="line">		       byte[] md = mdTemp.digest();</div><div class="line">		       int j = md.length;</div><div class="line">		       char[] buf = new char[j * 2];</div><div class="line">		       int k = 0;</div><div class="line">		       for (int i = 0; i &lt; j; i++) &#123;</div><div class="line">		           byte byte0 = md[i];</div><div class="line">		           buf[k++] = hexDigits[byte0 &gt;&gt;&gt; 4 &amp; 0xf];</div><div class="line">		           buf[k++] = hexDigits[byte0 &amp; 0xf];</div><div class="line">		       &#125;</div><div class="line">		       return new String(buf);</div><div class="line">		   &#125; catch (Exception e) &#123;</div><div class="line">		       return null;</div><div class="line">		   &#125;</div><div class="line">		&#125;</div></pre></td></tr></table></figure></p>
+<p>将token、timestamp、nonce三个参数进行字典序排序，再将三个参数字符串拼接成一个字符串进行sha1加密，加密后的字符串可与signature对比，标识该请求来源于微信，若确认此次GET请求来自微信服务器，请原样返回echostr参数内容 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public static boolean checkSignature(String signature,String timestamp,String nonce) &#123;</div><div class="line">		String arr[] = new String[]&#123;token,timestamp,nonce&#125;;</div><div class="line">		//排序</div><div class="line">		Arrays.sort(arr);</div><div class="line">		//生成字符串</div><div class="line">		StringBuffer content = new StringBuffer();</div><div class="line">		for(int i = 0;i &lt; arr.length;i++) &#123;</div><div class="line">			content.append(arr[i]);</div><div class="line">		&#125;</div><div class="line">		//sha1加密</div><div class="line">		String temp = getSha1(content.toString());</div><div class="line">		return temp.equals(signature);</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p>附：sha1加密算法： <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">public static String getSha1(String str)&#123;</div><div class="line">		   if (null == str || 0 == str.length())&#123;</div><div class="line">		       return null;</div><div class="line">		   &#125;</div><div class="line">		   char[] hexDigits = &#123; &apos;0&apos;, &apos;1&apos;, &apos;2&apos;, &apos;3&apos;, &apos;4&apos;, &apos;5&apos;, &apos;6&apos;, &apos;7&apos;, &apos;8&apos;, &apos;9&apos;, </div><div class="line">		           &apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;, &apos;e&apos;, &apos;f&apos;&#125;;</div><div class="line">		   try &#123;</div><div class="line">		       MessageDigest mdTemp = MessageDigest.getInstance(&quot;SHA1&quot;);</div><div class="line">		       mdTemp.update(str.getBytes(&quot;UTF-8&quot;));</div><div class="line">		        </div><div class="line">		       byte[] md = mdTemp.digest();</div><div class="line">		       int j = md.length;</div><div class="line">		       char[] buf = new char[j * 2];</div><div class="line">		       int k = 0;</div><div class="line">		       for (int i = 0; i &lt; j; i++) &#123;</div><div class="line">		           byte byte0 = md[i];</div><div class="line">		           buf[k++] = hexDigits[byte0 &gt;&gt;&gt; 4 &amp; 0xf];</div><div class="line">		           buf[k++] = hexDigits[byte0 &amp; 0xf];</div><div class="line">		       &#125;</div><div class="line">		       return new String(buf);</div><div class="line">		   &#125; catch (Exception e) &#123;</div><div class="line">		       return null;</div><div class="line">		   &#125;</div><div class="line">		&#125;</div></pre></td></tr></table></figure></p>
 <ul>
 <li>其次接受xml格式的消息，并转换为对象格式</li>
 </ul>
@@ -799,16 +788,15 @@
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public String getTulingRe(String info)&#123;</div><div class="line">		//调用图灵机器人接口api，获取结果</div><div class="line">		String url = &quot;http://www.tuling123.com/openapi/api?key=自己的秘钥&amp;info=&quot;+info;</div><div class="line">		String tlResult = HttpGetRequest.get(url);</div><div class="line">		//解析图灵结果数据，提取所需内容</div><div class="line">		JSONObject json = JSONObject.fromObject(tlResult);</div><div class="line">		tlResult = json.getString(&quot;text&quot;);</div><div class="line">		return tlResult;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
 <ul>
-<li><p>封装xml接口的返回数据</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">public static String getXmlResult(ReceiveXmlEntity xml, String tlResult)&#123;</div><div class="line">		StringBuffer sb = new StringBuffer();</div><div class="line">		sb.append(&quot;&lt;xml&gt;&lt;ToUserName&gt;&lt;![CDATA[&quot;);</div><div class="line">		sb.append(xml.getFromUserName());</div><div class="line">		sb.append(&quot;]]&gt;&lt;/ToUserName&gt;&lt;FromUserName&gt;&lt;![CDATA[&quot;);</div><div class="line">		sb.append(xml.getToUserName());</div><div class="line">		sb.append(&quot;]]&gt;&lt;/FromUserName&gt;&lt;CreateTime&gt;&quot;);</div><div class="line">		sb.append(new Date().getTime());</div><div class="line">		sb.append(&quot;&lt;/CreateTime&gt;&lt;MsgType&gt;&lt;![CDATA[text]]&gt;&lt;/MsgType&gt;&lt;Content&gt;&lt;![CDATA[&quot;);</div><div class="line">		sb.append(tlResult);</div><div class="line">		sb.append(&quot;]]&gt;&lt;/Content&gt;&lt;/xml&gt;&quot;);</div><div class="line">		return sb.toString();</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>使用ngork进行公网映射<br>cmd输入</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ngork http 8080</div></pre></td></tr></table></figure>
-</li>
+<li><p>封装xml接口的返回数据 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">public static String getXmlResult(ReceiveXmlEntity xml, String tlResult)&#123;</div><div class="line">		StringBuffer sb = new StringBuffer();</div><div class="line">		sb.append(&quot;&lt;xml&gt;&lt;ToUserName&gt;&lt;![CDATA[&quot;);</div><div class="line">		sb.append(xml.getFromUserName());</div><div class="line">		sb.append(&quot;]]&gt;&lt;/ToUserName&gt;&lt;FromUserName&gt;&lt;![CDATA[&quot;);</div><div class="line">		sb.append(xml.getToUserName());</div><div class="line">		sb.append(&quot;]]&gt;&lt;/FromUserName&gt;&lt;CreateTime&gt;&quot;);</div><div class="line">		sb.append(new Date().getTime());</div><div class="line">		sb.append(&quot;&lt;/CreateTime&gt;&lt;MsgType&gt;&lt;![CDATA[text]]&gt;&lt;/MsgType&gt;&lt;Content&gt;&lt;![CDATA[&quot;);</div><div class="line">		sb.append(tlResult);</div><div class="line">		sb.append(&quot;]]&gt;&lt;/Content&gt;&lt;/xml&gt;&quot;);</div><div class="line">		return sb.toString();</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p></li>
+<li><p>使用ngork进行公网映射 cmd输入 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ngork http 8080</div></pre></td></tr></table></figure></p></li>
 </ul>
-<p><img src="http://cdn.sinacloud.net/myblog-image/2017/01-20/01.png" alt="公网映射"></p>
+<div class="figure">
+<img src="http://cdn.sinacloud.net/myblog-image/2017/01-20/01.png" alt="公网映射">
+<p class="caption">公网映射</p>
+</div>
 <ul>
-<li>最后关注公众号即可，亲测准确性还是很高的：<br><img src="http://cdn.sinacloud.net/myblog-image/2017/01-20/02.png" alt="图灵机器人"></li>
+<li>最后关注公众号即可，亲测准确性还是很高的： <img src="http://cdn.sinacloud.net/myblog-image/2017/01-20/02.png" alt="图灵机器人"></li>
 </ul>
 
           
@@ -951,13 +939,10 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>最强大脑VS百度大脑最近很是热闹，于是乎发现百度大脑平台在1月06日开放了nlp自然语言处理的接口，于是试用了1.0版本。使用方法分为API和SDK两种方式。</p>
-<h2 id="API接口调用"><a href="#API接口调用" class="headerlink" title="API接口调用"></a>API接口调用</h2><ul>
-<li>首先获取access_token,需要用到API Key和Secret Key</li>
-</ul>
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>最强大脑VS百度大脑最近很是热闹，于是乎发现百度大脑平台在1月06日开放了nlp自然语言处理的接口，于是试用了1.0版本。使用方法分为API和SDK两种方式。 ## API接口调用 - 首先获取access_token,需要用到API Key和Secret Key</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public static String getAccess_token() &#123;</div><div class="line">		List&lt;NameValuePair&gt; nameValuePairs = new ArrayList&lt;NameValuePair&gt;();</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;grant_type&quot;, Message.GRANT_TYPE));</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;client_id&quot;, Message.CLIENT_ID));</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;client_secret&quot;, Message.CLIENT_SECRET));</div><div class="line">		String result = null;</div><div class="line">		try &#123;</div><div class="line">			result = postNameValuePair(Message.TOKEN_URL,nameValuePairs);</div><div class="line">		&#125; catch (IOException e) &#123;</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		return result;</div><div class="line">		</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
 <ul>
-<li>接下来用获取的access_token（目前为1个月重新获取一次）调用相关接口即可。<h2 id="JAVA-SDK接口调用"><a href="#JAVA-SDK接口调用" class="headerlink" title="JAVA SDK接口调用"></a>JAVA SDK接口调用</h2></li>
+<li>接下来用获取的access_token（目前为1个月重新获取一次）调用相关接口即可。 ## JAVA SDK接口调用</li>
 <li>首先通过API Key和Secret Key以及APP_ID创建一个客户端对象。</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public static AipNlp client = new AipNlp(Message.APP_ID, Message.CLIENT_ID, Message.CLIENT_SECRET);</div></pre></td></tr></table></figure>
@@ -966,11 +951,13 @@
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"> public void wordseg(String sentence) &#123;</div><div class="line">        // 使用指定语言分词</div><div class="line">        JSONObject response = NlpUtil.client.wordseg(sentence, NlpLangId.LANG_CHINESE);</div><div class="line">        JSONObject scw_out = response.getJSONObject(&quot;scw_out&quot;);</div><div class="line">        String wordsepbuf = scw_out.getString(&quot;wordsepbuf&quot;);</div><div class="line">        String wpcompbuf = scw_out.getString(&quot;wpcompbuf&quot;);</div><div class="line">        String subphrbuf = scw_out.getString(&quot;subphrbuf&quot;);</div><div class="line">        String str[] = wpcompbuf.split(&quot;\t&quot;);</div><div class="line">        for (int i = 0; i &lt; str.length; i++) &#123;</div><div class="line">			System.out.println(str[i]);</div><div class="line">		&#125;</div><div class="line">        System.out.println(&quot;基本词粒度结果:&quot;+wordsepbuf);</div><div class="line">        System.out.println(&quot;混排粒度结果&quot;+wpcompbuf);</div><div class="line">        System.out.println(&quot;所有识别出来的短语&quot;+subphrbuf);       </div><div class="line">    &#125; </div><div class="line"></div><div class="line">public List&lt;Word&gt; wordpos(String sentence) &#123;</div><div class="line">    	 JSONObject response = NlpUtil.client.wordpos(sentence);</div><div class="line">    	 JSONArray result_out = response.getJSONArray(&quot;result_out&quot;);</div><div class="line">    	 List&lt;Word&gt; words = new ArrayList&lt;Word&gt;();</div><div class="line">    	 Word word;</div><div class="line">    	 for (int i = 0; i &lt; result_out.length(); i++) &#123;</div><div class="line">    		 word = new Word();</div><div class="line">			 word.setLength(result_out.getJSONObject(i).getInt(&quot;length&quot;));</div><div class="line">			 word.setConfidence(result_out.getJSONObject(i).getInt(&quot;confidence&quot;));</div><div class="line">			 word.setType(result_out.getJSONObject(i).getString(&quot;type&quot;));</div><div class="line">			 word.setWord(result_out.getJSONObject(i).getString(&quot;word&quot;));</div><div class="line">			 words.add(word);</div><div class="line">		&#125;</div><div class="line">    	return words;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <ul>
-<li>测试分词结果：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public class Test &#123;</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		String sentence = &quot;如何成为一名优雅的程序员&quot;;</div><div class="line">		WordSeg wordSeg = new WordSeg();</div><div class="line">		List&lt;Word&gt; words = wordSeg.wordpos(sentence);</div><div class="line">		for (Word word : words) &#123;</div><div class="line">			System.out.println(&quot;单词：&quot;+word.getWord()+&quot;  &quot;+&quot;词性：&quot;+word.getType()+&quot; &quot;+&quot;置信度：&quot;+word.getConfidence());</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
+<li>测试分词结果： <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public class Test &#123;</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		String sentence = &quot;如何成为一名优雅的程序员&quot;;</div><div class="line">		WordSeg wordSeg = new WordSeg();</div><div class="line">		List&lt;Word&gt; words = wordSeg.wordpos(sentence);</div><div class="line">		for (Word word : words) &#123;</div><div class="line">			System.out.println(&quot;单词：&quot;+word.getWord()+&quot;  &quot;+&quot;词性：&quot;+word.getType()+&quot; &quot;+&quot;置信度：&quot;+word.getConfidence());</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></li>
 </ul>
 <p>结果相当准确：</p>
-<p><img src="http://cdn.sinacloud.net/myblog-image/2017/01-16/01.PNG" alt="分词结果"></p>
+<div class="figure">
+<img src="http://cdn.sinacloud.net/myblog-image/2017/01-16/01.PNG" alt="分词结果">
+<p class="caption">分词结果</p>
+</div>
 
           
         
@@ -1112,7 +1099,7 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>今天网络爬虫开始入门，看了《自己动手写网络爬虫》第一章，作者文中提出了使用httpclient-4.1.2.jar,结果在示例中自己用的httpclient-4.3.0以上的版本，在小节最后的总结程序Java网页抓取示例程序中又用了commons-httpclient的jar包，这三者在写法上有很大差别，尤其是commons-httpclient，已经是遗留版本，官方不推荐使用了，于是我就索性学习了下httpclient最新的文档，把Java网页抓取示例程序重写了一遍。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public class RetrievePage &#123;</div><div class="line">	private static HttpClient httpClient = HttpClients.createDefault();</div><div class="line">	public static boolean downloadPage(String path) throws ClientProtocolException, IOException &#123;</div><div class="line">		HttpPost httpPost = new HttpPost(path); </div><div class="line">//		HttpHost proxy = new HttpHost(&quot;172.17.18.84&quot;,8080,&quot;http&quot;);</div><div class="line">//	    RequestConfig rq = RequestConfig.custom().setProxy(proxy).build();</div><div class="line">//		httpPost.setConfig(rq);</div><div class="line">		InputStream input = null;</div><div class="line">		OutputStream output = null;</div><div class="line">//		HttpGet httpGet = new HttpGet(path);</div><div class="line">		List&lt;NameValuePair&gt; nameValuePairs = new ArrayList&lt;NameValuePair&gt;(2);</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;name&quot;, &quot;lietu&quot;));</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;password&quot;, &quot;*****&quot;));</div><div class="line">		httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,&quot;UTF-8&quot;));</div><div class="line">		HttpResponse response = httpClient.execute(httpPost);</div><div class="line">		int statusCode = response.getStatusLine().getStatusCode();</div><div class="line">		System.out.println(statusCode);</div><div class="line">		if(statusCode == HttpStatus.SC_OK) &#123;</div><div class="line">			String bodyAsString = EntityUtils.toString(response.getEntity(),&quot;utf-8&quot;);</div><div class="line">			input = new ByteArrayInputStream(bodyAsString.getBytes());</div><div class="line">			String filename = path.substring(path.lastIndexOf(&apos;/&apos;)+1);</div><div class="line">			System.out.println(filename);</div><div class="line">			output = new FileOutputStream(filename);</div><div class="line">			int tempByte = -1;</div><div class="line">			while((tempByte = input.read()) &gt; 0) &#123;</div><div class="line">				output.write(tempByte);</div><div class="line">			&#125;</div><div class="line">			if(input != null) &#123;</div><div class="line">				input.close();</div><div class="line">			&#125;</div><div class="line">			if(output != null) &#123;</div><div class="line">				output.close();</div><div class="line">			&#125;</div><div class="line">			return true;</div><div class="line">		&#125;</div><div class="line">		return false;</div><div class="line">	&#125;</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		try &#123;</div><div class="line">			RetrievePage.downloadPage(&quot;http://www.lietu.com&quot;);</div><div class="line">		&#125; catch (IOException e) &#123;</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>今天网络爬虫开始入门，看了《自己动手写网络爬虫》第一章，作者文中提出了使用httpclient-4.1.2.jar,结果在示例中自己用的httpclient-4.3.0以上的版本，在小节最后的总结程序Java网页抓取示例程序中又用了commons-httpclient的jar包，这三者在写法上有很大差别，尤其是commons-httpclient，已经是遗留版本，官方不推荐使用了，于是我就索性学习了下httpclient最新的文档，把Java网页抓取示例程序重写了一遍。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public class RetrievePage &#123;</div><div class="line">	private static HttpClient httpClient = HttpClients.createDefault();</div><div class="line">	public static boolean downloadPage(String path) throws ClientProtocolException, IOException &#123;</div><div class="line">		HttpPost httpPost = new HttpPost(path); </div><div class="line">//		HttpHost proxy = new HttpHost(&quot;172.17.18.84&quot;,8080,&quot;http&quot;);</div><div class="line">//	    RequestConfig rq = RequestConfig.custom().setProxy(proxy).build();</div><div class="line">//		httpPost.setConfig(rq);</div><div class="line">		InputStream input = null;</div><div class="line">		OutputStream output = null;</div><div class="line">//		HttpGet httpGet = new HttpGet(path);</div><div class="line">		List&lt;NameValuePair&gt; nameValuePairs = new ArrayList&lt;NameValuePair&gt;(2);</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;name&quot;, &quot;lietu&quot;));</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;password&quot;, &quot;*****&quot;));</div><div class="line">		httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,&quot;UTF-8&quot;));</div><div class="line">		HttpResponse response = httpClient.execute(httpPost);</div><div class="line">		int statusCode = response.getStatusLine().getStatusCode();</div><div class="line">		System.out.println(statusCode);</div><div class="line">		if(statusCode == HttpStatus.SC_OK) &#123;</div><div class="line">			String bodyAsString = EntityUtils.toString(response.getEntity(),&quot;utf-8&quot;);</div><div class="line">			input = new ByteArrayInputStream(bodyAsString.getBytes());</div><div class="line">			String filename = path.substring(path.lastIndexOf(&apos;/&apos;)+1);</div><div class="line">			System.out.println(filename);</div><div class="line">			output = new FileOutputStream(filename);</div><div class="line">			int tempByte = -1;</div><div class="line">			while((tempByte = input.read()) &gt; 0) &#123;</div><div class="line">				output.write(tempByte);</div><div class="line">			&#125;</div><div class="line">			if(input != null) &#123;</div><div class="line">				input.close();</div><div class="line">			&#125;</div><div class="line">			if(output != null) &#123;</div><div class="line">				output.close();</div><div class="line">			&#125;</div><div class="line">			return true;</div><div class="line">		&#125;</div><div class="line">		return false;</div><div class="line">	&#125;</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		try &#123;</div><div class="line">			RetrievePage.downloadPage(&quot;http://www.lietu.com&quot;);</div><div class="line">		&#125; catch (IOException e) &#123;</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>注释掉的地方是设置代理，以及Get通信方式，可以根据需要使用。个人感悟：IT方面更新太快，一切都要以官方文档为主要依据。</p>
 
           
@@ -1255,15 +1242,18 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="最大长度匹配法"><a href="#最大长度匹配法" class="headerlink" title="最大长度匹配法"></a>最大长度匹配法</h2><p>最常见的分词方法为查找词典算法，其中最常用就是最大长度匹配法——从字符串的指定位置开始，匹配词典，找出最长词。</p>
-<h3 id="正向最大长度匹配法"><a href="#正向最大长度匹配法" class="headerlink" title="正向最大长度匹配法"></a>正向最大长度匹配法</h3><p>人们用句的时候往往更倾向与使用更短的词，只有在必要的情况下才会用长词来表述，比如大学和大学生，如果大学能够表示大学生，那么人们更倾向与用短词，既然长词出现，那么就肯定是有含义的，需要优先匹配。这便是最大长度匹配法。最大长度匹配法常用前缀树（标准Trie树)进行匹配。</p>
-<h3 id="逆向最大长度匹配法"><a href="#逆向最大长度匹配法" class="headerlink" title="逆向最大长度匹配法"></a>逆向最大长度匹配法</h3><p>我们会发现正向最大长度匹配的精度不高，会出现歧义，比如大学生活丰富多彩，切分结果为大学生/活/丰富多彩，而采用逆向最大长度匹配的结果为大学/生活/丰富多彩，可见逆向最大长度匹配可以消除部分歧义，精度稍高。逆向最大长度匹配常用后缀树进行匹配。</p>
-<h3 id="标准Trie树（前缀树）"><a href="#标准Trie树（前缀树）" class="headerlink" title="标准Trie树（前缀树）"></a>标准Trie树（前缀树）</h3><p><img src="http://cdn.sinacloud.net/myblog-image/2017/01-14/01.png" alt="标准Trie树"></p>
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="最大长度匹配法">最大长度匹配法</h2>
+<p>最常见的分词方法为查找词典算法，其中最常用就是最大长度匹配法——从字符串的指定位置开始，匹配词典，找出最长词。 ### 正向最大长度匹配法 人们用句的时候往往更倾向与使用更短的词，只有在必要的情况下才会用长词来表述，比如大学和大学生，如果大学能够表示大学生，那么人们更倾向与用短词，既然长词出现，那么就肯定是有含义的，需要优先匹配。这便是最大长度匹配法。最大长度匹配法常用前缀树（标准Trie树)进行匹配。 ### 逆向最大长度匹配法 我们会发现正向最大长度匹配的精度不高，会出现歧义，比如大学生活丰富多彩，切分结果为大学生/活/丰富多彩，而采用逆向最大长度匹配的结果为大学/生活/丰富多彩，可见逆向最大长度匹配可以消除部分歧义，精度稍高。逆向最大长度匹配常用后缀树进行匹配。 ### 标准Trie树（前缀树） <img src="http://cdn.sinacloud.net/myblog-image/2017/01-14/01.png" alt="标准Trie树"></p>
 <p>前缀树的搜索速度快在于其每一个节点都指向一个直接定址表，无需处理冲突，而且树的高度小，所以 搜索 速度很快。但是它是空间换时间的算法，以内存消耗为代价。如果只是26个英文字母，每个节点就要保存26个指针，但并不是每个指针数组都保存记录，空的指针数组导致内存空间的浪费。</p>
-<p><img src="http://imgx.sinacloud.net/myblog-image/w_600,h_600/2017/01-14/02.png" alt="标准Trie树"></p>
-<p>因而我们可以结合了Trie树时间效率的优势和二叉搜索树空间效率的三叉搜索树。</p>
-<h3 id="三叉搜索树"><a href="#三叉搜索树" class="headerlink" title="三叉搜索树"></a>三叉搜索树</h3><p>三叉搜索树使用了一种聪明的手段去解决Trie的内存问题（空的指针数组）。为了避免多余的指针占用内存，三叉搜索树的节点表示成“树中有树”的形式。与Trie树不同的是，三叉搜索树的结构与读入顺序有关，三叉树是否平衡取决于其读入顺序。我们可以把词典按词的首字母大小排序，每次取中间值读入来构建平衡树，这样在进行正向最大长度匹配时，从一句话的指定位置开始，如果将该字首字母与根节点的字的首字母匹配，如果相等则继续访问中间孩子节点，如果小于则比较左孩子节点，如果大于则继续比较右孩子节点。匹配完一个词则回到根节点继续匹配。直到匹配到该句结尾，如果没有匹配的词则按单字切分。</p>
-<p><img src="http://cdn.sinacloud.net/myblog-image/2017/01-14/03.png" alt="三叉Trie树"></p>
+<div class="figure">
+<img src="http://imgx.sinacloud.net/myblog-image/w_600,h_600/2017/01-14/02.png" alt="标准Trie树">
+<p class="caption">标准Trie树</p>
+</div>
+<p>因而我们可以结合了Trie树时间效率的优势和二叉搜索树空间效率的三叉搜索树。 ### 三叉搜索树 三叉搜索树使用了一种聪明的手段去解决Trie的内存问题（空的指针数组）。为了避免多余的指针占用内存，三叉搜索树的节点表示成“树中有树”的形式。与Trie树不同的是，三叉搜索树的结构与读入顺序有关，三叉树是否平衡取决于其读入顺序。我们可以把词典按词的首字母大小排序，每次取中间值读入来构建平衡树，这样在进行正向最大长度匹配时，从一句话的指定位置开始，如果将该字首字母与根节点的字的首字母匹配，如果相等则继续访问中间孩子节点，如果小于则比较左孩子节点，如果大于则继续比较右孩子节点。匹配完一个词则回到根节点继续匹配。直到匹配到该句结尾，如果没有匹配的词则按单字切分。</p>
+<div class="figure">
+<img src="http://cdn.sinacloud.net/myblog-image/2017/01-14/03.png" alt="三叉Trie树">
+<p class="caption">三叉Trie树</p>
+</div>
 
           
         
@@ -1405,7 +1395,8 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="Octopress到Hexo一些简单的个人体会"><a href="#Octopress到Hexo一些简单的个人体会" class="headerlink" title="Octopress到Hexo一些简单的个人体会"></a>Octopress到Hexo一些简单的个人体会</h1><p>距离上次小站建成已经过去快一年了，然而这一年却也没能写点什么，这和之前说好的成为一个优雅的程序员走的有点远了，其实这一年是考研去了，不管结果如何，从现在开始新的生活，首先给自己买了一台电脑，索性就从写一篇博开始。</p>
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="octopress到hexo一些简单的个人体会">Octopress到Hexo一些简单的个人体会</h1>
+<p>距离上次小站建成已经过去快一年了，然而这一年却也没能写点什么，这和之前说好的成为一个优雅的程序员走的有点远了，其实这一年是考研去了，不管结果如何，从现在开始新的生活，首先给自己买了一台电脑，索性就从写一篇博开始。</p>
 <p>结果安装完ruby及依赖项之后总是会一运行rake命令就出错。当初在搭建octopress的时候完全没有考虑ruby对windows的支持。于是我发现了基于 Node.js 得Hexo，便索性用Hexo重新搭建了站点。</p>
 <p>Hexo和octopress很相像，而且都是Markdown语法编辑，所以站点迁起来也很快。不同之处在于Hexo基于node.js，在windows环境下支持更好而且环境搭建也更容易。于是新的站点也代表新的开始，继续加油吧。</p>
 <p>另附：这次建站用的是NexT的主题，该主题有详细的中文文档。</p>
@@ -1550,30 +1541,30 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="2015年终总结"><a href="#2015年终总结" class="headerlink" title="2015年终总结"></a>2015年终总结</h1><p>炮竹声中一岁除，新的一年猴年即将到来，在此对过去的一年做一个总结，希望在接下来的一年里收获更多。</p>
-<h2 id="学业方面"><a href="#学业方面" class="headerlink" title="学业方面"></a>学业方面</h2><p>这一年在学业方面虽然以些微之差没能获得年级第一有点小遗憾，不过还是有惊无险的得到特等奖学金，与去年相比有一个名次的进步，这我已经满足了，毕竟这一学我已经把重点从课业上注意到了项目实践能力上了，所以取得这样成绩已经满意了。</p>
-<h2 id="学生工作"><a href="#学生工作" class="headerlink" title="学生工作"></a>学生工作</h2><ul>
-<li><p>今年在完成了换届工作后我就正式结束电子学院科协与技术协会秘书长的工作，再见了，两年科协，很充实，很快乐。之后在5月份收到科协发过来的聘书。</p>
-</li>
-<li><p>另外在班级上继续担当学习委员职务，感觉相比之前，任务已经没有那么多了。</p>
-</li>
-<li><p>成立了电子学院微信俱乐部</p>
-</li>
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="年终总结">2015年终总结</h1>
+<p>炮竹声中一岁除，新的一年猴年即将到来，在此对过去的一年做一个总结，希望在接下来的一年里收获更多。</p>
+<h2 id="学业方面">学业方面</h2>
+<p>这一年在学业方面虽然以些微之差没能获得年级第一有点小遗憾，不过还是有惊无险的得到特等奖学金，与去年相比有一个名次的进步，这我已经满足了，毕竟这一学我已经把重点从课业上注意到了项目实践能力上了，所以取得这样成绩已经满意了。</p>
+<h2 id="学生工作">学生工作</h2>
+<ul>
+<li><p>今年在完成了换届工作后我就正式结束电子学院科协与技术协会秘书长的工作，再见了，两年科协，很充实，很快乐。之后在5月份收到科协发过来的聘书。</p></li>
+<li><p>另外在班级上继续担当学习委员职务，感觉相比之前，任务已经没有那么多了。</p></li>
+<li><p>成立了电子学院微信俱乐部</p></li>
 </ul>
-<h2 id="科研项目"><a href="#科研项目" class="headerlink" title="科研项目"></a>科研项目</h2><ul>
-<li><p>今年五月份开始进行的科研立项的省级指导项目“基于微信的教学管理云平台” 正按计划进行性，已经获得了国家级二等奖证书一份，软件著作权一份，同时顺利通过了中期检查，项目已基本完工。</p>
-</li>
-<li><p>之后接手的社会横向项目“今朝龙翔微信社区”项目已在年底完工。</p>
-</li>
+<h2 id="科研项目">科研项目</h2>
+<ul>
+<li><p>今年五月份开始进行的科研立项的省级指导项目“基于微信的教学管理云平台” 正按计划进行性，已经获得了国家级二等奖证书一份，软件著作权一份，同时顺利通过了中期检查，项目已基本完工。</p></li>
+<li><p>之后接手的社会横向项目“今朝龙翔微信社区”项目已在年底完工。</p></li>
 </ul>
-<h2 id="学科竞赛"><a href="#学科竞赛" class="headerlink" title="学科竞赛"></a>学科竞赛</h2><ul>
-<li><p>中国大学生服务外包创新创业大赛国家二等奖。</p>
-</li>
-<li><p>2015年“甲骨文杯”全国Java程序设计大赛华东赛区三等奖</p>
-</li>
+<h2 id="学科竞赛">学科竞赛</h2>
+<ul>
+<li><p>中国大学生服务外包创新创业大赛国家二等奖。</p></li>
+<li><p>2015年“甲骨文杯”全国Java程序设计大赛华东赛区三等奖</p></li>
 </ul>
-<h2 id="思想政治"><a href="#思想政治" class="headerlink" title="思想政治"></a>思想政治</h2><p>今年五月份通过党支部大会成为了一名预备党员，同时通过党校培训顺利结业。</p>
-<h2 id="看过的好书"><a href="#看过的好书" class="headerlink" title="看过的好书"></a>看过的好书</h2><p>今年看过的一些好书有：《headfirst 设计模式》、《JavaScript高级程序设计》、《HTML 5移动Web开发实战详解》</p>
+<h2 id="思想政治">思想政治</h2>
+<p>今年五月份通过党支部大会成为了一名预备党员，同时通过党校培训顺利结业。</p>
+<h2 id="看过的好书">看过的好书</h2>
+<p>今年看过的一些好书有：《headfirst 设计模式》、《JavaScript高级程序设计》、《HTML 5移动Web开发实战详解》</p>
 <p>以上就是今年的简单总结，其他的也暂时想不起什么了，要说的话就是火影完结了。追了十年的，感谢有你陪伴。</p>
 <p>至于明年的计划，也在计划中，主要有两点，一是希望能在算法再提升一下，二是打算深入学习一下JavaScript。</p>
 
@@ -1717,19 +1708,19 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="今朝龙翔微信社区技术总结"><a href="#今朝龙翔微信社区技术总结" class="headerlink" title="今朝龙翔微信社区技术总结"></a>今朝龙翔微信社区技术总结</h1><p>这几天突然接到了之前接受的今朝龙翔社区的项目即将上线的消息，于是开始抓紧时间赶紧进度，同时在需求方面又发生了很大的变动，原本是以将webAPP融入微信的方式（通过菜单链接直接链到webAPP中）,现在需要改成将webAPP的功能直接拆分到微信端，通过微信菜单直接获取资讯图文或者链接到单页面，所以在此基础上为了后期可拓展性，我并没有把原来的webAPP之前拆了，而是在此基础上进行了功能的拓展。下面是新旧版本的对比：</p>
-<p><img src="http://imgx.sinacloud.net/myblog-image/w_350,h_600/2016/01-27/01.png" alt="旧的版本"><br><img src="http://imgx.sinacloud.net/myblog-image/w_350,h_600/2016/01-27/02.png" alt="新的版本"></p>
-<p>之后经过这几天的赶工，项目总算是完工了，现总结一下这次项目的一些心得。</p>
-<h2 id="一、微信接口获取用户信息"><a href="#一、微信接口获取用户信息" class="headerlink" title="一、微信接口获取用户信息"></a>一、微信接口获取用户信息</h2><p>微信获取用户信息可以通过两种方式，两种方式用到的接口也不一样。</p>
-<p>###（1）通过自定义菜单的click类型获取用户信息（无需高级接口）<br>如果是通过自定义菜单的click类型，以图文链接的方式获取用户信息，可以先通过FromUserName获取到用户的openID，之后即可通过获取用户信息的接口<a href="https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&amp;openid=OPENID&amp;lang=zh_CN" target="_blank" rel="external">https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&amp;openid=OPENID&amp;lang=zh_CN</a> 获取用户基本信息。</p>
-<p>###（2）通过自定义菜单的view类型获取用户信息（需要高级接口，即认证服务号，另外还需要域名）<br>如果是通过自定义菜单的view类型，以自定义菜单直接链接到获取用户信息的页面，菜单的url是一个授权回调url，这样才能在菜单点击的时候使用oauth2.0授权获得openid，接口如下<a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&amp;redirect_uri=REDIRECT_URI&amp;response_type=code&amp;scope=SCOPE&amp;state=STATE#wechat_redirect" target="_blank" rel="external">https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&amp;redirect_uri=REDIRECT_URI&amp;response_type=code&amp;scope=SCOPE&amp;state=STATE#wechat_redirect</a> 。其中的redirect_uri便是回调页面的链接，不过页面所在的域名必须在微信公众号的后台进行绑定授权，授权后可以回调该域名下面的页面；其中的scope参数分为snsapi_base和snsapi_userinfo两种：</p>
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="今朝龙翔微信社区技术总结">今朝龙翔微信社区技术总结</h1>
+<p>这几天突然接到了之前接受的今朝龙翔社区的项目即将上线的消息，于是开始抓紧时间赶紧进度，同时在需求方面又发生了很大的变动，原本是以将webAPP融入微信的方式（通过菜单链接直接链到webAPP中）,现在需要改成将webAPP的功能直接拆分到微信端，通过微信菜单直接获取资讯图文或者链接到单页面，所以在此基础上为了后期可拓展性，我并没有把原来的webAPP之前拆了，而是在此基础上进行了功能的拓展。下面是新旧版本的对比：</p>
+<p><img src="http://imgx.sinacloud.net/myblog-image/w_350,h_600/2016/01-27/01.png" alt="旧的版本"> <img src="http://imgx.sinacloud.net/myblog-image/w_350,h_600/2016/01-27/02.png" alt="新的版本"></p>
+<p>之后经过这几天的赶工，项目总算是完工了，现总结一下这次项目的一些心得。 ## 一、微信接口获取用户信息 微信获取用户信息可以通过两种方式，两种方式用到的接口也不一样。 ###（1）通过自定义菜单的click类型获取用户信息（无需高级接口） 如果是通过自定义菜单的click类型，以图文链接的方式获取用户信息，可以先通过FromUserName获取到用户的openID，之后即可通过获取用户信息的接口https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&amp;openid=OPENID&amp;lang=zh_CN 获取用户基本信息。 ###（2）通过自定义菜单的view类型获取用户信息（需要高级接口，即认证服务号，另外还需要域名） 如果是通过自定义菜单的view类型，以自定义菜单直接链接到获取用户信息的页面，菜单的url是一个授权回调url，这样才能在菜单点击的时候使用oauth2.0授权获得openid，接口如下https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&amp;redirect_uri=REDIRECT_URI&amp;response_type=code&amp;scope=SCOPE&amp;state=STATE#wechat_redirect 。其中的redirect_uri便是回调页面的链接，不过页面所在的域名必须在微信公众号的后台进行绑定授权，授权后可以回调该域名下面的页面；其中的scope参数分为snsapi_base和snsapi_userinfo两种：</p>
 <p>1、以snsapi_base为scope发起的网页授权，是用来获取进入页面的用户的openid的，并且是静默授权并自动跳转到回调页的。用户感知的就是直接进入了回调页（往往是业务页面）</p>
 <p>2、以snsapi_userinfo为scope发起的网页授权，是用来获取用户的基本信息的。但这种授权需要用户手动同意，并且由于用户同意过，所以无须关注，就可在授权后获取该用户的基本信息。</p>
-<p>###（3）两种方式总结：</p>
+<h3 id="两种方式总结">（3）两种方式总结：</h3>
 <p>用户管理类接口中的“获取用户基本信息接口”，是在用户和公众号产生消息交互或关注后事件推送后，才能根据用户OpenID来获取用户基本信息。这个接口，包括其他微信接口，都是需要该用户（即openid）关注了公众号后，才能调用成功的。</p>
-<h2 id="二、多图文上传"><a href="#二、多图文上传" class="headerlink" title="二、多图文上传"></a>二、多图文上传</h2><p>原本是打算找一个合适插件来做随手拍的功能的，但找来找去并没找到符合要求的插件，接口那边需要通过POST文件的方式，而我发现大多数插件都是通过ajax并发上传单文件的方式，所以为此很头疼，所以最终索性自己来实现这个功能，用HTML5的File API来做多图上传及预览的随手拍功能。</p>
+<h2 id="二多图文上传">二、多图文上传</h2>
+<p>原本是打算找一个合适插件来做随手拍的功能的，但找来找去并没找到符合要求的插件，接口那边需要通过POST文件的方式，而我发现大多数插件都是通过ajax并发上传单文件的方式，所以为此很头疼，所以最终索性自己来实现这个功能，用HTML5的File API来做多图上传及预览的随手拍功能。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">funUploadFiles : function() &#123;</div><div class="line">		var self = this;  </div><div class="line">		var formdata = new FormData();</div><div class="line">		var xhr = new XMLHttpRequest();</div><div class="line">		for (var i = 0; i &lt; this.uploadFile.length; i++) &#123;</div><div class="line">			var file = this.uploadFile[i];</div><div class="line">		    formdata.append(&apos;file[]&apos;, file);</div><div class="line">		&#125;</div><div class="line">		xhr.addEventListener(&quot;load&quot;, function(e)&#123;</div><div class="line">	    		for(var i = 0; i &lt; self.uploadFile.length; i++) &#123;</div><div class="line">	    			var file = self.uploadFile[i];</div><div class="line">	    			self.onSuccess(file, xhr.responseText);</div><div class="line">			    	if(self.uploadFile.length==0)&#123;</div><div class="line">			    		self.onComplete(&quot;全部完成&quot;);</div><div class="line">			    	&#125;</div><div class="line">	    		&#125;</div><div class="line">		    &#125;, false);  </div><div class="line">		xhr.open(&quot;POST&quot;,this.url+$(&quot;#title&quot;).val()+&quot;&amp;UserID=&quot;+$(&quot;#userid&quot;).val()+&quot;&amp;name=&quot;+$(&quot;#name&quot;).val()+&quot;&amp;phone=&quot;+$(&quot;#phone&quot;).val(), true);</div><div class="line">		xhr.send(formdata);</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<h2 id="三、微信APP下载"><a href="#三、微信APP下载" class="headerlink" title="三、微信APP下载"></a>三、微信APP下载</h2><p>最后一个需要拿出来特别提一下的就是微信中实现app下载的功能，这是一个比较坑的地方，微信公众号拦截APPStore跳转和APK下载，允许使用腾讯域名下面的下载链接，所以解决方法有两个：</p>
+<h2 id="三微信app下载">三、微信APP下载</h2>
+<p>最后一个需要拿出来特别提一下的就是微信中实现app下载的功能，这是一个比较坑的地方，微信公众号拦截APPStore跳转和APK下载，允许使用腾讯域名下面的下载链接，所以解决方法有两个：</p>
 <ul>
 <li>1 把应用拿到应用宝，换得应用宝的APP下载地址，放到微信里就能跳转了</li>
 <li>2 做一个漂亮点的下载页面，并提示用户在浏览器中打开</li>
@@ -1875,7 +1866,9 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="小站初成：用octopress搭建个人网站"><a href="#小站初成：用octopress搭建个人网站" class="headerlink" title="小站初成：用octopress搭建个人网站"></a>小站初成：用octopress搭建个人网站</h1><h2 id="我的博客之路"><a href="#我的博客之路" class="headerlink" title="我的博客之路"></a>我的博客之路</h2><p>经过一天的折腾，终于用octopress搭建了属于自己的个人网站，同时还第一次申请了属于自己的域名，现在的个人页已经是绑定了自己的域名了，从此走向了自己博客之路，记录接下来工作生活的点滴。</p>
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="小站初成用octopress搭建个人网站">小站初成：用octopress搭建个人网站</h1>
+<h2 id="我的博客之路">我的博客之路</h2>
+<p>经过一天的折腾，终于用octopress搭建了属于自己的个人网站，同时还第一次申请了属于自己的域名，现在的个人页已经是绑定了自己的域名了，从此走向了自己博客之路，记录接下来工作生活的点滴。</p>
 <p>虽说之前也有打算用WordPress搭建自己个人站的想法，不过放弃了，至于原因╮(╯_╰)╭，主要是WordPress太重了，而且需要依赖于数据库和服务器，我想找到一个轻便一点的系统来写博客，之后也尝试过用一些第三方的博客平台，不过总归还是用自己的放心，之后便发现了octopress非常满足我的需求，于是就索性花了一点时间，搭建了自己的个人站。虽说大体上是搭建完成了，不过途中还是遇到过不少问题，有的甚至还没有解决，像是贴代码时的codeblock标签不能设置编程语言，一设置就出错，之后还会再找时间解决一下。</p>
 <p>另外还有一点就是目前的个人页还是很简陋的原始样式，接下来会找时间好好装饰一下，同时功能上也会应需求增加一些。第一篇就到这吧，希望以后能越写越多（如果我还是一个优雅的程序员）。</p>
 
@@ -1985,7 +1978,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2144,24 +2137,7 @@
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
 
 
 
@@ -2205,6 +2181,45 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
 
   
 

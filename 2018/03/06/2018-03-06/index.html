@@ -94,19 +94,22 @@
 
 
 
-<meta name="description" content="ACL17-Get To The Point: Summarization with Pointer-Generator Networks  PDF, Blog 这是我本周要讲的论文，发表在17年ACL会议上。本文针对长文本生成式摘要中出现的上下文不连贯、事实错误以及未登录词的问题，提出了Pointer-Generator模型，将复制与生成相结合，同时针对重复生成句子的问题，提出了覆盖机制。 Ba">
+<meta name="description" content="ACL17-Get To The Point: Summarization with Pointer-Generator Networks  PDF, Blog 这是我本周要讲的论文，发表在17年ACL会议上。本文针对长文本生成式摘要中出现的两个问题：（1）事实错误以及未登录词的问题（2）解码时生成重复句子。问题1作者提出结合point network来解决，问题2作者引入了Coverage me">
 <meta name="keywords" content="NLP,深度学习,ACL,Abstractive Summarization">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ACL17-Get To The Point: Summarization with Pointer-Generator Networks">
 <meta property="og:url" content="http://yoursite.com/2018/03/06/2018-03-06/index.html">
 <meta property="og:site_name" content="宫悟桑的小屋">
-<meta property="og:description" content="ACL17-Get To The Point: Summarization with Pointer-Generator Networks  PDF, Blog 这是我本周要讲的论文，发表在17年ACL会议上。本文针对长文本生成式摘要中出现的上下文不连贯、事实错误以及未登录词的问题，提出了Pointer-Generator模型，将复制与生成相结合，同时针对重复生成句子的问题，提出了覆盖机制。 Ba">
+<meta property="og:description" content="ACL17-Get To The Point: Summarization with Pointer-Generator Networks  PDF, Blog 这是我本周要讲的论文，发表在17年ACL会议上。本文针对长文本生成式摘要中出现的两个问题：（1）事实错误以及未登录词的问题（2）解码时生成重复句子。问题1作者提出结合point network来解决，问题2作者引入了Coverage me">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2018/03/06/2018-03-06/01.png">
-<meta property="og:updated_time" content="2018-03-06T17:17:50.231Z">
+<meta property="og:image" content="http://yoursite.com/D:/Hexo/source/_posts/2018-03-06/01.png">
+<meta property="og:image" content="http://yoursite.com/02.png">
+<meta property="og:image" content="http://yoursite.com/04.png">
+<meta property="og:updated_time" content="2018-03-07T08:02:36.782Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ACL17-Get To The Point: Summarization with Pointer-Generator Networks">
-<meta name="twitter:description" content="ACL17-Get To The Point: Summarization with Pointer-Generator Networks  PDF, Blog 这是我本周要讲的论文，发表在17年ACL会议上。本文针对长文本生成式摘要中出现的上下文不连贯、事实错误以及未登录词的问题，提出了Pointer-Generator模型，将复制与生成相结合，同时针对重复生成句子的问题，提出了覆盖机制。 Ba">
+<meta name="twitter:description" content="ACL17-Get To The Point: Summarization with Pointer-Generator Networks  PDF, Blog 这是我本周要讲的论文，发表在17年ACL会议上。本文针对长文本生成式摘要中出现的两个问题：（1）事实错误以及未登录词的问题（2）解码时生成重复句子。问题1作者提出结合point network来解决，问题2作者引入了Coverage me">
 <meta name="twitter:image" content="http://yoursite.com/2018/03/06/2018-03-06/01.png">
 
 
@@ -358,8 +361,8 @@
       
 
       
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="ACL17-Get-To-The-Point-Summarization-with-Pointer-Generator-Networks"><a href="#ACL17-Get-To-The-Point-Summarization-with-Pointer-Generator-Networks" class="headerlink" title="ACL17-Get To The Point: Summarization with Pointer-Generator Networks"></a>ACL17-Get To The Point: Summarization with Pointer-Generator Networks</h2><p>  <a href="">PDF</a>, <a href="">Blog</a></p>
-<p>这是我本周要讲的论文，发表在17年ACL会议上。本文针对长文本生成式摘要中出现的上下文不连贯、事实错误以及未登录词的问题，提出了Pointer-Generator模型，将复制与生成相结合，同时针对重复生成句子的问题，提出了覆盖机制。</p>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="ACL17-Get-To-The-Point-Summarization-with-Pointer-Generator-Networks"><a href="#ACL17-Get-To-The-Point-Summarization-with-Pointer-Generator-Networks" class="headerlink" title="ACL17-Get To The Point: Summarization with Pointer-Generator Networks"></a>ACL17-Get To The Point: Summarization with Pointer-Generator Networks</h2><p>  <a href="https://arxiv.org/abs/1704.04368" target="_blank" rel="external">PDF</a>, <a href="http://www.abigailsee.com/2017/04/16/taming-rnns-for-better-summarization.html" target="_blank" rel="external">Blog</a></p>
+<p>这是我本周要讲的论文，发表在17年ACL会议上。本文针对长文本生成式摘要中出现的两个问题：（1）事实错误以及未登录词的问题（2）解码时生成重复句子。问题1作者提出结合point network来解决，问题2作者引入了Coverage mechanism来解决。</p>
 <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><ul>
 <li>Extractive methods： assemble summaries exclusively from passages</li>
 <li>Abstractive methods:  generate novel words and phrases not featured in the source text</li>
@@ -375,47 +378,118 @@
 <li>coverage vector</li>
 </ul>
 <h2 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h2><img src="/2018/03/06/2018-03-06/01.png" alt="01.png" title="">
+<p><img src="/D:/Hexo/source/_posts/2018-03-06/01.png" alt="01"></p>
 <ul>
-<li><p>Sequence-to-sequence attentional model<br>$$<br>e^t_i = v^Ttanh(W_h h_i + W_s s<em>t + b</em>{attn})<br>$$</p>
-<p>$$<br>a^t = softmax(e^t)<br>$$</p>
-<p>$$<br>h_t^* = \sum{a^t_ih_i}<br>$$</p>
+<li><p>[<strong>Sequence-to-sequence attentional model</strong>]<br>$$e^t_i = v^Ttanh(W_h h_i + W_s s<em>t + b</em>{attn})$$</p>
+<p>$$a^t = softmax(e^t)$$</p>
+<p>$$h_t^* = \sum{a^t_ih_i}$$</p>
+<p>$$P_{vocab} = softmax(V^{‘}(V[h_t^*,s_t] + b)+b^{‘})$$</p>
+<p>$$P(w) = P_{vocab}(w)$$</p>
+<p>$$loss_t = -log P(w^*)$$</p>
+<p>context vector：$h_t^*$   attention distribution: $a^t$ decoder state: $s_t$</p>
+<p>vocabulary distribution: $P_{vocab}$  target word：$w^*$</p>
 </li>
-<li><p>Pointer-generator network</p>
-<p>​</p>
+<li><p>[<strong>Pointer-generator network</strong>]</p>
+<p>$$p<em>{gen} = \sigma(w</em>{h^<em>}^T h_t^</em> + w_{s_t}^Ts<em>t +  w</em>{x_t}^T x<em>t + b</em>{gen})$$</p>
+<p>decoder input: $x<em>t$ soft switch: $p</em>{gen} \in[0,1]$</p>
+<p>$$P(w) = p<em>{gen}P</em>{vocab}(w) + (1 - p<em>{gen})\sum</em>{i:w_i=w}a^t_i$$</p>
+<p>note: 这边作者将源文本中的相同词的attention值进行了累加，$\sum_{i:w_i=w}a^t_i$这一项的值永远在[0,1]</p>
+<p>这样对于在源文本中经常出现的词会增加其解码时的概率？</p>
 </li>
-<li><p>​</p>
+<li><p>[<strong>Coverage mechanism</strong>]</p>
+<p>$$c<em>t = \sum</em>{t^{‘}=0}^{t-1}a_{t^{‘}}$$</p>
+<p>$$e^t_i = v^Ttanh(W_h h_i + W_s s_t + w_cc<em>i^t + b</em>{attn})$$</p>
+<p>:-)This ensures that the attention mechanism’s current decision (choosing where to attend<br>next) is informed by a reminder of its previous decisions(summarized in $c_t$ ).</p>
+<p>尽管这样说，但是不加入loss函数的话没啥效果</p>
+<p>$$covloss_i = \sum_imin(a_i^t, c_i^t)$$</p>
+<p>:-)coverage loss is bounded, in particular $covloss_t &lt;= \sum_ia_i^t =1$.</p>
+<p>这里$covloss$正常情况下等于1， 只有当一个词之前一直没有被关注，突然被关注的情况下回小于1，相当于是奖励关注那些之前一直没被关注的词，惩罚只关注与某一些词。</p>
+<p>$$loss_t = -log P(w^*) + \lambda\sum_imin(a_i^t, c_i^t)$$</p>
+<p>最终设置$\lambda = 1$</p>
 </li>
 </ul>
-<h2 id="Experiment-Tasks-and-Datasets"><a href="#Experiment-Tasks-and-Datasets" class="headerlink" title="Experiment Tasks and Datasets"></a>Experiment Tasks and Datasets</h2><ul>
-<li>[<strong>Experiment Tasks and Datasets</strong>]<ul>
-<li>Reading Comprehension (<strong>bAbI</strong>)</li>
-<li>Sentiment Classification (<strong>Stanford Sentiment TreeBank</strong>)</li>
-<li>Sequence Modeling - POS tagging (<strong>WSJ-PTB</strong>)</li>
-</ul>
-</li>
-<li><p>[<strong>Model</strong>]</p>
+<h2 id="Related-Work-and-Datasets"><a href="#Related-Work-and-Datasets" class="headerlink" title="Related Work and Datasets"></a>Related Work and Datasets</h2><ul>
+<li><p>[<strong>Experiment Tasks and Datasets</strong>]</p>
 <ul>
-<li><strong>Input Module</strong></li>
-<li><strong>Question Module</strong></li>
-<li><strong>Episodic Memory Module</strong></li>
-<li><strong>Answer Module</strong></li>
+<li><p>CNN/Daily Mail dataset</p>
+<p>only two published results on the full dataset</p>
+</li>
 </ul>
 </li>
-<li><p>[<strong>Dynamic Memory Networks V.S. Memory Networks</strong>]</p>
+<li><p>[<strong><a href="https://arxiv.org/abs/1603.06393" target="_blank" rel="external">CopyNet</a> model V.S. Pointer-generator network</strong>]</p>
 <ol>
-<li>Sentence Encoding: RNN, Position-Encoding</li>
-<li>Dynamic: Episodic Memory Module(When attention probbility is in the <eos> position), Multi-Hops</eos></li>
+<li><p>explicit switch probability $p_{gen}$ V.S shared softmax function</p>
+<blockquote>
+<p>reason: calculating an explicit pgen usefully enables us to raise or lower the probability of all generated words or all copy words at once, rather than individually.</p>
+</blockquote>
+</li>
+<li><p>copy distribution: recycle the attention distribution V.S two separate distributions</p>
+<blockquote>
+<p>reason: the two distributions serve such similar purposes that we find our simpler approach suffices.</p>
+</blockquote>
+</li>
+<li><p>word appears multiple times: sum probability mass from all corresponding parts of the attention distribution</p>
+</li>
 </ol>
 </li>
-<li>[<strong>Motivation for Memory Module</strong>]:<blockquote>
-<p><strong>Episodic Memory Module</strong>: Given a collection of input representations, the episodic memory module chooses which parts of the inputs to focus on through the attention mechanism. It then produces a ”memory” vector representation taking into account the question as well as the previous memory. Each iteration provides the module with newly relevant information about the input. In other words, the module has the ability to retrieve new information, in the form of input representations, which were thought to be irrelevant in previous iterations. </p>
+<li><p>[<strong>Motivation for Coverage</strong>]:</p>
+<blockquote>
+<p>similar to <a href="http://www.ijcai.org/Proceedings/16/Papers/391.pdf" target="_blank" rel="external">distraction</a></p>
 </blockquote>
 </li>
-<li>[<strong>Motivation for Dynamic Part</strong>]:<blockquote>
-<p><strong>Need for Multiple Episodes</strong>: The iterative nature of this module allows it to attend to different inputs during each pass. It also allows for a type of transitive inference, since the first pass may uncover the need to retrieve additional facts. For instance, in the example in Fig. 3, we are asked Where is the football? In the first iteration, the model ought attend to sentence 7 (John put down the football.), as the question asks about the football. Only once the model sees that John is relevant can it reason that the second iteration should retrieve where John was. Similarly, a second pass may help for sentiment analysis as we show in the experiments section below.</p>
+<li><p>[<strong>Temporal attention V.S Coverage</strong>]:</p>
+<blockquote>
+<p>Temporal attention: each attention distribution is divided by the sum of the previous</p>
+<p>early intervention method such as coverage is preferable to a post hoc method such as temporal attention</p>
 </blockquote>
 </li>
 </ul>
+<h2 id="Experiments"><a href="#Experiments" class="headerlink" title="Experiments"></a>Experiments</h2><ul>
+<li>[<strong>Setting</strong>]<ul>
+<li>Adagrad initial accumulator: 0.1</li>
+<li>learning rate: 0.15</li>
+<li>truncate length: article 400 tokens, summary 100 tokens(train) 120(test)</li>
+<li>batch size of 16 </li>
+<li>beam size 4 (test)</li>
+</ul>
+</li>
+<li>[<strong>Trips</strong>]<ul>
+<li>start with highly-truncated sequences, then raise the maximum length once converged.</li>
+<li>added the coverage mechanism with coverage loss weighted to $\lambda = 1$ further 3000 iterations</li>
+</ul>
+</li>
+</ul>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><ul>
+<li><p>[<strong>Baseline</strong>]</p>
+<ul>
+<li><p>lead-3 baseline: first three sentences of the article as a summary</p>
+</li>
+<li><p>only existing abstractive (Nallapati et al.,2016) and extractive (Nallapati et al., 2017) models<br>on the full dataset.</p>
+<p>note: </p>
+</li>
+</ul>
+</li>
+<li><p>[<strong>Metric</strong>]</p>
+<ul>
+<li>ROUGE metric: F1 scores for ROUGE-1, ROUGE-2 and ROUGE-L</li>
+<li>METEOR metric</li>
+</ul>
+</li>
+<li><p>[<strong>Observations</strong>]</p>
+<p><img src="/02.png" alt="02"></p>
+<ul>
+<li>convincingly surpassing the best abstractive model </li>
+<li>does not quite surpass the ROUGE scores of the lead-3 baseline, nor the current best extrac<br>tive model</li>
+</ul>
+</li>
+<li><p>[<strong>Discussion</strong>]</p>
+<ul>
+<li>How abstractive is our model?</li>
+</ul>
+</li>
+</ul>
+<p><img src="/04.png" width="500px"></p>
+<p>copies whole article sentences 35%</p>
 
       
     </div>
@@ -594,7 +668,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ACL17-Get-To-The-Point-Summarization-with-Pointer-Generator-Networks"><span class="nav-number">1.</span> <span class="nav-text">ACL17-Get To The Point: Summarization with Pointer-Generator Networks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">3.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Model"><span class="nav-number">4.</span> <span class="nav-text">Model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment-Tasks-and-Datasets"><span class="nav-number">5.</span> <span class="nav-text">Experiment Tasks and Datasets</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ACL17-Get-To-The-Point-Summarization-with-Pointer-Generator-Networks"><span class="nav-number">1.</span> <span class="nav-text">ACL17-Get To The Point: Summarization with Pointer-Generator Networks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Motivation"><span class="nav-number">3.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Model"><span class="nav-number">4.</span> <span class="nav-text">Model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Related-Work-and-Datasets"><span class="nav-number">5.</span> <span class="nav-text">Related Work and Datasets</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiments"><span class="nav-number">6.</span> <span class="nav-text">Experiments</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results"><span class="nav-number">7.</span> <span class="nav-text">Results</span></a></li></ol></div>
             
 
           </div>

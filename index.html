@@ -418,32 +418,17 @@
 <li>CNN/Daily Mail dataset</li>
 </ul>
 <p>only two published results on the full dataset</p></li>
-<li>[<strong><a href="https://arxiv.org/abs/1603.06393" target="_blank" rel="external">CopyNet</a> model V.S. Pointer-generator network</strong>]
+<li><p>[<strong><a href="https://arxiv.org/abs/1603.06393" target="_blank" rel="external">CopyNet</a> model V.S. Pointer-generator network</strong>]</p>
 <ol style="list-style-type: decimal">
-<li>explicit switch probability <span class="math inline">\(p_{gen}\)</span> V.S shared softmax function</li>
-</ol>
-<blockquote>
-<p>reason: calculating an explicit pgen usefully enables us to raise or lower the probability of all generated words or all copy words at once, rather than individually.</p>
-</blockquote>
-<ol start="2" style="list-style-type: decimal">
-<li>copy distribution: recycle the attention distribution V.S two separate distributions</li>
-</ol>
-<blockquote>
-<p>reason: the two distributions serve such similar purposes that we find our simpler approach suffices.</p>
-</blockquote>
-<ol start="3" style="list-style-type: decimal">
+<li>explicit switch probability <span class="math inline">\(p_{gen}\)</span> V.S shared softmax function &gt; reason: calculating an explicit pgen usefully enables us to raise or lower the probability of all generated words or all copy words at once, rather than individually.</li>
+<li>copy distribution: recycle the attention distribution V.S two separate distributions &gt; reason: the two distributions serve such similar purposes that we find our simpler approach suffices.</li>
 <li>word appears multiple times: sum probability mass from all corresponding parts of the attention distribution</li>
 </ol></li>
-<li></li>
+<li><p>[<strong>Motivation for Coverage</strong>]</p></li>
 </ul>
 <blockquote>
-<p>similar to <a href="http://www.ijcai.org/Proceedings/16/Papers/391.pdf" target="_blank" rel="external">distraction</a></p>
+<p>similar to <a href="http://www.ijcai.org/Proceedings/16/Papers/391.pdf" target="_blank" rel="external">distraction</a> - [<strong>Temporal attention V.S Coverage</strong>] <strong>Temporal attention</strong>: each attention distribution is divided by the sum of the previous. early intervention method such as coverage is preferable to a post hoc method such as temporal attention</p>
 </blockquote>
-<ul>
-<li><blockquote>
-<p>early intervention method such as coverage is preferable to a post hoc method such as temporal attention</p>
-</blockquote></li>
-</ul>
 <h2 id="experiments">Experiments</h2>
 <ul>
 <li>[<strong>Setting</strong>]</li>

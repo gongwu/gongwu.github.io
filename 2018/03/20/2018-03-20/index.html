@@ -98,7 +98,7 @@
 <meta name="keywords" content="Multi-Task Learning,Machine Comprehension,Question Generate">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Multi-Task Learning in Machine Comprehension">
-<meta property="og:url" content="http://yoursite.com/2018/03/20/2018-03-20/index.html">
+<meta property="og:url" content="http://luxingwu.com/2018/03/20/2018-03-20/index.html">
 <meta property="og:site_name" content="宫悟桑的小屋">
 <meta property="og:description" content="Multi-Task Learning in Machine Comprehension ​ 对于阅读理解而言，答案选择是一个关键问题，对于Squad这样的数据集，对于训练集和测试集，都给出了答案所在的段落，对应的问题，要求从段落中找出答案所在的位置。对于这样的数据集，指针网络有着良好的效果。在Squad这样的数据集上，由于答案所在的段落已经锁定，通过使用Encoder-Decoder的模型就可">
 <meta property="og:locale" content="zh-Hans">
@@ -134,7 +134,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/03/20/2018-03-20/"/>
+  <link rel="canonical" href="http://luxingwu.com/2018/03/20/2018-03-20/"/>
 
 
 
@@ -267,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/20/2018-03-20/">
+    <link itemprop="mainEntityOfPage" href="http://luxingwu.com/2018/03/20/2018-03-20/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="luxingwu">
@@ -370,7 +370,7 @@
       
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="multi-task-learning-in-machine-comprehension">Multi-Task Learning in Machine Comprehension</h1>
 <p>​ 对于阅读理解而言，答案选择是一个关键问题，对于Squad这样的数据集，对于训练集和测试集，都给出了答案所在的段落，对应的问题，要求从段落中找出答案所在的位置。对于这样的数据集，指针网络有着良好的效果。在Squad这样的数据集上，由于答案所在的段落已经锁定，通过使用Encoder-Decoder的模型就可以简单的根据段落生成答案<a href="https://arxiv.org/abs/1705.00106" target="_blank" rel="external">[ACL-17]</a>。或者通过问题模板的方式<a href="https://arxiv.org/abs/1706.02027" target="_blank" rel="external">[EMNLP-17]</a>，通过检索+生成的方法，利用检索的方法检索与问题模板最相关的模型，同时用Encoder-Decoder模型生成相应模板，再通过选取主题词的方式选取段落中的主题词填入模板生成问题，通过生成问题和答案选择进行对偶学习提高QA的性能。</p>
-<p>​ 在<a href="https://arxiv.org/abs/1711.05073" target="_blank" rel="external">DuReader</a>的数据集上，没有给出明确的答案所在的段落，而是给出多个文档，需要通过相应的匹配方法匹配出答案最有可能所在的段落，再进行训练。但是对于测试集而言，只给出问题而没有，只能通过问题进行匹配，导致最终的结果非常不理想。那么是否可以通过多任务学习的方式，对问题生成和答案选择进行joint-learning。问题生成模型通过使用<a href="http://luxingwu.com/2018/03/09/2018-03-09/" target="_blank" rel="external">CopyNet</a>，用训练集进行预训练，根据答案匹配出的段落作编码，通过解码生成相应的问题，同时将答案作为特征加入。之后用问题匹配到的段落进行编码，生成出问题，将生成的问题拼接进行答案选择，来提高阅读理解的性能，再用选择到的更高质量的段落训练问题生成模型，提高问题生成的质量，以此进行多任务学习。</p>
+<p>​ 在<a href="https://arxiv.org/abs/1711.05073" target="_blank" rel="external">DuReader</a>的数据集上，没有给出明确的答案所在的段落，而是给出多个文档，需要通过相应的匹配方法匹配出答案最有可能所在的段落，再进行训练。但是对于测试集而言，只给出问题而没有，只能通过问题进行匹配，导致最终的结果非常不理想。那么是否可以通过多任务学习的方式，对问题生成和答案选择进行joint-learning。问题生成模型通过使用<a href="http://luxingwu.com/2018/03/09/2018-03-09/">CopyNet</a>，用训练集进行预训练，根据答案匹配出的段落作编码，通过解码生成相应的问题，同时将答案作为特征加入。之后用问题匹配到的段落进行编码，生成出问题，将生成的问题拼接进行答案选择，来提高阅读理解的性能，再用选择到的更高质量的段落训练问题生成模型，提高问题生成的质量，以此进行多任务学习。</p>
 
       
     </div>

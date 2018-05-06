@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/03/20/2018-03-20/</loc>
+    <lastmod>2018-05-06T11:25:56.742Z</lastmod>
+    <data>
+        <display>
+        <title>Multi-Task Learning in Machine Comprehension</title>
+        <pubTime>2018-03-20T03:01:05.000Z</pubTime>
+        
+        <tag>Multi-Task Learning</tag>
+         
+        <tag>Machine Comprehension</tag>
+         
+        <tag>Question Generate</tag>
+         
+         
+           
+             
+              <breadCrumb title="知识小结" url="http://luxingwu.com/categories/%E7%9F%A5%E8%AF%86%E5%B0%8F%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/03/25/2018-03-25/</loc>
+    <lastmod>2018-05-06T11:16:43.529Z</lastmod>
+    <data>
+        <display>
+        <title>Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders</title>
+        <pubTime>2018-03-25T09:45:01.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>ACL</tag>
+         
+        <tag>Dialogue Generation</tag>
+         
+        <tag>CVAE</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/03/28/2018-03-28/</loc>
+    <lastmod>2018-05-06T09:03:01.242Z</lastmod>
+    <data>
+        <display>
+        <title>ACL17-Sequential Matching Network: A New Architecture for Multi-turn Response Selection in Retrieval-Based Chatbots</title>
+        <pubTime>2018-03-28T01:52:50.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>ACL</tag>
+         
+        <tag>Dialogue Retrieval</tag>
+         
+        <tag>Multi-turn</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/03/15/2018-03-15/</loc>
+    <lastmod>2018-05-06T08:57:08.388Z</lastmod>
+    <data>
+        <display>
+        <title>ICLR18-A DEEP REINFORCED MODEL FOR ABSTRACTIVE SUMMARIZATION</title>
+        <pubTime>2018-03-15T14:51:04.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>Abstractive Summarization</tag>
+         
+        <tag>ICLR</tag>
+         
+        <tag>Reinforcement Learning</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/03/21/2018-03-21/</loc>
+    <lastmod>2018-05-06T08:50:51.076Z</lastmod>
+    <data>
+        <display>
+        <title>Neural Response Generation with Dynamic Vocabularies</title>
+        <pubTime>2018-03-21T04:12:38.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>AAAI</tag>
+         
+        <tag>Dialogue Generation</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/03/27/2018-03-27/</loc>
+    <lastmod>2018-03-28T01:54:49.729Z</lastmod>
+    <data>
+        <display>
+        <title>Neural Network Dialog System Papers</title>
+        <pubTime>2018-03-27T04:12:38.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>Dialogue Generation</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文列表" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E5%88%97%E8%A1%A8/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/03/06/2018-03-06/</loc>
+    <lastmod>2018-03-21T09:56:17.189Z</lastmod>
+    <data>
+        <display>
+        <title>ACL17-Get To The Point: Summarization with Pointer-Generator Networks</title>
+        <pubTime>2018-03-06T10:16:12.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>ACL</tag>
+         
+        <tag>Abstractive Summarization</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/03/09/2018-03-09/</loc>
+    <lastmod>2018-03-09T13:54:29.316Z</lastmod>
+    <data>
+        <display>
+        <title>ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning</title>
+        <pubTime>2018-03-09T13:18:13.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>ACL</tag>
+         
+        <tag>Abstractive Summarization</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2017/01/16/2017-01-16/</loc>
+    <lastmod>2018-03-07T08:23:18.683Z</lastmod>
+    <data>
+        <display>
+        <title>中文分词之百度大脑nlp_sdk</title>
+        <pubTime>2017-01-16T15:30:28.000Z</pubTime>
+        
+        <tag>机器学习</tag>
+         
+        <tag>NLP</tag>
+         
+        <tag>Java</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术小结" url="http://luxingwu.com/categories/%E6%8A%80%E6%9C%AF%E5%B0%8F%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2017/01/14/2017-01-14/</loc>
+    <lastmod>2018-03-07T08:23:09.005Z</lastmod>
+    <data>
+        <display>
+        <title>中文分词原理之最大长度匹配法</title>
+        <pubTime>2017-01-14T15:17:41.000Z</pubTime>
+        
+        <tag>机器学习</tag>
+         
+        <tag>NLP</tag>
+         
+        <tag>算法</tag>
+         
+         
+           
+             
+              <breadCrumb title="知识小结" url="http://luxingwu.com/categories/%E7%9F%A5%E8%AF%86%E5%B0%8F%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2016/01/23/2016-01-23-blogstart/</loc>
+    <lastmod>2017-08-11T11:53:30.813Z</lastmod>
+    <data>
+        <display>
+        <title>小站初成</title>
+        <pubTime>2016-01-22T16:16:56.000Z</pubTime>
+        
+        <tag>建站</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术，生活" url="http://luxingwu.com/categories/%E6%8A%80%E6%9C%AF%EF%BC%8C%E7%94%9F%E6%B4%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2017/08/11/2017-01-23/</loc>
+    <lastmod>2017-08-11T10:29:17.511Z</lastmod>
+    <data>
+        <display>
+        <title>网络爬虫之正则表达式</title>
+        <pubTime>2017-08-11T10:16:12.000Z</pubTime>
+        
+        <tag>Java</tag>
+         
+        <tag>网络爬虫</tag>
+         
+        <tag>正则</tag>
+         
+         
+           
+             
+              <breadCrumb title="知识小结" url="http://luxingwu.com/categories/%E7%9F%A5%E8%AF%86%E5%B0%8F%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2017/01/13/2017-01-13/</loc>
+    <lastmod>2017-08-11T10:13:58.500Z</lastmod>
+    <data>
+        <display>
+        <title>小站二迁</title>
+        <pubTime>2017-01-13T10:05:29.000Z</pubTime>
+        
+        <tag>建站</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术，生活" url="http://luxingwu.com/categories/%E6%8A%80%E6%9C%AF%EF%BC%8C%E7%94%9F%E6%B4%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2016/02/07/2016-02-07-theLastSum/</loc>
+    <lastmod>2017-08-11T10:01:43.387Z</lastmod>
+    <data>
+        <display>
+        <title>2015年终总结</title>
+        <pubTime>2016-02-07T13:19:56.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="生活" url="http://luxingwu.com/categories/%E7%94%9F%E6%B4%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2016/01/27/2016-01-27-smartcommunity/</loc>
+    <lastmod>2017-08-11T09:58:29.468Z</lastmod>
+    <data>
+        <display>
+        <title>今朝龙翔微信社区</title>
+        <pubTime>2016-01-26T16:16:56.000Z</pubTime>
+        
+        <tag>web</tag>
+         
+        <tag>微信</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术小结" url="http://luxingwu.com/categories/%E6%8A%80%E6%9C%AF%E5%B0%8F%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2015/12/07/2015-12-07-kuayu/</loc>
+    <lastmod>2017-08-11T09:56:17.046Z</lastmod>
+    <data>
+        <display>
+        <title>跨域问题</title>
+        <pubTime>2015-12-07T12:40:56.000Z</pubTime>
+        
+        <tag>web</tag>
+         
+        <tag>javascript</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术小结" url="http://luxingwu.com/categories/%E6%8A%80%E6%9C%AF%E5%B0%8F%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2017/01/20/2017-01-20/</loc>
+    <lastmod>2017-01-20T16:04:49.138Z</lastmod>
+    <data>
+        <display>
+        <title>自动问答之微信图灵机器人</title>
+        <pubTime>2017-01-20T15:22:05.000Z</pubTime>
+        
+        <tag>微信</tag>
+         
+        <tag>Java</tag>
+         
+        <tag>图灵机器人</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术小结" url="http://luxingwu.com/categories/%E6%8A%80%E6%9C%AF%E5%B0%8F%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2017/01/15/2017-01-15/</loc>
+    <lastmod>2017-01-15T15:44:00.526Z</lastmod>
+    <data>
+        <display>
+        <title>网络爬虫之HttpClient</title>
+        <pubTime>2017-01-15T14:41:54.000Z</pubTime>
+        
+        <tag>Java</tag>
+         
+        <tag>网络爬虫</tag>
+         
+         
+           
+             
+              <breadCrumb title="知识小结" url="http://luxingwu.com/categories/%E7%9F%A5%E8%AF%86%E5%B0%8F%E7%BB%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2015/08/05/2015-08-05-chusai/</loc>
+    <lastmod>2017-01-13T15:30:43.435Z</lastmod>
+    <data>
+        <display>
+        <title>服务外包大赛初赛</title>
+        <pubTime>2015-08-04T16:16:56.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="参赛感言" url="http://luxingwu.com/categories/%E5%8F%82%E8%B5%9B%E6%84%9F%E8%A8%80/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+    
+  <url>
+    <loc>http://luxingwu.com/2015/08/29/2015-08-29-juesai/</loc>
+    <lastmod>2017-01-11T07:36:53.531Z</lastmod>
+    <data>
+        <display>
+        <title>服务外包大赛决赛</title>
+        <pubTime>2015-08-28T16:16:56.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="参赛感言" url="http://luxingwu.com/categories/%E5%8F%82%E8%B5%9B%E6%84%9F%E8%A8%80/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2015/08/15/2015-08-15-view/</loc>
+    <lastmod>2017-01-11T07:36:25.055Z</lastmod>
+    <data>
+        <display>
+        <title>华为、同程活动报道</title>
+        <pubTime>2015-08-14T16:16:56.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="活动报道" url="http://luxingwu.com/categories/%E6%B4%BB%E5%8A%A8%E6%8A%A5%E9%81%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+</urlset>

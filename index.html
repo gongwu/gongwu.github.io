@@ -12,7 +12,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
 
-
+ <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+ <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
 
 
 
@@ -383,7 +384,7 @@
         
           
           ACL17-Sequential Matching Network: A New Architecture for Multi-turn Response Selection in Retrieval-Based Chatbots
-这是我本周要讲的论文，发表在17年ACL会议上。本文实现了基于检索
+这是我本周要讲的论文，发表在17年ACL会议上。本文实现了基于检索的多轮对话系统，针对之前的模型存在的两点问题：不能充分捕获对话历史之间的序列关系以及不能充分捕获重要的上下文信息，提出了序列匹配模型，通过使用不同粒度卷积操作捕获重要的上下文信息，通过循环神经网络捕获
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -544,7 +545,15 @@
         
           
           Neural Network Dialog System Papers
-A list of papers about creating dialog systems using deep nets! Please feel free to add an issue for suggesting m
+A list of papers about creating dialog systems using deep nets! Please feel free to add an issue for suggesting missing good paper.
+Bookmarks
+
+Long-term Context
+Task Bots
+Chat Bots
+Reinforcement Learning
+
+
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -706,7 +715,8 @@ A list of papers about creating dialog systems using deep nets! Please feel free
           
           Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders
 PDF
-这是我本周要讲的论文，发表在17年ACL会议上。本文将条件变分自编码的机制融入到对
+这是我本周要讲的论文，发表在17年ACL会议上。本文将条件变分自编码的机制融入到对话生成模型中来解决safe answer的问题。作者还提出基于知识指导的条件变分自编码模型通过融入语言学特征来提高性能，以及提出bag-of-word loss来解决训练过程中隐变量消失的问题。
+B
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -869,7 +879,10 @@ PDF
           AAAI-18 Neural Response Generation with Dynamic Vocabularies
 PDF
 这是我本周要讲的论文，发表在18年AAAI会议上。本文针对采用静态词表解码容易生成不相关回复以及解码效率过低的问题，提出了使用动态词表解码来解决。
-Motivati
+Motivation
+shortcomings(open domain conversation):
+
+words that are semantically far from the current conv
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1030,7 +1043,7 @@ Motivati
         
           
           Multi-Task Learning in Machine Comprehension
-​ 对于阅读理解而言，答案选择是一个关键问题，对于Squad这样的数据集，对于训练集和测试集，都给出了答案所在的段落，对应的问题，要求从段落中找出答案所在的位置。对于这样的数据集，指针网络有着良好的效果。在S
+​ 对于阅读理解而言，答案选择是一个关键问题，对于Squad这样的数据集，对于训练集和测试集，都给出了答案所在的段落，对应的问题，要求从段落中找出答案所在的位置。对于这样的数据集，指针网络有着良好的效果。在Squad这样的数据集上，由于答案所在的段落已经锁定，通过使用Encoder-Decoder的模型就可以简单的根据段落生成答案[ACL-17]。或者通过问题模板的方式[EMNLP-17]，通过检索+生成
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1192,7 +1205,10 @@ Motivati
           
           ICLR18-A DEEP REINFORCED MODEL FOR ABSTRACTIVE SUMMARIZATION
 Motivation
-For longer documents and summaries these models often include repetitive and
+For longer documents and summaries these models often include repetitive and incoherent phrases.
+Model
+
+novel intra attention that attends over the input and continuously ge
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1355,8 +1371,9 @@ For longer documents and summaries these models often include repetitive and
           ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning
 PDF
 Motivation
-copying mechanism: locates a certain segment of the input sen
-          ...
+copying mechanism: locates a certain segment of the input sentence and puts the segment into the output sequence.
+
+          
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/03/09/2018-03-09/#more" rel="contents">
@@ -1517,7 +1534,10 @@ copying mechanism: locates a certain segment of the input sen
           
           ACL17-Get To The Point: Summarization with Pointer-Generator Networks
 PDF, Blog
-这是我本周要讲的论文，发表在17年ACL会议上。本文针对长文本生成式摘要中出现的两个问题：（1）事实错误以及未登录词的问题（2）解码时生
+这是我本周要讲的论文，发表在17年ACL会议上。本文针对长文本生成式摘要中出现的两个问题：（1）事实错误以及未登录词的问题（2）解码时生成重复句子。问题1作者提出结合point network来解决，问题2作者引入了Coverage mechanism来解决。
+Background
+
+Extractive methods： as
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1679,7 +1699,9 @@ PDF, Blog
           
           在了解了如何通过httpclient获取到相关网页的源代码后，作为主题爬虫，还需要获取网页源代码中的相关信息以及下一跳的URL地址。这就需要用到正则表达式，这里总结一下处理网页源代码时用到的一些技巧。
 
-分组 在我们获取网页中关键信息时，我们或许会使用多次正则，而如何获取我们所指定位置的正则所匹
+分组 在我们获取网页中关键信息时，我们或许会使用多次正则，而如何获取我们所指定位置的正则所匹配的信息，我们就需要对正则表达式进行分组。 比如
+
+12String CHAPTER = &quot;&lt;td class=\&quot;chapterBean\&quot; chapterI
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1841,7 +1863,7 @@ PDF, Blog
           
           今天看论文资料看到了DeepQA深度问答系统，而国内的图灵机器人正是基于DeepQA实现的，对中文语义理解的准确率挺高。就尝试做了个基于微信图灵机器人。之前开发微信一直用的PHP，这次尝试用Java开发。
 
-首先编写servlet进行消息验证 12345678910111213protected
+首先编写servlet进行消息验证 12345678910111213protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOExc
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -2004,17 +2026,6 @@ PDF, Blog
   <span class="author" itemprop="copyrightHolder">luxingwu</span>
   <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
-   <div class="comment"></div>
-    <script>
-        new Valine({
-            // AV 对象来自上面引入av-min.js(老司机们不要开车➳♡゛扎心了老铁)
-            av: AV, 
-            el: '.comment', // 
-            app_id: 'Your APP ID', // 这里填写上面得到的APP ID
-            app_key: 'Your APP KEY', // 这里填写上面得到的APP KEY
-            placeholder: 'ヾﾉ≧∀≦)o来啊，快活啊!' // [v1.0.7 new]留言框占位提示文字
-        });
-    </script>
   <script>
 	(function(){
 		var bp = document.createElement('script');

@@ -104,7 +104,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://imgx.sinacloud.net/myblog-image/w_350,h_600/2016/01-27/01.png">
 <meta property="og:image" content="http://imgx.sinacloud.net/myblog-image/w_350,h_600/2016/01-27/02.png">
-<meta property="og:updated_time" content="2017-08-11T09:58:29.468Z">
+<meta property="og:updated_time" content="2018-05-06T16:50:16.970Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="今朝龙翔微信社区">
 <meta name="twitter:description" content="今朝龙翔微信社区技术总结 这几天突然接到了之前接受的今朝龙翔社区的项目即将上线的消息，于是开始抓紧时间赶紧进度，同时在需求方面又发生了很大的变动，原本是以将webAPP融入微信的方式（通过菜单链接直接链到webAPP中）,现在需要改成将webAPP的功能直接拆分到微信端，通过微信菜单直接获取资讯图文或者链接到单页面，所以在此基础上为了后期可拓展性，我并没有把原来的webAPP之前拆了，而是在此基">
@@ -374,10 +374,14 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="今朝龙翔微信社区技术总结">今朝龙翔微信社区技术总结</h1>
 <p>这几天突然接到了之前接受的今朝龙翔社区的项目即将上线的消息，于是开始抓紧时间赶紧进度，同时在需求方面又发生了很大的变动，原本是以将webAPP融入微信的方式（通过菜单链接直接链到webAPP中）,现在需要改成将webAPP的功能直接拆分到微信端，通过微信菜单直接获取资讯图文或者链接到单页面，所以在此基础上为了后期可拓展性，我并没有把原来的webAPP之前拆了，而是在此基础上进行了功能的拓展。下面是新旧版本的对比：</p>
 <p><img src="http://imgx.sinacloud.net/myblog-image/w_350,h_600/2016/01-27/01.png" alt="旧的版本"> <img src="http://imgx.sinacloud.net/myblog-image/w_350,h_600/2016/01-27/02.png" alt="新的版本"></p>
-<p>之后经过这几天的赶工，项目总算是完工了，现总结一下这次项目的一些心得。 ## 一、微信接口获取用户信息 微信获取用户信息可以通过两种方式，两种方式用到的接口也不一样。 ###（1）通过自定义菜单的click类型获取用户信息（无需高级接口） 如果是通过自定义菜单的click类型，以图文链接的方式获取用户信息，可以先通过FromUserName获取到用户的openID，之后即可通过获取用户信息的接口https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&amp;openid=OPENID&amp;lang=zh_CN 获取用户基本信息。 ###（2）通过自定义菜单的view类型获取用户信息（需要高级接口，即认证服务号，另外还需要域名） 如果是通过自定义菜单的view类型，以自定义菜单直接链接到获取用户信息的页面，菜单的url是一个授权回调url，这样才能在菜单点击的时候使用oauth2.0授权获得openid，接口如下https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&amp;redirect_uri=REDIRECT_URI&amp;response_type=code&amp;scope=SCOPE&amp;state=STATE#wechat_redirect 。其中的redirect_uri便是回调页面的链接，不过页面所在的域名必须在微信公众号的后台进行绑定授权，授权后可以回调该域名下面的页面；其中的scope参数分为snsapi_base和snsapi_userinfo两种：</p>
-<p>1、以snsapi_base为scope发起的网页授权，是用来获取进入页面的用户的openid的，并且是静默授权并自动跳转到回调页的。用户感知的就是直接进入了回调页（往往是业务页面）</p>
-<p>2、以snsapi_userinfo为scope发起的网页授权，是用来获取用户的基本信息的。但这种授权需要用户手动同意，并且由于用户同意过，所以无须关注，就可在授权后获取该用户的基本信息。</p>
-<h3 id="两种方式总结">（3）两种方式总结：</h3>
+<p>之后经过这几天的赶工，项目总算是完工了，现总结一下这次项目的一些心得。 ## 一、微信接口获取用户信息 微信获取用户信息可以通过两种方式，两种方式用到的接口也不一样。 ### 1、通过自定义菜单的click类型获取用户信息（无需高级接口） 如果是通过自定义菜单的click类型，以图文链接的方式获取用户信息，可以先通过FromUserName获取到用户的openID，之后即可通过获取用户信息的接口https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&amp;openid=OPENID&amp;lang=zh_CN 获取用户基本信息。</p>
+<h3 id="通过自定义菜单的view类型获取用户信息需要高级接口即认证服务号另外还需要域名">2、通过自定义菜单的view类型获取用户信息（需要高级接口，即认证服务号，另外还需要域名）</h3>
+<p>如果是通过自定义菜单的view类型，以自定义菜单直接链接到获取用户信息的页面，菜单的url是一个授权回调url，这样才能在菜单点击的时候使用oauth2.0授权获得openid，接口如下https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&amp;redirect_uri=REDIRECT_URI&amp;response_type=code&amp;scope=SCOPE&amp;state=STATE#wechat_redirect 。其中的redirect_uri便是回调页面的链接，不过页面所在的域名必须在微信公众号的后台进行绑定授权，授权后可以回调该域名下面的页面；其中的scope参数分为snsapi_base和snsapi_userinfo两种：</p>
+<ul>
+<li><p>以snsapi_base为scope发起的网页授权，是用来获取进入页面的用户的openid的，并且是静默授权并自动跳转到回调页的。用户感知的就是直接进入了回调页（往往是业务页面）</p></li>
+<li><p>以snsapi_userinfo为scope发起的网页授权，是用来获取用户的基本信息的。但这种授权需要用户手动同意，并且由于用户同意过，所以无须关注，就可在授权后获取该用户的基本信息。</p></li>
+</ul>
+<h3 id="两种方式总结">两种方式总结：</h3>
 <p>用户管理类接口中的“获取用户基本信息接口”，是在用户和公众号产生消息交互或关注后事件推送后，才能根据用户OpenID来获取用户基本信息。这个接口，包括其他微信接口，都是需要该用户（即openid）关注了公众号后，才能调用成功的。</p>
 <h2 id="二多图文上传">二、多图文上传</h2>
 <p>原本是打算找一个合适插件来做随手拍的功能的，但找来找去并没找到符合要求的插件，接口那边需要通过POST文件的方式，而我发现大多数插件都是通过ajax并发上传单文件的方式，所以为此很头疼，所以最终索性自己来实现这个功能，用HTML5的File API来做多图上传及预览的随手拍功能。</p>
@@ -385,8 +389,8 @@
 <h2 id="三微信app下载">三、微信APP下载</h2>
 <p>最后一个需要拿出来特别提一下的就是微信中实现app下载的功能，这是一个比较坑的地方，微信公众号拦截APPStore跳转和APK下载，允许使用腾讯域名下面的下载链接，所以解决方法有两个：</p>
 <ul>
-<li>1 把应用拿到应用宝，换得应用宝的APP下载地址，放到微信里就能跳转了</li>
-<li>2 做一个漂亮点的下载页面，并提示用户在浏览器中打开</li>
+<li>把应用拿到应用宝，换得应用宝的APP下载地址，放到微信里就能跳转了</li>
+<li>做一个漂亮点的下载页面，并提示用户在浏览器中打开</li>
 </ul>
 
       
@@ -566,7 +570,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#今朝龙翔微信社区技术总结"><span class="nav-number">1.</span> <span class="nav-text">今朝龙翔微信社区技术总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#两种方式总结"><span class="nav-number">1.0.1.</span> <span class="nav-text">（3）两种方式总结：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二多图文上传"><span class="nav-number">1.1.</span> <span class="nav-text">二、多图文上传</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三微信app下载"><span class="nav-number">1.2.</span> <span class="nav-text">三、微信APP下载</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#今朝龙翔微信社区技术总结"><span class="nav-number">1.</span> <span class="nav-text">今朝龙翔微信社区技术总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通过自定义菜单的view类型获取用户信息需要高级接口即认证服务号另外还需要域名"><span class="nav-number">1.0.1.</span> <span class="nav-text">2、通过自定义菜单的view类型获取用户信息（需要高级接口，即认证服务号，另外还需要域名）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两种方式总结"><span class="nav-number">1.0.2.</span> <span class="nav-text">两种方式总结：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二多图文上传"><span class="nav-number">1.1.</span> <span class="nav-text">二、多图文上传</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三微信app下载"><span class="nav-number">1.2.</span> <span class="nav-text">三、微信APP下载</span></a></li></ol></li></ol></div>
             
 
           </div>

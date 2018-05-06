@@ -234,6 +234,16 @@
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
 
       
     </ul>
@@ -372,126 +382,16 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="acl17-sequential-matching-network-a-new-architecture-for-multi-turn-response-selection-in-retrieval-based-chatbots">ACL17-Sequential Matching Network: A New Architecture for Multi-turn Response Selection in Retrieval-Based Chatbots</h1>
-<p>这是我本周要讲的论文，发表在17年ACL会议上。本文实现了基于检索的多轮对话系统，针对之前的模型存在的两点问题：不能充分捕获对话历史之间的序列关系以及不能充分捕获重要的上下文信息，提出了序列匹配模型，通过使用不同粒度卷积操作捕获重要的上下文信息，通过循环神经网络捕获对话历史之间的序列关系。</p>
-<h1 id="background">Background</h1>
-<ul>
-<li><strong>Retrieval based V.S Generation based</strong></li>
-</ul>
-<p>advantage of informative and fluent responses</p>
-<ul>
-<li><strong>multi-turn V.S single-turn</strong></li>
-</ul>
-<p>matching between responses and utterances in previous turns</p>
-<ul>
-<li>how to identify important information in context.</li>
-<li>how to model relationships among the utterances in the context.</li>
-</ul>
-<h1 id="motivate">Motivate</h1>
-<p><strong>shortcomings(multiturn conversation &amp; retrieval-based)</strong>:</p>
-<ul>
-<li>lose relationships among utterances (concatenates utterances)</li>
-</ul>
-<p>历史的对话信息之间的序列关系是很重要的，当然最后一句话最为重要，这就很适合用循环神经网络。</p>
-<ul>
-<li>lose important contextual information(highly abstract context vector)</li>
-</ul>
-<p>分层的编码解码模型虽然可以对对话历史信息进行序列建模，但是他没有考虑到历史信息与回复之间的匹配关系，只是对历史信息进行一个更高的抽象，最后一步得到的向量才与回复作匹配。这样容易丢失一些重要的上下文信息。</p>
-<p><strong>solutions</strong>:</p>
-<ul>
-<li>the proposal of a new context based matching model for multi-turn response selection in retrieval-based chatbots</li>
-<li>the publication of a large human-labeled data set to research communities</li>
-<li>empirical verification of the effectiveness of the model on public data sets.</li>
-</ul>
-<h1 id="model-overview">Model Overview</h1>
-<img src="/2018/03/28/2018-03-28/01.png" alt="01.png" title="">
-<p><strong>advantages：</strong></p>
-<ul>
-<li>a response candidate can match each utterance in the context at the very beginning</li>
-<li>information extraction from each utterance is conducted on different levels of granularity and under sufficient supervision from the response</li>
-<li>matching and utterance relationships are coupled rather than separately modeled</li>
-</ul>
-<p><strong>Utterance-Response Matching</strong>：</p>
-<ul>
-<li>word-word similarity matrix：</li>
-</ul>
-<p><span class="math display">\[e_{1,i,j} = e^T_{u,i}.e_{i,j}\]</span></p>
-<ul>
-<li>sequence-sequence similarity matrix</li>
-</ul>
-<p><span class="math display">\[e_{2,i,j} = h^T_{i,j}Ah_{i,j}\]</span></p>
-<p><strong>Matching Accumulation</strong>:</p>
-<p>GRU:</p>
-<ul>
-<li>it models the dependency and the temporal relationship of utterances in the context</li>
-<li>it leverages the temporal relationship to supervise the accumulation of the pair matching as a context based matching.</li>
-</ul>
-<p><strong>Matching Prediction and Learning</strong>:</p>
-<ul>
-<li>最后一个隐层</li>
-<li>静态加权求和</li>
-<li>attention</li>
-<li>objective function:</li>
-</ul>
-<p><span class="math display">\[-\sum_{i=1}^N[y_ilog(g(s_i,r_i))+(1-y_i)log(1-g(s_i,r_i))]\]</span></p>
-<p><strong>Response Candidate Retrieval</strong>:</p>
-<p>extract the top 5 keywords from <span class="math inline">\({u_1,.....,u_{n-1}}\)</span> based on their <span class="math inline">\(tf-idf\)</span> scores1 and expand <span class="math inline">\(u_n\)</span> with the keywords.</p>
-<h1 id="experiments">Experiments</h1>
-<h3 id="corpus">Corpus</h3>
-<p><strong>Ubuntu Corpus</strong>:</p>
-<ul>
-<li>training: 1 million pairs</li>
-<li>validation: 0.5 million pairs</li>
-<li>testing: 0.5 million pairs</li>
-</ul>
-<p>negative ones are randomly sampled: 1:1 in training, and 1:9 in validation and testing.</p>
-<p><strong>Douban Conversation Corpus</strong>:</p>
-<p><strong>sample</strong>:</p>
-<ul>
-<li>training set: 0.5 million dialogues</li>
-<li>validation set: 25 thousand dialogues</li>
-<li>test set: 1, 000 dialogues</li>
-</ul>
-<p><strong>sample negative</strong>:</p>
-<ul>
-<li>training and validation: sampled another response as a negative response</li>
-<li>test set: retrieved 10 response candidates from the index of Sina Weibo following the method Response Candidate Retrieval</li>
-</ul>
-<p><strong>finally formed</strong>:</p>
-<ul>
-<li>training set: 1 million dialogues</li>
-<li>validation set: 50 thousand dialogues</li>
-<li>test set: 10, 000 dialogues</li>
-</ul>
-<h3 id="baseline">Baseline</h3>
-<ul>
-<li>Basic models: TF-IDF, RNN, CNN, LSTM and BiLSTM</li>
-<li>Multi-view</li>
-<li>Deep learning to respond</li>
-<li>Advanced single-turn matching models: MV-LSTM, Match-LSTM, Attentive-LSTM</li>
-</ul>
-<h3 id="setting">Setting</h3>
-<ul>
-<li>window size of convolution and pooling: (3, 3)</li>
-<li>Multi-Channel GRU: 200</li>
-<li>matching vectors GRU: 50</li>
-<li>maximum utterance length: 50</li>
-<li>maximum context length: 10</li>
-<li>learning rate: 0.001</li>
-</ul>
-<h3 id="evaluation-results">Evaluation Results</h3>
-<img src="/2018/03/28/2018-03-28/02.png" alt="02.png" title="">
-<h3 id="further-analysis">Further Analysis</h3>
-<p><strong>Model ablation</strong>：</p>
-<img src="/2018/03/28/2018-03-28/03.png" alt="03.png" title="">
-<p><strong>Performance across context length</strong>：</p>
-<div class="image-size-200" style="width:60%; text-align: center">
-<p>​ <img src="/2018/03/28/2018-03-28/04.png" alt="04.png" title=""></p>
-</div>
-<p><strong>Maximum context length:</strong></p>
-<img src="/2018/03/28/2018-03-28/05.png" alt="05.png" title="">
-
-          
+          ACL17-Sequential Matching Network: A New Architecture for Multi-turn Response Selection in Retrieval-Based Chatbots
+这是我本周要讲的论文，发表在17年ACL会议上。本文实现了基于检索
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/28/2018-03-28/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -643,102 +543,16 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="neural-network-dialog-system-papers">Neural Network Dialog System Papers</h1>
-<p>A list of papers about creating dialog systems using deep nets! Please feel free to add an issue for suggesting missing <strong>good</strong> paper.</p>
-<h1 id="bookmarks">Bookmarks</h1>
-<ul>
-<li><a href="#long-term-context">Long-term Context</a></li>
-<li><a href="#task-bots">Task Bots</a></li>
-<li><a href="#chat-bots">Chat Bots</a></li>
-<li><a href="#reinforcement-learning">Reinforcement Learning</a></li>
-</ul>
-<h2 id="long-term-context">Long-term Context</h2>
-<p>Mostly the models are evaluated at CNN/Daily Mail and Children's Book Test (CBT) corpora.</p>
-<ul>
-<li><a href="https://arxiv.org/abs/1506.03340" target="_blank" rel="external">Teaching Machines to Read and Comprehend</a>, Karl Moritz Hermann et al., <em>arXiv</em>, 2015.</li>
-<li><p>Deep LSTM/Attentive Reader/Impatient Reader</p></li>
-<li><p><a href="https://arxiv.org/abs/1603.01547" target="_blank" rel="external">Text Understanding with the Attention Sum Reader Network</a>, Rudolf Kadlec et al., <em>arXiv</em>, 2016.</p></li>
-<li><a href="https://arxiv.org/abs/1511.02301" target="_blank" rel="external">The Goldlocks Principle: Reading Children's Books With Explicit Memory Representations</a>, Felix Hill., <em>arXiv</em>, 2016.</li>
-<li><p>Memory Network</p></li>
-<li><p><a href="http://arxiv.org/abs/1503.08895v5" target="_blank" rel="external">End-To-End Memory Networks</a>, Sainbayar Sukhbaatar et al., <em>arXiv</em>, 2015.</p></li>
-<li><p><a href="http://www.cl.ecei.tohoku.ac.jp/publications/2016/kobayashi-dynamic-entity-naacl2016.pdf" target="_blank" rel="external">Dynamic Entity Representation with Max-pooling Improves Machine Reading</a>, Sosuke Kobayashi et al., <em>arXiv</em>, 2016.</p></li>
-<li><p><a href="https://arxiv.org/abs/1606.01549" target="_blank" rel="external">Gated-Attention Readers for Text Comprehension</a>, Bhuwan Dhingra et al., <em>arXiv</em>, 2016.</p></li>
-<li><p><a href="http://arxiv.org/abs/1606.02245v3" target="_blank" rel="external">Iterative Alternating Neural Attention for Machine Reading</a>, Alessandro Sordoni et al., <em>arXiv</em>, 2016.</p></li>
-<li><p><a href="https://michaelauli.github.io/papers/chitchat.pdf" target="_blank" rel="external">A Neural Network Approach to Context-Senstive Generation of Conversational Responses</a>, Alessandro Sordoni et al, 2015</p></li>
-<li><p><a href="https://arxiv.org/abs/1607.04423" target="_blank" rel="external">Attention-over-Attention Neural Networks for Reading Comprehension</a> Yiming Cui et al., <em>arXiv</em> 2016</p></li>
-<li><p><a href="https://arxiv.org/pdf/1701.07149.pdf" target="_blank" rel="external">Hierarchical Recurrent Attention Network for Response Generation</a> Chen Xing et al., 2017</p></li>
-<li><p><a href="http://www.aclweb.org/anthology/P17-2036" target="_blank" rel="external">How to Make Context More Useful? An Empirical Study on Context-Aware Neural Conversational Models</a> Zhiliang Tian et al., 2017</p></li>
-</ul>
-<h2 id="task-bots">Task Bots</h2>
-<ul>
-<li><p><a href="http://arxiv.org/abs/1609.01462v1" target="_blank" rel="external">Joint Online Spoken Language Understanding and Language Modeling with Recurrent Neural Networks</a>, Bing Liu, <em>arXiv</em>, 2016</p></li>
-<li><p><a href="http://arxiv.org/abs/1609.01454v1" target="_blank" rel="external">Attention-Based Recurrent Neural Network Models for Joint Intent Detection and Slot Filling</a>, Bing Liu, <em>arXiv</em>, 2016</p></li>
-<li><p><a href="https://arxiv.org/abs/1604.04562" target="_blank" rel="external">A Network-based End-to-End Trainable Task-oriented Dialogue System</a> Tsung-Hsien Wen et al, 2016</p></li>
-<li><p><a href="https://arxiv.org/abs/1606.03352" target="_blank" rel="external">Conditional Generation and Snapshot Learning in Neural Dialogue Systems</a> Tsung-Hsien Wen et al, 2016</p></li>
-<li><p><a href="http://media.wix.com/ugd/b6d786_137894b7b3a341a09ed0c0b45b46dbb6.pdf" target="_blank" rel="external">Incorporating Unstructured Textual Knowledge Sources into Neural Dialogue</a> Ryan Lowe et al., 2016</p></li>
-<li><p><a href="http://arxiv.org/pdf/1606.01269v1.pdf" target="_blank" rel="external">End-to-end LSTM-based dialog control optimized with supervised and reinforcement learning</a>, Jason D. Williams et al., 2016</p></li>
-<li><p><a href="https://arxiv.org/pdf/1606.02560v1.pdf" target="_blank" rel="external">Towards End-to-End Learning for Dialog State Tracking and Management using Deep Reinforcement Learning</a> Tiancheng Zhao et al., 2016</p></li>
-<li><p><a href="http://arxiv.org/abs/1609.00777" target="_blank" rel="external">End-to-End Reinforcement Learning of Dialogue Agents for Information Access</a> Bhuwan Dhingra et al., 2016</p></li>
-<li><p><a href="https://arxiv.org/abs/1612.05688" target="_blank" rel="external">A User Simulator for Task-Completion Dialogues</a> Xinjun Li et al., 2016</p></li>
-<li><p><a href="https://arxiv.org/abs/1612.00913" target="_blank" rel="external">End-to-End Joint Learning of Natural Language Understanding and Dialogue Manager</a> Xuesong Yang et al., 2016</p></li>
-<li><p><a href="https://arxiv.org/abs/1702.03274" target="_blank" rel="external">Hybrid Code Networks: practical and efficient end-to-end dialog control with supervised and reinforcement learning</a> Jason D. Williams et al., 2017</p></li>
-<li><p><a href="https://arxiv.org/abs/1704.07130" target="_blank" rel="external">Learning Symmetric Collaborative Dialogue Agents with Dynamic Knowledge Graph Embeddings</a> He He et al., 2017</p></li>
-<li><p><a href="https://arxiv.org/abs/1705.05414" target="_blank" rel="external">Key-Value Retrieval Networks for Task-Oriented Dialogue</a> M Eric et al., 2017</p></li>
-<li><p><a href="https://arxiv.org/abs/1706.05125" target="_blank" rel="external">Deal or No Deal? End-to-End Learning for Negotiation Dialogues</a> Mike Lewis et al., 2017</p></li>
-<li><p><a href="https://arxiv.org/abs/1706.08476" target="_blank" rel="external">Generative Encoder-Decoder Models for Task-Oriented Spoken Dialog Systems with Chatting Capability</a> Tiancheng Zhao et al., 2017</p></li>
-<li><p><a href="https://arxiv.org/pdf/1708.05956.pdf" target="_blank" rel="external">An End-to-End Trainable Neural Network Model with Belief Tracking for Task-Oriented Dialog</a> Liu Bing et al., 2017</p></li>
-<li><p><a href="https://arxiv.org/pdf/1706.06210.pdf" target="_blank" rel="external">Sub-domain Modelling for Dialogue Management with Hierarchical Reinforcement Learning</a> Paweł et al., 2017</p></li>
-<li><p><a href="http://workshop.colips.org/dstc6/papers/track1_paper02_wu.pdf" target="_blank" rel="external">End-to-End Recurrent Entity Network for Entity-Value Independent Goal-Oriented Dialog Learning</a> CS Wu et al 2017</p></li>
-<li><p><a href="https://arxiv.org/pdf/1712.09943.pdf" target="_blank" rel="external">Toward Continual Learning for Conversational Agents</a> S Lee 2017</p></li>
-<li><p><a href="https://arxiv.org/abs/1801.04871" target="_blank" rel="external">Building a Conversational Agent Overnight with Dialogue Self-Play</a> Pararth Shah et al 2018</p></li>
-</ul>
-<h2 id="chat-bots">Chat Bots</h2>
-<h3 id="general">General</h3>
-<ul>
-<li><p><a href="http://arxiv.org/abs/1506.05869" target="_blank" rel="external">A Neural Conversational Model</a> Oriol Vinyals et al., <em>arXiv</em> 2015]</p></li>
-<li><p><a href="https://arxiv.org/pdf/1506.06714v1.pdf" target="_blank" rel="external">A Neural Network Approach to Context-Sensitive Generation of Conversational Responses∗</a> Alessandro Sordoni et al., <em>arXiv</em> 2015]</p></li>
-<li><p><a href="https://arxiv.org/pdf/1606.00776v2.pdf" target="_blank" rel="external">Multiresolution Recurrent Neural Networks: An Application to Dialogue Response Generation</a> Iulian Vlad Serban et al., <em>arXiv</em> 2016s</p></li>
-<li><p><a href="https://arxiv.org/abs/1605.06069" target="_blank" rel="external">A Hierarchical Latent Variable Encoder-Decoder Model for Generating Dialogues</a> Iulian Vlad Serban et al., 2016</p></li>
-<li><p><a href="https://arxiv.org/abs/1612.03929" target="_blank" rel="external">Online Sequence-to-Sequence Reinforcement Learning for Open-Domain Conversational Agents</a> Nabiha Asghar et al., 2016</p></li>
-<li><p><a href="https://arxiv.org/abs/1802.02032" target="_blank" rel="external">Improving Variational Encoder-Decoders in Dialogue Generation</a> X Shen et al 2018.</p></li>
-</ul>
-<h3 id="rich-dialog-context">Rich Dialog Context</h3>
-<ul>
-<li><p><a href="https://arxiv.org/abs/1603.06155" target="_blank" rel="external">A Persona-Based Neural Conversation Model</a> Jiwei Li et al, <em>arXiv</em>, 2016</p></li>
-<li><p><a href="http://arxiv.org/pdf/1606.00372v1.pdf" target="_blank" rel="external">Conversational Contextual Cues: The Case of Personalization and History for Response Ranking</a> Rami Al-Rfou et al., 2016</p></li>
-<li><p><a href="https://arxiv.org/abs/1709.05453" target="_blank" rel="external">Augmenting End-to-End Dialog Systems with Commonsense Knowledge</a> Tom Young et al., 2017</p></li>
-<li><p><a href="https://arxiv.org/abs/1712.09783" target="_blank" rel="external">Topic Compositional Neural Language Model</a> W Wang et al 2017</p></li>
-</ul>
-<h3 id="diversity">Diversity</h3>
-<ul>
-<li><p><a href="http://www.aclweb.org/anthology/N16-1014" target="_blank" rel="external">A Diversity-Promoting Objective Function for Neural Conversation Models</a> Jiwei Li et al. 2016</p></li>
-<li><p><a href="https://arxiv.org/abs/1611.08562" target="_blank" rel="external">A Simple, Fast Diverse Decoding Algorithm for Neural Generation</a> Jiwei Li et al., 2016</p></li>
-<li><p><a href="https://arxiv.org/abs/1702.06703" target="_blank" rel="external">Data Distillation for Controlling Specificity in Dialogue Generation</a> Jiwei Li et al., 2017</p></li>
-<li><p><a href="https://arxiv.org/abs/1701.03185" target="_blank" rel="external">Generating High-Quality and Informative Conversation Responses with Sequence-to-Sequence Models</a> Louis Shao et al., 2017</p></li>
-<li><p><a href="https://arxiv.org/abs/1703.10960" target="_blank" rel="external">Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders</a> Tiancheng Zhao et al., 2017</p></li>
-<li><p><a href="https://arxiv.org/abs/1702.05962" target="_blank" rel="external">Latent variable dialogue models and their diversity</a> Cao, Kris et al 2017</p></li>
-</ul>
-<h3 id="reinforcement-learning-and-adversarial">Reinforcement Learning and Adversarial</h3>
-<ul>
-<li><p><a href="https://arxiv.org/abs/1606.01541" target="_blank" rel="external">Deep Reinforcement Learning for Dialogue Generation</a> Jiwei Li et al., <em>arXiv</em>, 2016</p></li>
-<li><p><a href="https://arxiv.org/abs/1701.06547" target="_blank" rel="external">Adversarial Learning for Neural Dialogue Generation</a> Jiwei Li et al., 2017</p></li>
-<li><p><a href="https://arxiv.org/abs/1709.02349" target="_blank" rel="external">A deep reinforcement learning chatbot</a> Serban et al 2017</p></li>
-<li><p><a href="https://arxiv.org/abs/1711.10122" target="_blank" rel="external">End-to-end Adversarial Learning for Generative Conversational Agents</a> Ludwig, O. 2017.</p></li>
-</ul>
-<h2 id="reinforcement-learning">Reinforcement Learning</h2>
-<ul>
-<li><p><a href="https://arxiv.org/abs/1511.08099" target="_blank" rel="external">Strategic Dialogue Management via Deep Reinforcement Learning</a> Heriberto Cuayáhuitl et al., 2015</p></li>
-<li><p><a href="http://arxiv.org/abs/1510.09202" target="_blank" rel="external">Generating Text with Deep Reinforcement Learning</a>, Hongyu Guo, <em>arXiv</em>, 2015</p></li>
-<li><p><a href="http://arxiv.org/abs/1511.04636v5" target="_blank" rel="external">Deep Reinforcement Learning with a Natural Language Action Space</a>, Ji He et al., <em>arXiv</em>, 2016.</p></li>
-<li><p><a href="https://arxiv.org/abs/1506.08941" target="_blank" rel="external">Language Understanding for Text-based Games using Deep Reinforcement Learning</a>, Karthik Narasimhan <em>arXiv</em>, 2016</p></li>
-<li><p><a href="https://arxiv.org/abs/1606.01541" target="_blank" rel="external">Deep reinforcement learning for dialogue generation</a> Jiwei Li et al., 2016</p></li>
-<li><p><a href="https://arxiv.org/abs/1703.01008" target="_blank" rel="external">End-to-end task-completion neural dialogue systems</a> Xiujun Li et al., 2017</p></li>
-<li><p><a href="https://arxiv.org/abs/1706.06210" target="_blank" rel="external">Sub-domain Modelling for Dialogue Management with Hierarchical Reinforcement Learning</a> Paweł Budzianowski et al., 2017</p></li>
-<li><p><a href="https://arxiv.org/abs/1707.00130" target="_blank" rel="external">Sample-efficient Actor-Critic Reinforcement Learning with Supervised Data for Dialogue Management</a> Pei-Hao Su et al., 2017</p></li>
-<li><p><a href="https://arxiv.org/abs/1704.03084" target="_blank" rel="external">Composite Task-Completion Dialogue Policy Learning via Hierarchical Deep Reinforcement Learning</a> Baolin Peng et al., 2017</p></li>
-</ul>
-
-          
+          Neural Network Dialog System Papers
+A list of papers about creating dialog systems using deep nets! Please feel free to add an issue for suggesting m
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/27/2018-03-27/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -890,207 +704,17 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="learning-discourse-level-diversity-for-neural-dialog-models-using-conditional-variational-autoencoders">Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders</h1>
-<p><a href="https://arxiv.org/abs/1703.10960" target="_blank" rel="external">PDF</a></p>
-<p>这是我本周要讲的论文，发表在17年ACL会议上。本文将条件变分自编码的机制融入到对话生成模型中来解决safe answer的问题。作者还提出基于知识指导的条件变分自编码模型通过融入语言学特征来提高性能，以及提出bag-of-word loss来解决训练过程中隐变量消失的问题。</p>
-<h1 id="background">Background</h1>
-<p><strong>two categories(solve this safe answer):</strong></p>
-<ul>
-<li>Other features should be extracted and provided to the models as conditionals in order to generate more specific responses</li>
-<li>improve the encoder-decoder model itself (beam-search, RL, GAN)</li>
-</ul>
-<h1 id="motivation">Motivation</h1>
-<p><strong>shortcomings</strong>:</p>
-<ul>
-<li>encoder-decoder models often generate dull and generic responses .</li>
-</ul>
-<p>past work focused on diversifying the output of the decoder at word-level.</p>
-<ul>
-<li>VAE with LSTM decoder has vanishing latent variable problem.</li>
-</ul>
-<p><strong>solutions</strong>:</p>
-<p>captures the discourse-level diversity in the encoder using conditional variational autoencoders</p>
-<ul>
-<li>present a novel neural dialog model adapted from (CVAE)</li>
-<li>propose Knowledge-Guided CVAE</li>
-<li>We develop a training method in addressing the difficulty of optimizing CVAE for natural language generation</li>
-</ul>
-<h1 id="model">Model</h1>
-<h2 id="cvae-for-dialog-generation">CVAE for Dialog Generation</h2>
-<img src="/2018/03/25/2018-03-25/01.png" alt="01.png" title="">
-<p><strong>Define:</strong></p>
-<ul>
-<li>the dialog context c (context window size k - 1)</li>
-<li>c is composed of the dialog history: the preceding k-1 utterances</li>
-<li>conversational floor (1 if the utterance is from the same speaker of x, otherwise 0)</li>
-<li>and meta features m (e.g. the topic)</li>
-<li>the response utterance x (the <span class="math inline">\(k^{th}\)</span> utterance)</li>
-<li>a latent variable z</li>
-</ul>
-<hr>
-<ul>
-<li>conditional distribution: <span class="math inline">\(p(x,z|c) = p(x|z,c)p(z|c)\)</span></li>
-<li>prior network: <span class="math inline">\(p(z|c)\)</span></li>
-<li>response decoder: <span class="math inline">\(p(x|z,c)\)</span></li>
-</ul>
-<img src="/2018/03/25/2018-03-25/02.png" alt="02.png" title="">
-<p><strong>generative process</strong>:</p>
-<ul>
-<li>Sample a latent variable z from the prior network <span class="math inline">\(p_\theta(z|c)\)</span>.</li>
-<li>Generate x through the response decoder <span class="math inline">\(p_\theta(x|z, c)\)</span>.</li>
-</ul>
-<p><strong>trained</strong>:</p>
-<ul>
-<li>maximize the conditional log likelihood of x given c</li>
-<li>involves an intractable marginalization over the latent variable z</li>
-<li>maximizing the variational lower bound of the conditional log likelihood</li>
-</ul>
-$$
-<span class="math display">\[\begin{aligned}
-L(\theta,\phi;x,c)  &amp;= -KL(q\phi(z|x,c)||p\theta(z|c)) \\
-
-                               &amp;+ E_{q\phi(z|c,x)}[logp_\theta(x|z,c)]\\
-
-                               &amp;&lt;= logp(x|c)
-\end{aligned}\]</span>
-<p>$$</p>
-<p>introduce a recognition network <span class="math inline">\(q_\phi(z|x,c)\)</span> to approximate the true posterior distribution <span class="math inline">\(p_\theta(z|c)\)</span></p>
-<p><strong>model</strong>:</p>
-<ul>
-<li>utterance encoder: bidirectional recurrent neural network with a GRU</li>
-</ul>
-<p>input: encode each utterance and x</p>
-<p>output: <span class="math inline">\(u_{i:k}\)</span></p>
-<ul>
-<li>context encoder: 1-layer GRU network</li>
-</ul>
-<p>input: <span class="math inline">\(u_{i:k}\)</span> and corresponding conversation floor</p>
-<p>output: last hidden state <span class="math inline">\(h^c\)</span> concatenated with meta features</p>
-<ul>
-<li><p>recognition network: <span class="math inline">\(q_\phi(z|x,c) \sim N(\mu,\sigma^2I)\)</span> <span class="math display">\[
-  \left[ \begin{matrix} \mu \\ \log{\sigma^{2}}  \end{matrix}  \right] = W_r\left[ \begin{matrix} x\\ c \end{matrix}  \right] + b_r
-  \]</span></p></li>
-<li><p>prior network: <span class="math inline">\(p_\theta(z|c) \sim N(\mu^{&#39;},\sigma^{&#39;2}I)\)</span> <span class="math display">\[
-  \left[ \begin{matrix} \mu^{&#39;} \\ \log{\sigma^{&#39;2}}  \end{matrix}  \right] = MLP_p(c)
-  \]</span></p></li>
-<li><p>response decoder: 1-layer GRU</p></li>
-</ul>
-<p>initial state: <span class="math inline">\(s_0 = W_i[z,c]+b_i\)</span></p>
-<h2 id="knowledge-guided-cvae-kgcvae">Knowledge-Guided CVAE (kgCVAE)</h2>
-<p>incorporate the linguistic features into the basic CVAE model will be beneficial for the model to learn meaningful latent z.</p>
-<p><strong>define:</strong></p>
-<ul>
-<li><p>set of linguistic features as y</p></li>
-<li><p>generation of x depends on c, z and y. y relies on z and c.</p></li>
-</ul>
-<div class="image-size-200" style="width:50%; text-align: center">
-<p>​ <img src="/2018/03/25/2018-03-25/03.png" alt="03.png" title=""></p>
-</div>
-<p><strong>model:</strong></p>
-<p>train:</p>
-<ul>
-<li>response decoder:</li>
-</ul>
-<p>the response decoder is <span class="math inline">\(s_0 = W_i[z,c,y] + b_i\)</span></p>
-<p>the input at every step is [et; y]</p>
-<ul>
-<li>MLP : predict <span class="math inline">\(y^{&#39;} = MLP_y(z, c)\)</span> based on z and c</li>
-</ul>
-<p>test: predicted <span class="math inline">\(y^{&#39;}\)</span> is used by the response. <span class="math display">\[
-\begin{aligned}
-L(\theta,\phi;x,c,y)  &amp; = -KL(q\phi(z|x,c,y)||p\theta(z|c)) \\
-                                 &amp; + E_{q\phi(z|c,x,y)}[logp(x|z,c,y)]\\
-                                 &amp; +  E_{q\phi(z|c,x,y)}[logp(y|z,c)]\\
-                                 &amp; &lt;= logp(x|c)
-\end{aligned}
-\]</span></p>
-<h2 id="optimization-challenges">Optimization Challenges</h2>
-<p><strong><a href="https://arxiv.org/abs/1511.06349" target="_blank" rel="external">vanishing latent variable problem</a></strong>:</p>
-<p>VAE with RNN decoder fails to encode meaningful information in z.</p>
-<ul>
-<li>KL annealing: gradually increasing the weight of the KL term from 0 to 1 during training;</li>
-<li>word drop decoding: setting a certain percentage of the target words to 0.</li>
-</ul>
-<p><strong>bag-of-word loss</strong></p>
-<ul>
-<li><span class="math inline">\(x_o\)</span> with word order</li>
-<li><span class="math inline">\(x_{bow}\)</span> without order</li>
-</ul>
-<p><span class="math inline">\(f = MLP_b(z, x)\)</span></p>
-<p><span class="math display">\[logp(x_{bow}|z,c) = log\prod_{t=1}^{|x|}\frac{e^{fx_t}}{\sum_{j}^{V}e^{f_j}}\]</span></p>
-<p><span class="math display">\[L^{&#39;}(\theta,\phi;x,c) = L(\theta,\phi;x,c) + E_{q_\phi(z|c,x,y)}[logp(x_{bow}|z,c)]\]</span></p>
-<h1 id="experiment">Experiment</h1>
-<h3 id="dataset">Dataset</h3>
-<p><strong>Switchboard (SW) 1 Release 2 Corpus</strong>:</p>
-<ul>
-<li>train: 207; 833</li>
-<li>validate: 5; 225</li>
-<li>test: 5; 481</li>
-</ul>
-<p><strong>features</strong>：</p>
-<ul>
-<li>unigram and bigram of the utterance</li>
-<li>contextual features of the last 3 utterances</li>
-</ul>
-<p><strong>dialog acts</strong>：</p>
-<p>42 types of dialog acts and the SVM achieved 77.3% accuracy on held-out data</p>
-<h3 id="setting">Setting</h3>
-<ul>
-<li>word embedding: size of 200</li>
-<li>utterance encoder: hidden size 300 for each direction</li>
-<li>context encoder: hidden size 600</li>
-<li>response decoder: hidden size 400</li>
-<li>prior network and the MLP for predicting y: 1 hidden layer of size 400</li>
-<li>latent variable z: size of 200</li>
-<li>context window: k is 10</li>
-<li>mini-batch size: 30</li>
-<li>Adam optimizer: learning rate of 0.001 and gradient clipping at 5</li>
-</ul>
-<h3 id="baseline-model">baseline model</h3>
-<ul>
-<li>a strong baseline model</li>
-<li>CVAE</li>
-<li>kgCVAE</li>
-</ul>
-<h3 id="quantitative-analysis">Quantitative Analysis</h3>
-<h3 id="metric">Metric</h3>
-<p><strong>distance functions</strong></p>
-<ul>
-<li>Smoothed Sentence-level BLEU</li>
-<li>Cosine Distance of Bag-of-word Embedding</li>
-<li>Dialog Act Match</li>
-</ul>
-<div class="image-size-200" style="width:60%; text-align: center;">
-<p>​ <img src="/2018/03/25/2018-03-25/04.png" alt="04.png" title=""></p>
-</div>
-<img src="/2018/03/25/2018-03-25/05.png" alt="05.png" title="">
-<h3 id="qualitative-analysis">Qualitative Analysis</h3>
-<ul>
-<li>case study</li>
-</ul>
-<img src="/2018/03/25/2018-03-25/06.png" alt="06.png" title="">
-<ul>
-<li>posterior z outputted from the recognition network should cluster the responses into meaningful groups</li>
-</ul>
-<div class="image-size-200" style="width:60%; text-align: center">
-<p>​ <img src="/2018/03/25/2018-03-25/07.png" alt="07.png" title=""></p>
-</div>
-<h3 id="results-for-bag-of-word-loss">Results for Bag-of-Word Loss</h3>
-<p>conducted the same language modelling (LM) task on Penn Treebank using VAE</p>
-<ul>
-<li>standard VAE without any heuristics</li>
-<li>VAE with KL annealing (KLA)</li>
-<li>VAE with BOW loss</li>
-<li>VAE with both BOW loss and KLA</li>
-</ul>
-<div class="image-size-200" style="width:60%; text-align: center">
-<p>​ <img src="/2018/03/25/2018-03-25/08.png" alt="08.png" title=""></p>
-</div>
-<div class="image-size-200" style="width:60%; text-align: center">
-<p>​ <img src="/2018/03/25/2018-03-25/09.png" alt="09.png" title=""></p>
-</div>
-
-          
+          Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders
+PDF
+这是我本周要讲的论文，发表在17年ACL会议上。本文将条件变分自编码的机制融入到对
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/25/2018-03-25/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1242,150 +866,18 @@ L(\theta,\phi;x,c,y)  &amp; = -KL(q\phi(z|x,c,y)||p\theta(z|c)) \\
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="aaai-18-neural-response-generation-with-dynamic-vocabularies">AAAI-18 Neural Response Generation with Dynamic Vocabularies</h1>
-<p><a href="https://arxiv.org/abs/1711.11191" target="_blank" rel="external">PDF</a></p>
-<p>这是我本周要讲的论文，发表在18年AAAI会议上。本文针对采用静态词表解码容易生成不相关回复以及解码效率过低的问题，提出了使用动态词表解码来解决。</p>
-<h1 id="motivation">Motivation</h1>
-<p><strong>shortcomings(open domain conversation)</strong>:</p>
-<ul>
-<li>words that are semantically far from the current conversation also take part in decoding, irrelevant responses and generic responses.</li>
-<li>the decoding process becomes unnecessarily slow.</li>
-</ul>
-<p><strong>solutions</strong>:</p>
-<ul>
-<li>dynamic vocabulary sequence-to-sequence (DVS2S) model</li>
-<li>In training: vocabulary construction and response generation are jointly learned by maximizing a lower bound of the true objective with a Monte Carlo sampling method.</li>
-<li>In inference: word prediction model dynamically allocates a small vocabulary for an input</li>
-</ul>
-<h1 id="problem-formalization">Problem Formalization</h1>
-<p><span class="math display">\[p(Y_i|X_i) = p(Y_i|T_i,X_i)p(T_i|X_i)\]</span></p>
-<p>target vocabulary : <span class="math inline">\(T_i\)</span> (sampled from a multivariate Bernoulli distribution)</p>
-<p>response:<span class="math inline">\(Y_i\)</span> input:<span class="math inline">\(X_i\)</span></p>
-<p>word selection model: <span class="math inline">\(f(X)\)</span></p>
-<p>response generation model: <span class="math inline">\(g(X, T)\)</span></p>
-<h1 id="model">Model</h1>
-<img src="/2018/03/21/2018-03-21/01.png" alt="01.png" title="">
-<ul>
-<li>[<strong>Sequence-to-Sequence Model</strong>]</li>
-</ul>
-<p>略</p>
-<ul>
-<li><p>[<strong>word selection model</strong>]</p></li>
-<li><p><strong>Function words</strong></p>
-<p>We collect words appearing more than times 10 in the training data, excluding nouns, verbs, adjectives and adverbs from them, and use the remaining ones to form a function word set.</p>
-<p>There are 701 function words</p></li>
-<li><p><strong>Content words</strong></p>
-<div class="image-size-200" style="width:80%; text-align: center">
-<p>​ <img src="/2018/03/21/2018-03-21/02.png" alt="02.png" title=""></p>
-</div>
-<ul>
-<li><p>The input vector is given by the last hidden state of the encoder</p></li>
-<li><p>MLP is employed to predict the vocabulary</p></li>
-</ul>
-<p><span class="math display">\[\beta_{I(c)} = \sigma(W_c^Th_t + b_c)\]</span></p>
-<ul>
-<li>The word prediction loss is formulated as</li>
-</ul>
-<p><span class="math display">\[𝑃(𝑤_{𝑝𝑜𝑠} = 1|𝑋)+𝑝(𝑤_{𝑛𝑒𝑔} = 0|𝑋)\]</span></p>
-<p>where <span class="math inline">\(𝑤_{𝑛𝑒𝑔}\)</span> are sampled by frequency, and $ 𝑤_{𝑝𝑜𝑠}$ are words in the ground-truth response.</p>
-<p>-:)这边原文没有说明，这预训练的过程中，词表构造模型是通过负采样的方法进行的，负样本是通过词频进行采样的，因为频率高的词越容易导致在回复中出现，正样本是标注数据中的词。</p></li>
-</ul>
-<h1 id="model-training">Model Training</h1>
-<ul>
-<li><strong>Joint learning</strong></li>
-</ul>
-<p><span class="math display">\[\sum_{i=1}^{N}log(p(Y_i|X_i)) = \sum_{i=1}^{N}log(\sum_{Ti}log(\sum_{T_i}p(Y_i|T_i,X_i)p(T_i|X_i)))\]</span></p>
-<ol style="list-style-type: decimal">
-<li>With a latent variable T, it is difficult to optimize as logarithm is outside the summation.</li>
-</ol>
-<p>instead maximize a variational lower bound of <span class="math inline">\(\sum_{i=1}^{N}log(p(Y_i|X_i))\)</span>：</p>
-<div class="image-size-200" style="width:60%; text-align: center">
-<p>​ <img src="/2018/03/21/2018-03-21/03.png" alt="03.png" title=""></p>
-</div>
-<ol start="2" style="list-style-type: decimal">
-<li>log trick:</li>
-</ol>
-<p><span class="math display">\[\frac{dlog(f(x))}{dx} = \frac{1}{f(x)}\frac{df(x)}{dx}\]</span></p>
-<p><span class="math display">\[\nabla log(f(x)) = \frac{\nabla f(x)}{f(x)}\]</span></p>
-<p><span class="math display">\[\nabla p(T_i|X_i) = p(T_i|X_i)\frac{\nabla p(T_i|X_i)}{p(T_i|X_i)} = p(T_i|X_i)\nabla logp(T_i|X_i)\]</span></p>
-<p><span class="math inline">\(\frac{\partial L_i(\theta)}{\partial \theta}\)</span> :</p>
-<div class="image-size-200" style="width:60%; text-align: center">
-<p>​ <img src="/2018/03/21/2018-03-21/04.png" alt="04.png" title=""></p>
-</div>
-<ol start="3" style="list-style-type: decimal">
-<li>we employ the Monte Carlo sampling technique to approximate <span class="math inline">\(\frac{\partial L_i(\theta)}{\partial \theta}\)</span>:</li>
-</ol>
-<div class="image-size-200" style="width:60%; text-align: center">
-<p>​ <img src="/2018/03/21/2018-03-21/05.png" alt="05.png" title=""></p>
-</div>
-<p>$T_{(i,s)} $ a multivariate Bernoulli distribution <span class="math inline">\((\{\beta\}^{|V|})\)</span></p>
-<ol start="4" style="list-style-type: decimal">
-<li>To reduce variance, we normalize the gradient with the length of the response:</li>
-</ol>
-<div class="image-size-200" style="width:60%; text-align: center">
-<p>​ <img src="/2018/03/21/2018-03-21/06.png" alt="06.png" title=""></p>
-</div>
-<div class="image-size-200" style="width:60%; text-align: center">
-<p>​ <img src="/2018/03/21/2018-03-21/07.png" alt="07.png" title=""></p>
-</div>
-<ul>
-<li><strong>Algorithm</strong></li>
-</ul>
-<div class="image-size-200" style="width:60%; text-align: center">
-<p>​ <img src="/2018/03/21/2018-03-21/08.png" alt="08.png" title=""></p>
-</div>
-<h1 id="experiment">Experiment</h1>
-<ul>
-<li><p><strong>Experiment Setup</strong></p></li>
-<li><p><strong>dataset</strong>: Baidu Tieba</p>
-<p>training set: 5 million pairs validation set: 10000 pairs test set: 1; 000 pairs</p></li>
-<li><p>samples S: 5</p>
-<p>function words: 701</p>
-<p>content words: rank according to <span class="math inline">\(\{\beta_i\}\)</span> and select top 1000 words to form a target vocabulary</p>
-<p>beam size: 20</p></li>
-<li><p><strong>Evaluation Metrics</strong></p></li>
-<li>Word overlap based metrics</li>
-<li>Embedding based metrics</li>
-<li>Distinct-1 &amp; distinct-2</li>
-<li><p>3-scale human annotation</p></li>
-<li><p><strong>Comparison Methods</strong></p></li>
-<li>S2SA: https://github.com/mila-udem/blocks</li>
-<li>S2SA-MMI: https://github.com/jiweil/Neural-Dialogue-Generation</li>
-<li>TA-S2S: https://github.com/LynetteXing1991/TAJA-Seq2Seq</li>
-<li>CVAE: https://github.com/snakeztc/NeuralDialog-CVAE</li>
-<li><p>S-DVS2S: separately learn a generation model and a word prediction model</p></li>
-<li><p><strong>Evaluation Results</strong></p></li>
-<li><p>automatic metrics evaluation:</p>
-<img src="/2018/03/21/2018-03-21/09.png" alt="09.png" title=""></li>
-<li><p>human evaluation:</p>
-<div class="image-size-200" style="width:70%; text-align: center">
-<p>​ <img src="/2018/03/21/2018-03-21/10.png" alt="10.png" title=""></p>
-</div></li>
-<li><p>efficiency of decoding:</p>
-<div class="image-size-200" style="width:90%; text-align: center">
-<p>​ <img src="/2018/03/21/2018-03-21/11.png" alt="11.png" title=""></p>
-</div>
-<p>​</p></li>
-</ul>
-<h1 id="discussions">Discussions</h1>
-<ul>
-<li><strong>Dynamic vocabulary coverage</strong>:</li>
-</ul>
-<div class="image-size-200" style="width:80%; text-align: center">
-<p>​ <img src="/2018/03/21/2018-03-21/12.png" alt="12.png" title=""></p>
-</div>
-<ul>
-<li><strong>Performance across different dynamic vocabulary sizes</strong></li>
-</ul>
-<div class="image-size-200" style="width:80%; text-align: center">
-<p>​ <img src="/2018/03/21/2018-03-21/13.png" alt="13.png" title=""></p>
-</div>
-<ul>
-<li><strong>Case study</strong></li>
-</ul>
-<img src="/2018/03/21/2018-03-21/14.png" alt="14.png" title="">
-
-          
+          AAAI-18 Neural Response Generation with Dynamic Vocabularies
+PDF
+这是我本周要讲的论文，发表在18年AAAI会议上。本文针对采用静态词表解码容易生成不相关回复以及解码效率过低的问题，提出了使用动态词表解码来解决。
+Motivati
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/21/2018-03-21/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1537,11 +1029,16 @@ L(\theta,\phi;x,c,y)  &amp; = -KL(q\phi(z|x,c,y)||p\theta(z|c)) \\
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="multi-task-learning-in-machine-comprehension">Multi-Task Learning in Machine Comprehension</h1>
-<p>​ 对于阅读理解而言，答案选择是一个关键问题，对于Squad这样的数据集，对于训练集和测试集，都给出了答案所在的段落，对应的问题，要求从段落中找出答案所在的位置。对于这样的数据集，指针网络有着良好的效果。在Squad这样的数据集上，由于答案所在的段落已经锁定，通过使用Encoder-Decoder的模型就可以简单的根据段落生成答案<a href="https://arxiv.org/abs/1705.00106" target="_blank" rel="external">[ACL-17]</a>。或者通过问题模板的方式<a href="https://arxiv.org/abs/1706.02027" target="_blank" rel="external">[EMNLP-17]</a>，通过检索+生成的方法，利用检索的方法检索与问题模板最相关的模型，同时用Encoder-Decoder模型生成相应模板，再通过选取主题词的方式选取段落中的主题词填入模板生成问题，通过生成问题和答案选择进行对偶学习提高QA的性能。</p>
-<p>​ 在<a href="https://arxiv.org/abs/1711.05073" target="_blank" rel="external">DuReader</a>的数据集上，没有给出明确的答案所在的段落，而是给出多个文档，需要通过相应的匹配方法匹配出答案最有可能所在的段落，再进行训练。但是对于测试集而言，只给出问题而没有，只能通过问题进行匹配，导致最终的结果非常不理想。那么是否可以通过多任务学习的方式，对问题生成和答案选择进行joint-learning。问题生成模型通过使用<a href="http://luxingwu.com/2018/03/09/2018-03-09/">CopyNet</a>，用训练集进行预训练，根据答案匹配出的段落作编码，通过解码生成相应的问题，同时将答案作为特征加入。之后用问题匹配到的段落进行编码，生成出问题，将生成的问题拼接进行答案选择，来提高阅读理解的性能，再用选择到的更高质量的段落训练问题生成模型，提高问题生成的质量，以此进行多任务学习。</p>
-
-          
+          Multi-Task Learning in Machine Comprehension
+​ 对于阅读理解而言，答案选择是一个关键问题，对于Squad这样的数据集，对于训练集和测试集，都给出了答案所在的段落，对应的问题，要求从段落中找出答案所在的位置。对于这样的数据集，指针网络有着良好的效果。在S
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/20/2018-03-20/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1693,16 +1190,17 @@ L(\theta,\phi;x,c,y)  &amp; = -KL(q\phi(z|x,c,y)||p\theta(z|c)) \\
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="iclr18-a-deep-reinforced-model-for-abstractive-summarization">ICLR18-A DEEP REINFORCED MODEL FOR ABSTRACTIVE SUMMARIZATION</h1>
-<h1 id="motivation">Motivation</h1>
-<p>For longer documents and summaries these models often include repetitive and incoherent phrases.</p>
-<h1 id="model">Model</h1>
-<ul>
-<li>novel intra attention that attends over the input and continuously generated output separately</li>
-<li>combines standard supervised word prediction and reinforcement learning (RL)</li>
-</ul>
-
-          
+          ICLR18-A DEEP REINFORCED MODEL FOR ABSTRACTIVE SUMMARIZATION
+Motivation
+For longer documents and summaries these models often include repetitive and
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/15/2018-03-15/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1854,12 +1352,18 @@ L(\theta,\phi;x,c,y)  &amp; = -KL(q\phi(z|x,c,y)||p\theta(z|c)) \\
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="acl16-incorporating-copying-mechanism-in-sequence-to-sequence-learning">ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning</h2>
-<p><a href="https://arxiv.org/abs/1603.06393" target="_blank" rel="external">PDF</a></p>
-<h2 id="motivation">Motivation</h2>
-<p><strong>copying mechanism</strong>: locates a certain segment of the input sentence and puts the segment into the output sequence.</p>
-
-          
+          ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning
+PDF
+Motivation
+copying mechanism: locates a certain segment of the input sen
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/09/2018-03-09/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2011,127 +1515,17 @@ L(\theta,\phi;x,c,y)  &amp; = -KL(q\phi(z|x,c,y)||p\theta(z|c)) \\
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="acl17-get-to-the-point-summarization-with-pointer-generator-networks">ACL17-Get To The Point: Summarization with Pointer-Generator Networks</h2>
-<p><a href="https://arxiv.org/abs/1704.04368" target="_blank" rel="external">PDF</a>, <a href="http://www.abigailsee.com/2017/04/16/taming-rnns-for-better-summarization.html" target="_blank" rel="external">Blog</a></p>
-<p>这是我本周要讲的论文，发表在17年ACL会议上。本文针对长文本生成式摘要中出现的两个问题：（1）事实错误以及未登录词的问题（2）解码时生成重复句子。问题1作者提出结合point network来解决，问题2作者引入了Coverage mechanism来解决。</p>
-<h2 id="background">Background</h2>
-<ul>
-<li>Extractive methods： assemble summaries exclusively from passages</li>
-<li>Abstractive methods: generate novel words and phrases not featured in the source text</li>
-</ul>
-<h2 id="motivation">Motivation</h2>
-<p><strong>Two shortcomings(multi-sentence summaries):</strong></p>
-<ul>
-<li>reproduce factual details inaccurately and inability to deal with out-of-vocabulary</li>
-<li>tend to repeat themselves</li>
-</ul>
-<p><strong>Two solutions:</strong></p>
-<ul>
-<li>copying words from the source text via pointing</li>
-<li>coverage vector</li>
-</ul>
-<h2 id="model">Model</h2>
-<img src="/2018/03/06/2018-03-06/01.png" alt="01.png" title="">
-<ul>
-<li>[<strong>Sequence-to-sequence attentional model</strong>] <span class="math display">\[e^t_i = v^Ttanh(W_h h_i + W_s s_t + b_{attn})\]</span></li>
-</ul>
-<p><span class="math display">\[a^t = softmax(e^t)\]</span></p>
-<p><span class="math display">\[h_t^* = \sum{a^t_ih_i}\]</span></p>
-<p><span class="math display">\[P_{vocab} = softmax(V^{&#39;}(V[h_t^*,s_t] + b)+b^{&#39;})\]</span></p>
-<p><span class="math display">\[P(w) = P_{vocab}(w)\]</span></p>
-<p><span class="math display">\[loss_t = -log P(w^*)\]</span></p>
-<p>context vector：<span class="math inline">\(h_t^{*}\)</span> attention distribution: <span class="math inline">\(a^t\)</span> decoder state: <span class="math inline">\(s_t\)</span></p>
-<p>vocabulary distribution: <span class="math inline">\(P_{vocab}\)</span> target word：<span class="math inline">\(w^*\)</span></p>
-<ul>
-<li>[<strong>Pointer-generator network</strong>]</li>
-</ul>
-<p><span class="math display">\[p_{gen} = \sigma(w_{h^*}^T h_t^* + w_{s_t}^Ts_t +  w_{x_t}^T x_t + b_{gen})\]</span></p>
-<p>decoder input: <span class="math inline">\(x_{t}\)</span> soft switch: <span class="math inline">\(p_{gen} \in[0,1]\)</span></p>
-<p><span class="math display">\[P(w) = p_{gen}P_{vocab}(w) + (1 - p_{gen})\sum_{i:w_i=w}a^t_i\]</span></p>
-<p>:-) 这边作者将源文本中的相同词的attention值进行了累加，<span class="math inline">\(\sum_{i:w_i=w}a^t_i\)</span>这一项的值永远在[0,1]范围</p>
-<p>这样对于在源文本中经常出现的词会增加其解码时的概率？</p>
-<ul>
-<li>[<strong>Coverage mechanism</strong>]</li>
-</ul>
-<p><span class="math display">\[c_t = \sum_{t^{&#39;}=0}^{t-1}a_{t^{&#39;}}\]</span></p>
-<p><span class="math display">\[e^t_i = v^Ttanh(W_h h_i + W_s s_t + w_cc_i^t + b_{attn})\]</span></p>
-<p>:-) This ensures that the attention mechanism’s current decision (choosing where to attend next) is informed by a reminder of its previous decisions(summarized in <span class="math inline">\(c_t\)</span> ).</p>
-<p>尽管这样说，但是不加入loss函数的话没啥效果</p>
-<p><span class="math display">\[covloss_i = \sum_imin(a_i^t, c_i^t)\]</span></p>
-<p>:-) coverage loss is bounded, in particular <span class="math inline">\(covloss_t &lt;= \sum_ia_i^t =1\)</span>.</p>
-<p>这里<span class="math inline">\(covloss\)</span>正常情况下等于1， 只有当一个词之前一直没有被关注，突然被关注的情况下回小于1，相当于是奖励关注那些之前一直没被关注的词，惩罚只关注与某一些词。</p>
-<p><span class="math display">\[loss_t = -log P(w^*) + \lambda\sum_imin(a_i^t, c_i^t)\]</span></p>
-<p>最终设置<span class="math inline">\(\lambda = 1\)</span></p>
-<h2 id="related-work-and-datasets">Related Work and Datasets</h2>
-<ul>
-<li>[<strong>Experiment Tasks and Datasets</strong>]
-<ul>
-<li>CNN/Daily Mail dataset</li>
-</ul>
-<p>only two published results on the full dataset</p></li>
-<li><p>[<strong><a href="https://arxiv.org/abs/1603.06393" target="_blank" rel="external">CopyNet</a> model V.S. Pointer-generator network</strong>]</p>
-<ol style="list-style-type: decimal">
-<li>explicit switch probability <span class="math inline">\(p_{gen}\)</span> V.S shared softmax function</li>
-</ol>
-<blockquote>
-<p>reason: calculating an explicit pgen usefully enables us to raise or lower the probability of all generated words or all copy words at once, rather than individually.</p>
-</blockquote>
-<ol start="2" style="list-style-type: decimal">
-<li>copy distribution: recycle the attention distribution V.S two separate distributions</li>
-</ol>
-<blockquote>
-<p>reason: the two distributions serve such similar purposes that we find our simpler approach suffices.</p>
-</blockquote>
-<ol start="3" style="list-style-type: decimal">
-<li>word appears multiple times: sum probability mass from all corresponding parts of the attention distribution</li>
-</ol></li>
-<li><p>[<strong>Motivation for Coverage</strong>]</p></li>
-</ul>
-<blockquote>
-<p>similar to <a href="http://www.ijcai.org/Proceedings/16/Papers/391.pdf" target="_blank" rel="external">distraction</a></p>
-</blockquote>
-<ul>
-<li>[<strong>Temporal attention V.S Coverage</strong>]</li>
-</ul>
-<blockquote>
-<p><strong>Temporal attention</strong>: each attention distribution is divided by the sum of the previous. early intervention method such as coverage is preferable to a post hoc method such as temporal attention</p>
-</blockquote>
-<h2 id="experiments">Experiments</h2>
-<ul>
-<li>[<strong>Setting</strong>]</li>
-<li>Adagrad initial accumulator: 0.1</li>
-<li>learning rate: 0.15</li>
-<li>truncate length: article 400 tokens, summary 100 tokens(train) 120(test)</li>
-<li>batch size of 16</li>
-<li>beam size 4 (test)</li>
-<li>[<strong>Trips</strong>]</li>
-<li>start with highly-truncated sequences, then raise the maximum length once converged.</li>
-<li>added the coverage mechanism with coverage loss weighted to <span class="math inline">\(\lambda = 1\)</span> further 3000 iterations</li>
-</ul>
-<h2 id="results">Results</h2>
-<ul>
-<li><p>[<strong>Baseline</strong>]</p></li>
-<li><p>lead-3 baseline: first three sentences of the article as a summary</p></li>
-<li><p>only existing abstractive (Nallapati et al.,2016) and extractive (Nallapati et al., 2017) models on the full dataset.</p>
-<p>:-) they generate anonymized summaries, this paper generate plain-text summaries</p></li>
-<li><p>[<strong>Metric</strong>]</p></li>
-<li>ROUGE metric: F1 scores for ROUGE-1, ROUGE-2 and ROUGE-L</li>
-<li><p>METEOR metric</p></li>
-<li><p>[<strong>Observations</strong>]</p></li>
-</ul>
-<p><img src="/2018/03/06/2018-03-06/02.png" alt="02.png" title=""></p>
-<ul>
-<li>convincingly surpassing the best abstractive model</li>
-<li><p>does not quite surpass the ROUGE scores of the lead-3 baseline, nor the current best extractive model</p></li>
-<li><p>[<strong>Discussion</strong>]</p></li>
-<li><p>How abstractive is our model?</p>
-<div class="image-size-200" style="width:80%; text-align: center">
-<p>​ <img src="/2018/03/06/2018-03-06/04.png" alt="04.png" title=""></p>
-</div>
-<p>copies whole article sentences 35%</p></li>
-</ul>
-
-          
+          ACL17-Get To The Point: Summarization with Pointer-Generator Networks
+PDF, Blog
+这是我本周要讲的论文，发表在17年ACL会议上。本文针对长文本生成式摘要中出现的两个问题：（1）事实错误以及未登录词的问题（2）解码时生
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/06/2018-03-06/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2283,18 +1677,17 @@ L(\theta,\phi;x,c,y)  &amp; = -KL(q\phi(z|x,c,y)||p\theta(z|c)) \\
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>在了解了如何通过httpclient获取到相关网页的源代码后，作为主题爬虫，还需要获取网页源代码中的相关信息以及下一跳的URL地址。这就需要用到正则表达式，这里总结一下处理网页源代码时用到的一些技巧。</p>
-<ul>
-<li>分组 在我们获取网页中关键信息时，我们或许会使用多次正则，而如何获取我们所指定位置的正则所匹配的信息，我们就需要对正则表达式进行分组。 比如</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">String CHAPTER = &quot;&lt;td class=\&quot;chapterBean\&quot; chapterId=\&quot;\\d*\&quot; chapterName=\&quot;(.*?)\&quot; chapterLevel=\&quot;\\d*\&quot; wordNum=\&quot;(.*?)\&quot; updateTime=\&quot;(\\d*?)\&quot;&gt;&lt;a href=\&quot;(.*?)\&quot; title=\&quot;.*?\&quot;&gt;&quot;;</div></pre></td></tr></table></figure>
-<p>我们要获取chapterName处的内容，就是group(1)，wordNum处的内容，就是group(2)，updateTime处的内容，就是group(3)。第0组group(0)或者不写值group()即是匹配整个字符串，从左往右起第一个左括号即是分组1，以此类推。</p>
-<ul>
-<li><p>贪婪模式 贪婪模式即是匹配尽可能多的字符串，比如.*或者.+,同样上面例子中的chapterName=”(.+)”，将会匹配从chapterName=”开始，直到找到最后一个”才匹配结束。所以我们在处理网页时更常用的是懒惰模式。</p></li>
-<li><p>懒惰模式 懒惰模式是在能使整个匹配成功的前提下使用最少的重复。比如.*？或者.+？，同样上面例子中的chapterName=”(.+？)”，将会匹配从chapterName=”开始，找到第一个”就匹配结束。</p></li>
-</ul>
+          在了解了如何通过httpclient获取到相关网页的源代码后，作为主题爬虫，还需要获取网页源代码中的相关信息以及下一跳的URL地址。这就需要用到正则表达式，这里总结一下处理网页源代码时用到的一些技巧。
 
-          
+分组 在我们获取网页中关键信息时，我们或许会使用多次正则，而如何获取我们所指定位置的正则所匹
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/08/11/2017-01-23/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2446,33 +1839,17 @@ L(\theta,\phi;x,c,y)  &amp; = -KL(q\phi(z|x,c,y)||p\theta(z|c)) \\
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>今天看论文资料看到了DeepQA深度问答系统，而国内的图灵机器人正是基于DeepQA实现的，对中文语义理解的准确率挺高。就尝试做了个基于微信图灵机器人。之前开发微信一直用的PHP，这次尝试用Java开发。</p>
-<ul>
-<li>首先编写servlet进行消息验证 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException &#123;</div><div class="line">		// TODO Auto-generated method stub</div><div class="line">		String signature = request.getParameter(&quot;signature&quot;);</div><div class="line">		String timestamp = request.getParameter(&quot;timestamp&quot;);</div><div class="line">		String nonce = request.getParameter(&quot;nonce&quot;);</div><div class="line">		String echostr = request.getParameter(&quot;echostr&quot;);</div><div class="line">		PrintWriter out = response.getWriter();</div><div class="line">		if(CheckUtil.checkSignature(signature, timestamp, nonce)) &#123;</div><div class="line">			out.print(echostr);</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">	&#125;</div></pre></td></tr></table></figure></li>
-</ul>
-<p>将token、timestamp、nonce三个参数进行字典序排序，再将三个参数字符串拼接成一个字符串进行sha1加密，加密后的字符串可与signature对比，标识该请求来源于微信，若确认此次GET请求来自微信服务器，请原样返回echostr参数内容 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public static boolean checkSignature(String signature,String timestamp,String nonce) &#123;</div><div class="line">		String arr[] = new String[]&#123;token,timestamp,nonce&#125;;</div><div class="line">		//排序</div><div class="line">		Arrays.sort(arr);</div><div class="line">		//生成字符串</div><div class="line">		StringBuffer content = new StringBuffer();</div><div class="line">		for(int i = 0;i &lt; arr.length;i++) &#123;</div><div class="line">			content.append(arr[i]);</div><div class="line">		&#125;</div><div class="line">		//sha1加密</div><div class="line">		String temp = getSha1(content.toString());</div><div class="line">		return temp.equals(signature);</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
-<p>附：sha1加密算法： <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">public static String getSha1(String str)&#123;</div><div class="line">		   if (null == str || 0 == str.length())&#123;</div><div class="line">		       return null;</div><div class="line">		   &#125;</div><div class="line">		   char[] hexDigits = &#123; &apos;0&apos;, &apos;1&apos;, &apos;2&apos;, &apos;3&apos;, &apos;4&apos;, &apos;5&apos;, &apos;6&apos;, &apos;7&apos;, &apos;8&apos;, &apos;9&apos;, </div><div class="line">		           &apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;, &apos;e&apos;, &apos;f&apos;&#125;;</div><div class="line">		   try &#123;</div><div class="line">		       MessageDigest mdTemp = MessageDigest.getInstance(&quot;SHA1&quot;);</div><div class="line">		       mdTemp.update(str.getBytes(&quot;UTF-8&quot;));</div><div class="line">		        </div><div class="line">		       byte[] md = mdTemp.digest();</div><div class="line">		       int j = md.length;</div><div class="line">		       char[] buf = new char[j * 2];</div><div class="line">		       int k = 0;</div><div class="line">		       for (int i = 0; i &lt; j; i++) &#123;</div><div class="line">		           byte byte0 = md[i];</div><div class="line">		           buf[k++] = hexDigits[byte0 &gt;&gt;&gt; 4 &amp; 0xf];</div><div class="line">		           buf[k++] = hexDigits[byte0 &amp; 0xf];</div><div class="line">		       &#125;</div><div class="line">		       return new String(buf);</div><div class="line">		   &#125; catch (Exception e) &#123;</div><div class="line">		       return null;</div><div class="line">		   &#125;</div><div class="line">		&#125;</div></pre></td></tr></table></figure></p>
-<ul>
-<li>其次接受xml格式的消息，并转换为对象格式</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">public static ReceiveXmlEntity getMsgEntity(String content)&#123;</div><div class="line">		ReceiveXmlEntity msg = null;</div><div class="line">		try&#123;</div><div class="line">			// 将字符串转换为xml对象</div><div class="line">			Document doc = DocumentHelper.parseText(content);</div><div class="line">			//获取文档的根节点</div><div class="line">			Element root = doc.getRootElement();</div><div class="line">			//遍历根节点下所有的子结点</div><div class="line">			Iterator&lt;?&gt; iter = root.elementIterator();</div><div class="line">			//利用反射机制，调用对象的set方法</div><div class="line">			Class&lt;?&gt; c = Class.forName(&quot;com.wechat.entity.ReceiveXmlEntity&quot;);</div><div class="line">			//创建实体类</div><div class="line">			msg = (ReceiveXmlEntity)c.newInstance();</div><div class="line">			while(iter.hasNext())&#123;</div><div class="line">				Element ele = (Element)iter.next();</div><div class="line">				//获取set方法中的参数字段（实体类的属性）</div><div class="line">				Field filed = c.getDeclaredField(ele.getName());</div><div class="line">				//获取set方法</div><div class="line">				Method method = c.getDeclaredMethod(&quot;set&quot;+ele.getName(), filed.getType());</div><div class="line">				//调用set方法</div><div class="line">				method.invoke(msg, ele.getText());</div><div class="line">			&#125;</div><div class="line">		&#125;catch(Exception e)&#123;</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		return msg;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>调用图灵机器人接口处理模块，获取图灵机器人的结果</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public String getTulingRe(String info)&#123;</div><div class="line">		//调用图灵机器人接口api，获取结果</div><div class="line">		String url = &quot;http://www.tuling123.com/openapi/api?key=自己的秘钥&amp;info=&quot;+info;</div><div class="line">		String tlResult = HttpGetRequest.get(url);</div><div class="line">		//解析图灵结果数据，提取所需内容</div><div class="line">		JSONObject json = JSONObject.fromObject(tlResult);</div><div class="line">		tlResult = json.getString(&quot;text&quot;);</div><div class="line">		return tlResult;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li><p>封装xml接口的返回数据 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">public static String getXmlResult(ReceiveXmlEntity xml, String tlResult)&#123;</div><div class="line">		StringBuffer sb = new StringBuffer();</div><div class="line">		sb.append(&quot;&lt;xml&gt;&lt;ToUserName&gt;&lt;![CDATA[&quot;);</div><div class="line">		sb.append(xml.getFromUserName());</div><div class="line">		sb.append(&quot;]]&gt;&lt;/ToUserName&gt;&lt;FromUserName&gt;&lt;![CDATA[&quot;);</div><div class="line">		sb.append(xml.getToUserName());</div><div class="line">		sb.append(&quot;]]&gt;&lt;/FromUserName&gt;&lt;CreateTime&gt;&quot;);</div><div class="line">		sb.append(new Date().getTime());</div><div class="line">		sb.append(&quot;&lt;/CreateTime&gt;&lt;MsgType&gt;&lt;![CDATA[text]]&gt;&lt;/MsgType&gt;&lt;Content&gt;&lt;![CDATA[&quot;);</div><div class="line">		sb.append(tlResult);</div><div class="line">		sb.append(&quot;]]&gt;&lt;/Content&gt;&lt;/xml&gt;&quot;);</div><div class="line">		return sb.toString();</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p></li>
-<li><p>使用ngork进行公网映射 cmd输入 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ngork http 8080</div></pre></td></tr></table></figure></p></li>
-</ul>
-<div class="figure">
-<img src="http://cdn.sinacloud.net/myblog-image/2017/01-20/01.png" alt="公网映射">
-<p class="caption">公网映射</p>
-</div>
-<ul>
-<li>最后关注公众号即可，亲测准确性还是很高的： <img src="http://cdn.sinacloud.net/myblog-image/2017/01-20/02.png" alt="图灵机器人"></li>
-</ul>
+          今天看论文资料看到了DeepQA深度问答系统，而国内的图灵机器人正是基于DeepQA实现的，对中文语义理解的准确率挺高。就尝试做了个基于微信图灵机器人。之前开发微信一直用的PHP，这次尝试用Java开发。
 
-          
+首先编写servlet进行消息验证 12345678910111213protected
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/01/20/2017-01-20/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2627,6 +2004,17 @@ L(\theta,\phi;x,c,y)  &amp; = -KL(q\phi(z|x,c,y)||p\theta(z|c)) \\
   <span class="author" itemprop="copyrightHolder">luxingwu</span>
   <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+   <div class="comment"></div>
+    <script>
+        new Valine({
+            // AV 对象来自上面引入av-min.js(老司机们不要开车➳♡゛扎心了老铁)
+            av: AV, 
+            el: '.comment', // 
+            app_id: 'Your APP ID', // 这里填写上面得到的APP ID
+            app_key: 'Your APP KEY', // 这里填写上面得到的APP KEY
+            placeholder: 'ヾﾉ≧∀≦)o来啊，快活啊!' // [v1.0.7 new]留言框占位提示文字
+        });
+    </script>
   <script>
 	(function(){
 		var bp = document.createElement('script');
@@ -2641,7 +2029,7 @@ L(\theta,\phi;x,c,y)  &amp; = -KL(q\phi(z|x,c,y)||p\theta(z|c)) \\
 		s.parentNode.insertBefore(bp, s);
 	})();
   </script>
-
+	
 </div>
 
 

@@ -234,6 +234,16 @@
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
 
       
     </ul>
@@ -372,27 +382,16 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>最强大脑VS百度大脑最近很是热闹，于是乎发现百度大脑平台在1月06日开放了nlp自然语言处理的接口，于是试用了1.0版本。使用方法分为API和SDK两种方式。 ## API接口调用 - 首先获取access_token,需要用到API Key和Secret Key</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public static String getAccess_token() &#123;</div><div class="line">		List&lt;NameValuePair&gt; nameValuePairs = new ArrayList&lt;NameValuePair&gt;();</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;grant_type&quot;, Message.GRANT_TYPE));</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;client_id&quot;, Message.CLIENT_ID));</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;client_secret&quot;, Message.CLIENT_SECRET));</div><div class="line">		String result = null;</div><div class="line">		try &#123;</div><div class="line">			result = postNameValuePair(Message.TOKEN_URL,nameValuePairs);</div><div class="line">		&#125; catch (IOException e) &#123;</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		return result;</div><div class="line">		</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>接下来用获取的access_token（目前为1个月重新获取一次）调用相关接口即可。 ## JAVA SDK接口调用</li>
-<li>首先通过API Key和Secret Key以及APP_ID创建一个客户端对象。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public static AipNlp client = new AipNlp(Message.APP_ID, Message.CLIENT_ID, Message.CLIENT_SECRET);</div></pre></td></tr></table></figure>
-<ul>
-<li>接着用客户端对象调用相关接口即可。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"> public void wordseg(String sentence) &#123;</div><div class="line">        // 使用指定语言分词</div><div class="line">        JSONObject response = NlpUtil.client.wordseg(sentence, NlpLangId.LANG_CHINESE);</div><div class="line">        JSONObject scw_out = response.getJSONObject(&quot;scw_out&quot;);</div><div class="line">        String wordsepbuf = scw_out.getString(&quot;wordsepbuf&quot;);</div><div class="line">        String wpcompbuf = scw_out.getString(&quot;wpcompbuf&quot;);</div><div class="line">        String subphrbuf = scw_out.getString(&quot;subphrbuf&quot;);</div><div class="line">        String str[] = wpcompbuf.split(&quot;\t&quot;);</div><div class="line">        for (int i = 0; i &lt; str.length; i++) &#123;</div><div class="line">			System.out.println(str[i]);</div><div class="line">		&#125;</div><div class="line">        System.out.println(&quot;基本词粒度结果:&quot;+wordsepbuf);</div><div class="line">        System.out.println(&quot;混排粒度结果&quot;+wpcompbuf);</div><div class="line">        System.out.println(&quot;所有识别出来的短语&quot;+subphrbuf);       </div><div class="line">    &#125; </div><div class="line"></div><div class="line">public List&lt;Word&gt; wordpos(String sentence) &#123;</div><div class="line">    	 JSONObject response = NlpUtil.client.wordpos(sentence);</div><div class="line">    	 JSONArray result_out = response.getJSONArray(&quot;result_out&quot;);</div><div class="line">    	 List&lt;Word&gt; words = new ArrayList&lt;Word&gt;();</div><div class="line">    	 Word word;</div><div class="line">    	 for (int i = 0; i &lt; result_out.length(); i++) &#123;</div><div class="line">    		 word = new Word();</div><div class="line">			 word.setLength(result_out.getJSONObject(i).getInt(&quot;length&quot;));</div><div class="line">			 word.setConfidence(result_out.getJSONObject(i).getInt(&quot;confidence&quot;));</div><div class="line">			 word.setType(result_out.getJSONObject(i).getString(&quot;type&quot;));</div><div class="line">			 word.setWord(result_out.getJSONObject(i).getString(&quot;word&quot;));</div><div class="line">			 words.add(word);</div><div class="line">		&#125;</div><div class="line">    	return words;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>测试分词结果： <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public class Test &#123;</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		String sentence = &quot;如何成为一名优雅的程序员&quot;;</div><div class="line">		WordSeg wordSeg = new WordSeg();</div><div class="line">		List&lt;Word&gt; words = wordSeg.wordpos(sentence);</div><div class="line">		for (Word word : words) &#123;</div><div class="line">			System.out.println(&quot;单词：&quot;+word.getWord()+&quot;  &quot;+&quot;词性：&quot;+word.getType()+&quot; &quot;+&quot;置信度：&quot;+word.getConfidence());</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></li>
-</ul>
-<p>结果相当准确：</p>
-<div class="figure">
-<img src="http://cdn.sinacloud.net/myblog-image/2017/01-16/01.PNG" alt="分词结果">
-<p class="caption">分词结果</p>
-</div>
-
-          
+          最强大脑VS百度大脑最近很是热闹，于是乎发现百度大脑平台在1月06日开放了nlp自然语言处理的接口，于是试用了1.0版本。使用方法分为API和SDK两种方式。 ## API接口调用 - 首先获取access_token,需要用到API Key和Secret Key
+1234567891011121
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/01/16/2017-01-16/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -544,10 +543,15 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>今天网络爬虫开始入门，看了《自己动手写网络爬虫》第一章，作者文中提出了使用httpclient-4.1.2.jar,结果在示例中自己用的httpclient-4.3.0以上的版本，在小节最后的总结程序Java网页抓取示例程序中又用了commons-httpclient的jar包，这三者在写法上有很大差别，尤其是commons-httpclient，已经是遗留版本，官方不推荐使用了，于是我就索性学习了下httpclient最新的文档，把Java网页抓取示例程序重写了一遍。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public class RetrievePage &#123;</div><div class="line">	private static HttpClient httpClient = HttpClients.createDefault();</div><div class="line">	public static boolean downloadPage(String path) throws ClientProtocolException, IOException &#123;</div><div class="line">		HttpPost httpPost = new HttpPost(path); </div><div class="line">//		HttpHost proxy = new HttpHost(&quot;172.17.18.84&quot;,8080,&quot;http&quot;);</div><div class="line">//	    RequestConfig rq = RequestConfig.custom().setProxy(proxy).build();</div><div class="line">//		httpPost.setConfig(rq);</div><div class="line">		InputStream input = null;</div><div class="line">		OutputStream output = null;</div><div class="line">//		HttpGet httpGet = new HttpGet(path);</div><div class="line">		List&lt;NameValuePair&gt; nameValuePairs = new ArrayList&lt;NameValuePair&gt;(2);</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;name&quot;, &quot;lietu&quot;));</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;password&quot;, &quot;*****&quot;));</div><div class="line">		httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,&quot;UTF-8&quot;));</div><div class="line">		HttpResponse response = httpClient.execute(httpPost);</div><div class="line">		int statusCode = response.getStatusLine().getStatusCode();</div><div class="line">		System.out.println(statusCode);</div><div class="line">		if(statusCode == HttpStatus.SC_OK) &#123;</div><div class="line">			String bodyAsString = EntityUtils.toString(response.getEntity(),&quot;utf-8&quot;);</div><div class="line">			input = new ByteArrayInputStream(bodyAsString.getBytes());</div><div class="line">			String filename = path.substring(path.lastIndexOf(&apos;/&apos;)+1);</div><div class="line">			System.out.println(filename);</div><div class="line">			output = new FileOutputStream(filename);</div><div class="line">			int tempByte = -1;</div><div class="line">			while((tempByte = input.read()) &gt; 0) &#123;</div><div class="line">				output.write(tempByte);</div><div class="line">			&#125;</div><div class="line">			if(input != null) &#123;</div><div class="line">				input.close();</div><div class="line">			&#125;</div><div class="line">			if(output != null) &#123;</div><div class="line">				output.close();</div><div class="line">			&#125;</div><div class="line">			return true;</div><div class="line">		&#125;</div><div class="line">		return false;</div><div class="line">	&#125;</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		try &#123;</div><div class="line">			RetrievePage.downloadPage(&quot;http://www.lietu.com&quot;);</div><div class="line">		&#125; catch (IOException e) &#123;</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>注释掉的地方是设置代理，以及Get通信方式，可以根据需要使用。个人感悟：IT方面更新太快，一切都要以官方文档为主要依据。</p>
-
-          
+          今天网络爬虫开始入门，看了《自己动手写网络爬虫》第一章，作者文中提出了使用httpclient-4.1.2.jar,结果在示例中自己用的httpclient-4.3.0以上的版本，在小节最后的总结程序Java网页抓取示例程序中又用了commons-httpclient的jar包，这三者在写法上有很大
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/01/15/2017-01-15/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -699,20 +703,16 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="最大长度匹配法">最大长度匹配法</h2>
-<p>最常见的分词方法为查找词典算法，其中最常用就是最大长度匹配法——从字符串的指定位置开始，匹配词典，找出最长词。 ### 正向最大长度匹配法 人们用句的时候往往更倾向与使用更短的词，只有在必要的情况下才会用长词来表述，比如大学和大学生，如果大学能够表示大学生，那么人们更倾向与用短词，既然长词出现，那么就肯定是有含义的，需要优先匹配。这便是最大长度匹配法。最大长度匹配法常用前缀树（标准Trie树)进行匹配。 ### 逆向最大长度匹配法 我们会发现正向最大长度匹配的精度不高，会出现歧义，比如大学生活丰富多彩，切分结果为大学生/活/丰富多彩，而采用逆向最大长度匹配的结果为大学/生活/丰富多彩，可见逆向最大长度匹配可以消除部分歧义，精度稍高。逆向最大长度匹配常用后缀树进行匹配。 ### 标准Trie树（前缀树） <img src="http://cdn.sinacloud.net/myblog-image/2017/01-14/01.png" alt="标准Trie树"></p>
-<p>前缀树的搜索速度快在于其每一个节点都指向一个直接定址表，无需处理冲突，而且树的高度小，所以 搜索 速度很快。但是它是空间换时间的算法，以内存消耗为代价。如果只是26个英文字母，每个节点就要保存26个指针，但并不是每个指针数组都保存记录，空的指针数组导致内存空间的浪费。</p>
-<div class="figure">
-<img src="http://imgx.sinacloud.net/myblog-image/w_600,h_600/2017/01-14/02.png" alt="标准Trie树">
-<p class="caption">标准Trie树</p>
-</div>
-<p>因而我们可以结合了Trie树时间效率的优势和二叉搜索树空间效率的三叉搜索树。 ### 三叉搜索树 三叉搜索树使用了一种聪明的手段去解决Trie的内存问题（空的指针数组）。为了避免多余的指针占用内存，三叉搜索树的节点表示成“树中有树”的形式。与Trie树不同的是，三叉搜索树的结构与读入顺序有关，三叉树是否平衡取决于其读入顺序。我们可以把词典按词的首字母大小排序，每次取中间值读入来构建平衡树，这样在进行正向最大长度匹配时，从一句话的指定位置开始，如果将该字首字母与根节点的字的首字母匹配，如果相等则继续访问中间孩子节点，如果小于则比较左孩子节点，如果大于则继续比较右孩子节点。匹配完一个词则回到根节点继续匹配。直到匹配到该句结尾，如果没有匹配的词则按单字切分。</p>
-<div class="figure">
-<img src="http://cdn.sinacloud.net/myblog-image/2017/01-14/03.png" alt="三叉Trie树">
-<p class="caption">三叉Trie树</p>
-</div>
-
-          
+          最大长度匹配法
+最常见的分词方法为查找词典算法，其中最常用就是最大长度匹配法——从字符串的指定位置开始，匹配词典，找出最长词。 ### 正向最大长度匹配法 人们用句的时候往往更倾向与使用更短的词，只有在必要的情况下才会用长词来表述，比如大学和大学生，如果大学能够表示大学生，那么人们更倾向与用短词，
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/01/14/2017-01-14/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -864,13 +864,17 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="octopress到hexo一些简单的个人体会">Octopress到Hexo一些简单的个人体会</h1>
-<p>距离上次小站建成已经过去快一年了，然而这一年却也没能写点什么，这和之前说好的成为一个优雅的程序员走的有点远了，其实这一年是考研去了，不管结果如何，从现在开始新的生活，首先给自己买了一台电脑，索性就从写一篇博开始。</p>
-<p>结果安装完ruby及依赖项之后总是会一运行rake命令就出错。当初在搭建octopress的时候完全没有考虑ruby对windows的支持。于是我发现了基于 Node.js 得Hexo，便索性用Hexo重新搭建了站点。</p>
-<p>Hexo和octopress很相像，而且都是Markdown语法编辑，所以站点迁起来也很快。不同之处在于Hexo基于node.js，在windows环境下支持更好而且环境搭建也更容易。于是新的站点也代表新的开始，继续加油吧。</p>
-<p>另附：这次建站用的是NexT的主题，该主题有详细的中文文档。</p>
-
-          
+          Octopress到Hexo一些简单的个人体会
+距离上次小站建成已经过去快一年了，然而这一年却也没能写点什么，这和之前说好的成为一个优雅的程序员走的有点远了，其实这一年是考研去了，不管结果如何，从现在开始新的生活，首先给自己买了一台电脑，索性就从写一篇博开始。
+结果安装完ruby及依赖项之后总是
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/01/13/2017-01-13/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1022,34 +1026,18 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="年终总结">2015年终总结</h1>
-<p>炮竹声中一岁除，新的一年猴年即将到来，在此对过去的一年做一个总结，希望在接下来的一年里收获更多。</p>
-<h2 id="学业方面">学业方面</h2>
-<p>这一年在学业方面虽然以些微之差没能获得年级第一有点小遗憾，不过还是有惊无险的得到特等奖学金，与去年相比有一个名次的进步，这我已经满足了，毕竟这一学我已经把重点从课业上注意到了项目实践能力上了，所以取得这样成绩已经满意了。</p>
-<h2 id="学生工作">学生工作</h2>
-<ul>
-<li><p>今年在完成了换届工作后我就正式结束电子学院科协与技术协会秘书长的工作，再见了，两年科协，很充实，很快乐。之后在5月份收到科协发过来的聘书。</p></li>
-<li><p>另外在班级上继续担当学习委员职务，感觉相比之前，任务已经没有那么多了。</p></li>
-<li><p>成立了电子学院微信俱乐部</p></li>
-</ul>
-<h2 id="科研项目">科研项目</h2>
-<ul>
-<li><p>今年五月份开始进行的科研立项的省级指导项目“基于微信的教学管理云平台” 正按计划进行性，已经获得了国家级二等奖证书一份，软件著作权一份，同时顺利通过了中期检查，项目已基本完工。</p></li>
-<li><p>之后接手的社会横向项目“今朝龙翔微信社区”项目已在年底完工。</p></li>
-</ul>
-<h2 id="学科竞赛">学科竞赛</h2>
-<ul>
-<li><p>中国大学生服务外包创新创业大赛国家二等奖。</p></li>
-<li><p>2015年“甲骨文杯”全国Java程序设计大赛华东赛区三等奖</p></li>
-</ul>
-<h2 id="思想政治">思想政治</h2>
-<p>今年五月份通过党支部大会成为了一名预备党员，同时通过党校培训顺利结业。</p>
-<h2 id="看过的好书">看过的好书</h2>
-<p>今年看过的一些好书有：《headfirst 设计模式》、《JavaScript高级程序设计》、《HTML 5移动Web开发实战详解》</p>
-<p>以上就是今年的简单总结，其他的也暂时想不起什么了，要说的话就是火影完结了。追了十年的，感谢有你陪伴。</p>
-<p>至于明年的计划，也在计划中，主要有两点，一是希望能在算法再提升一下，二是打算深入学习一下JavaScript。</p>
-
-          
+          2015年终总结
+炮竹声中一岁除，新的一年猴年即将到来，在此对过去的一年做一个总结，希望在接下来的一年里收获更多。
+学业方面
+这一年在学业方面虽然以些微之差没能获得年级第一有点小遗憾，不过还是有惊无险的得到特等奖学金，与去年相比有一个名次的进步，这我已经满足了，毕竟这一学我已经把重点从课业上注
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/02/07/2016-02-07-theLastSum/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1201,29 +1189,16 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="今朝龙翔微信社区技术总结">今朝龙翔微信社区技术总结</h1>
-<p>这几天突然接到了之前接受的今朝龙翔社区的项目即将上线的消息，于是开始抓紧时间赶紧进度，同时在需求方面又发生了很大的变动，原本是以将webAPP融入微信的方式（通过菜单链接直接链到webAPP中）,现在需要改成将webAPP的功能直接拆分到微信端，通过微信菜单直接获取资讯图文或者链接到单页面，所以在此基础上为了后期可拓展性，我并没有把原来的webAPP之前拆了，而是在此基础上进行了功能的拓展。下面是新旧版本的对比：</p>
-<p><img src="http://imgx.sinacloud.net/myblog-image/w_350,h_600/2016/01-27/01.png" alt="旧的版本"> <img src="http://imgx.sinacloud.net/myblog-image/w_350,h_600/2016/01-27/02.png" alt="新的版本"></p>
-<p>之后经过这几天的赶工，项目总算是完工了，现总结一下这次项目的一些心得。 ## 一、微信接口获取用户信息 微信获取用户信息可以通过两种方式，两种方式用到的接口也不一样。 ### 1、通过自定义菜单的click类型获取用户信息（无需高级接口） 如果是通过自定义菜单的click类型，以图文链接的方式获取用户信息，可以先通过FromUserName获取到用户的openID，之后即可通过获取用户信息的接口https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&amp;openid=OPENID&amp;lang=zh_CN 获取用户基本信息。</p>
-<h3 id="通过自定义菜单的view类型获取用户信息需要高级接口即认证服务号另外还需要域名">2、通过自定义菜单的view类型获取用户信息（需要高级接口，即认证服务号，另外还需要域名）</h3>
-<p>如果是通过自定义菜单的view类型，以自定义菜单直接链接到获取用户信息的页面，菜单的url是一个授权回调url，这样才能在菜单点击的时候使用oauth2.0授权获得openid，接口如下https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&amp;redirect_uri=REDIRECT_URI&amp;response_type=code&amp;scope=SCOPE&amp;state=STATE#wechat_redirect 。其中的redirect_uri便是回调页面的链接，不过页面所在的域名必须在微信公众号的后台进行绑定授权，授权后可以回调该域名下面的页面；其中的scope参数分为snsapi_base和snsapi_userinfo两种：</p>
-<ul>
-<li><p>以snsapi_base为scope发起的网页授权，是用来获取进入页面的用户的openid的，并且是静默授权并自动跳转到回调页的。用户感知的就是直接进入了回调页（往往是业务页面）</p></li>
-<li><p>以snsapi_userinfo为scope发起的网页授权，是用来获取用户的基本信息的。但这种授权需要用户手动同意，并且由于用户同意过，所以无须关注，就可在授权后获取该用户的基本信息。</p></li>
-</ul>
-<h3 id="两种方式总结">两种方式总结：</h3>
-<p>用户管理类接口中的“获取用户基本信息接口”，是在用户和公众号产生消息交互或关注后事件推送后，才能根据用户OpenID来获取用户基本信息。这个接口，包括其他微信接口，都是需要该用户（即openid）关注了公众号后，才能调用成功的。</p>
-<h2 id="二多图文上传">二、多图文上传</h2>
-<p>原本是打算找一个合适插件来做随手拍的功能的，但找来找去并没找到符合要求的插件，接口那边需要通过POST文件的方式，而我发现大多数插件都是通过ajax并发上传单文件的方式，所以为此很头疼，所以最终索性自己来实现这个功能，用HTML5的File API来做多图上传及预览的随手拍功能。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">funUploadFiles : function() &#123;</div><div class="line">		var self = this;  </div><div class="line">		var formdata = new FormData();</div><div class="line">		var xhr = new XMLHttpRequest();</div><div class="line">		for (var i = 0; i &lt; this.uploadFile.length; i++) &#123;</div><div class="line">			var file = this.uploadFile[i];</div><div class="line">		    formdata.append(&apos;file[]&apos;, file);</div><div class="line">		&#125;</div><div class="line">		xhr.addEventListener(&quot;load&quot;, function(e)&#123;</div><div class="line">	    		for(var i = 0; i &lt; self.uploadFile.length; i++) &#123;</div><div class="line">	    			var file = self.uploadFile[i];</div><div class="line">	    			self.onSuccess(file, xhr.responseText);</div><div class="line">			    	if(self.uploadFile.length==0)&#123;</div><div class="line">			    		self.onComplete(&quot;全部完成&quot;);</div><div class="line">			    	&#125;</div><div class="line">	    		&#125;</div><div class="line">		    &#125;, false);  </div><div class="line">		xhr.open(&quot;POST&quot;,this.url+$(&quot;#title&quot;).val()+&quot;&amp;UserID=&quot;+$(&quot;#userid&quot;).val()+&quot;&amp;name=&quot;+$(&quot;#name&quot;).val()+&quot;&amp;phone=&quot;+$(&quot;#phone&quot;).val(), true);</div><div class="line">		xhr.send(formdata);</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<h2 id="三微信app下载">三、微信APP下载</h2>
-<p>最后一个需要拿出来特别提一下的就是微信中实现app下载的功能，这是一个比较坑的地方，微信公众号拦截APPStore跳转和APK下载，允许使用腾讯域名下面的下载链接，所以解决方法有两个：</p>
-<ul>
-<li>把应用拿到应用宝，换得应用宝的APP下载地址，放到微信里就能跳转了</li>
-<li>做一个漂亮点的下载页面，并提示用户在浏览器中打开</li>
-</ul>
-
-          
+          今朝龙翔微信社区技术总结
+这几天突然接到了之前接受的今朝龙翔社区的项目即将上线的消息，于是开始抓紧时间赶紧进度，同时在需求方面又发生了很大的变动，原本是以将webAPP融入微信的方式（通过菜单链接直接链到webAPP中）,现在需要改成将webAPP的功能直接拆分到微信端，通过微信菜单直接获取资讯图
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/01/27/2016-01-27-smartcommunity/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1375,13 +1350,18 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="小站初成用octopress搭建个人网站">小站初成：用octopress搭建个人网站</h1>
-<h2 id="我的博客之路">我的博客之路</h2>
-<p>经过一天的折腾，终于用octopress搭建了属于自己的个人网站，同时还第一次申请了属于自己的域名，现在的个人页已经是绑定了自己的域名了，从此走向了自己博客之路，记录接下来工作生活的点滴。</p>
-<p>虽说之前也有打算用WordPress搭建自己个人站的想法，不过放弃了，至于原因╮(╯_╰)╭，主要是WordPress太重了，而且需要依赖于数据库和服务器，我想找到一个轻便一点的系统来写博客，之后也尝试过用一些第三方的博客平台，不过总归还是用自己的放心，之后便发现了octopress非常满足我的需求，于是就索性花了一点时间，搭建了自己的个人站。虽说大体上是搭建完成了，不过途中还是遇到过不少问题，有的甚至还没有解决，像是贴代码时的codeblock标签不能设置编程语言，一设置就出错，之后还会再找时间解决一下。</p>
-<p>另外还有一点就是目前的个人页还是很简陋的原始样式，接下来会找时间好好装饰一下，同时功能上也会应需求增加一些。第一篇就到这吧，希望以后能越写越多（如果我还是一个优雅的程序员）。</p>
-
-          
+          小站初成：用octopress搭建个人网站
+我的博客之路
+经过一天的折腾，终于用octopress搭建了属于自己的个人网站，同时还第一次申请了属于自己的域名，现在的个人页已经是绑定了自己的域名了，从此走向了自己博客之路，记录接下来工作生活的点滴。
+虽说之前也有打算用WordPress搭建自己个
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/01/23/2016-01-23-blogstart/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1533,30 +1513,21 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="旧站迁移关于项目中的跨域问题">旧站迁移：关于项目中的跨域问题</h1>
-<p>在这次龙翔微信社区的项目中，因为对方将后台进行了封装，只以API形式提供数据，因此遇到了ajax传输数据的跨域 问题。总结一下ajax跨域的几种解决方案：</p>
-<p>问题：JavaScript因为同源策略是有跨域限制的</p>
-<p>数据是可以发送过去的</p>
-<div class="figure">
-<img src="http://cdn.sinacloud.net/myblog-image/2015/12-07/01.jpg" alt="数据是可以发送成功的">
-<p class="caption">数据是可以发送成功的</p>
-</div>
-<p>但是却无法接受返回的数据</p>
-<div class="figure">
-<img src="http://cdn.sinacloud.net/myblog-image/2015/12-07/02.jpg" alt="但是却无法接受返回的数据">
-<p class="caption">但是却无法接受返回的数据</p>
-</div>
-<p>解决方案： 1、代理 前端将需要获取数据的Url请求发送给自己服务器的后台，自己服务器端将受到的请求转发给目标服务器（服务器端与服务器端是没有跨域的限制的，）,可以使用file_get_contents函数，再将获取到数据后返回给前端就可以了，不过上传图片貌似用这种方式不太妥当。</p>
-<p>2、Jsonp 使用jsonp来获取数据，后台需要将返回的数据格式改为jsonp的数据格式（这里因为不是jsonp的格式报错了）</p>
-<div class="figure">
-<img src="http://cdn.sinacloud.net/myblog-image/2015/12-07/03.jpg" alt="这里因为不是jsonp的格式报错了">
-<p class="caption">这里因为不是jsonp的格式报错了</p>
-</div>
-<p>3、XHR2（IE10以下不支持） 添加信息头</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">header(&quot;Access-Control-Allow-Origin:*&quot;);</div><div class="line">header(&quot;Access-Control-Allow-Methods:POST,GET&quot;);</div></pre></td></tr></table></figure>
-<p>总结： 在碰不了后台代码的情况下使用方法一为妙； 在可以修改后台代码的情况下方法三最方便，但同时要考虑兼容性的话可以使用方法二。</p>
+          旧站迁移：关于项目中的跨域问题
+在这次龙翔微信社区的项目中，因为对方将后台进行了封装，只以API形式提供数据，因此遇到了ajax传输数据的跨域 问题。总结一下ajax跨域的几种解决方案：
+问题：JavaScript因为同源策略是有跨域限制的
+数据是可以发送过去的
 
-          
+
+数据是可以发送成功的
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/12/07/2015-12-07-kuayu/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1708,24 +1679,17 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="旧站迁移中国大学生服务外包创新创业大赛决赛小结">旧站迁移：中国大学生服务外包创新创业大赛决赛小结</h1>
-<p>服创大赛就此圆满结束了，同时也意味着我的暑假生活就此开始了（只有三天的暑假也是醉了），这次取得了全国二等奖成绩我已经很满足了。决赛主要展示能力和临场应变能力，同样也离不开那份底气，也就是对自己产品的自信能力。</p>
-<p>在决赛期间小伙伴们发挥都很不错，没有出现什么大的失误，尽管我出场顺序抽了最后一签，但丝毫没影响大家士气，决赛进入答辩室后首先开始介绍我们的项目，中途评委老师问我们有没有成品，我们把手机拿给评委展示，评委针对我们产品提了相应的问题，都很好地解答了。主要问题还是问了和学校数据库接口方面问题还有项目的规划方面。</p>
-<p>最后我对服创决赛提几点注意点：一是表现一定自信，讲解流畅；二是项目最后要有一个成品；三是一定要对自己的项目充分了解。</p>
-<div class="figure">
-<img src="http://cdn.sinacloud.net/myblog-image/2015/08-29/01.jpeg" alt="成员照片">
-<p class="caption">成员照片</p>
-</div>
-<div class="figure">
-<img src="http://cdn.sinacloud.net/myblog-image/2015/08-29/02.jpeg" alt="颁奖仪式">
-<p class="caption">颁奖仪式</p>
-</div>
-<div class="figure">
-<img src="http://cdn.sinacloud.net/myblog-image/2015/08-29/03.jpeg" alt="颁奖仪式">
-<p class="caption">颁奖仪式</p>
-</div>
-
-          
+          旧站迁移：中国大学生服务外包创新创业大赛决赛小结
+服创大赛就此圆满结束了，同时也意味着我的暑假生活就此开始了（只有三天的暑假也是醉了），这次取得了全国二等奖成绩我已经很满足了。决赛主要展示能力和临场应变能力，同样也离不开那份底气，也就是对自己产品的自信能力。
+在决赛期间小伙伴们发挥都很不错，没有
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/08/29/2015-08-29-juesai/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1877,16 +1841,16 @@
       
         
           
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="旧站迁移中国计算机学会苏州会员活动苏州华为研究院同程旅游活动报道">旧站迁移：中国计算机学会苏州会员活动——苏州华为研究院、同程旅游活动报道</h1>
-<p>今日有幸受奚老师之邀参加中国计算机学会苏州会员活动，主要参观访问了华为、同程旅游两家公司，今日之行，收益颇丰。 ##一、参观华为研究所 到达了园区科技创业园后，首先映入眼帘的是华为研究所气派的大楼，走进华为究所，完成签到后，便在华为工作人员的带领下进入展厅，我们逐一参观了华为科技在各个领域的成果，同时了解了华为公司的业绩，不得不令人赞叹华为公司其业务范围之广，科技成就之高，其业务涵盖了城市、铁路、电网、能源、银行、医院、电视媒体、酒店、零售等各行各业，其间给我印象最深的是一个宣传短片，短片中并没有刻意强调华为的技术有多好，而是通过一个故事的形式展示了华为技术的重要性。故事讲述了一次马拉松比赛的过程中发现了一枚定时炸弹，之后从视频监控，视频会议拆弹，人脸识别，无人机抓捕，到第二枚炸弹的信息屏蔽，无不展现了华为科技的技术含量之高以及其重要性。之后我又开始了大约半小时的视频会议，会议中华为公司的相关人员讲述了华为企业如何与高校进行对接，同时提出了“华为网院”的平台，作为高校师生与企业进行对接的桥梁。 <img src="http://cdn.sinacloud.net/myblog-image/2015/08-15/01.jpg" alt="华为大厅"></p>
-<div class="figure">
-<img src="http://cdn.sinacloud.net/myblog-image/2015/08-15/02.jpg" alt="华为经济增长指数">
-<p class="caption">华为经济增长指数</p>
-</div>
-<h2 id="二参观同程网络科技股份有限公司">二、参观同程网络科技股份有限公司</h2>
-<p>参观了华为研究所后，我们又来到了同程网络科技股份有限公司，在同程公司CTO张海龙的带领下首先参观了一下同程公司，了解了同程公司的发展历程，令人惊叹的是从一个当初只有两个人的小公司发展到如今拥有几千员工的大公司。之后张总由于我们分享了公司一路发展过来所经历的艰辛与喜悦，以及他在公司发展这么多年的个人经验，每一句都是作为一个企业家的肺腑之言，之后张总又与我们讲述他对于当今企业对大学生人才要求的看法与理解，对我的启发很大，张总说，对于当初我们还是一个小企业的时候，我们可能需要的是那种应用型的人才，上来就能办事的那种人，现在企业规模扩大了，我们如今需要的是哪些有基础有底蕴的人，并不是那种掌握了某种开发语言的人，这些其实不重要了，因为企业可以教你，甚至教的比学校里面更好。 <img src="http://cdn.sinacloud.net/myblog-image/2015/08-15/03.jpg" alt="同程ceo讲解"></p>
-
-          
+          旧站迁移：中国计算机学会苏州会员活动——苏州华为研究院、同程旅游活动报道
+今日有幸受奚老师之邀参加中国计算机学会苏州会员活动，主要参观访问了华为、同程旅游两家公司，今日之行，收益颇丰。 ##一、参观华为研究所 到达了园区科技创业园后，首先映入眼帘的是华为研究所气派的大楼，走进华为究所，完成签到后，
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/08/15/2015-08-15-view/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2041,6 +2005,17 @@
   <span class="author" itemprop="copyrightHolder">luxingwu</span>
   <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+   <div class="comment"></div>
+    <script>
+        new Valine({
+            // AV 对象来自上面引入av-min.js(老司机们不要开车➳♡゛扎心了老铁)
+            av: AV, 
+            el: '.comment', // 
+            app_id: 'Your APP ID', // 这里填写上面得到的APP ID
+            app_key: 'Your APP KEY', // 这里填写上面得到的APP KEY
+            placeholder: 'ヾﾉ≧∀≦)o来啊，快活啊!' // [v1.0.7 new]留言框占位提示文字
+        });
+    </script>
   <script>
 	(function(){
 		var bp = document.createElement('script');
@@ -2055,7 +2030,7 @@
 		s.parentNode.insertBefore(bp, s);
 	})();
   </script>
-
+	
 </div>
 
 

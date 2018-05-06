@@ -104,7 +104,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://imgx.sinacloud.net/myblog-image/w_350,h_600/2016/01-27/01.png">
 <meta property="og:image" content="http://imgx.sinacloud.net/myblog-image/w_350,h_600/2016/01-27/02.png">
-<meta property="og:updated_time" content="2018-05-06T16:50:16.970Z">
+<meta property="og:updated_time" content="2018-05-06T17:39:43.437Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="今朝龙翔微信社区">
 <meta name="twitter:description" content="今朝龙翔微信社区技术总结 这几天突然接到了之前接受的今朝龙翔社区的项目即将上线的消息，于是开始抓紧时间赶紧进度，同时在需求方面又发生了很大的变动，原本是以将webAPP融入微信的方式（通过菜单链接直接链到webAPP中）,现在需要改成将webAPP的功能直接拆分到微信端，通过微信菜单直接获取资讯图文或者链接到单页面，所以在此基础上为了后期可拓展性，我并没有把原来的webAPP之前拆了，而是在此基">
@@ -234,6 +234,16 @@
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
             分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
           </a>
         </li>
       
@@ -374,9 +384,13 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="今朝龙翔微信社区技术总结">今朝龙翔微信社区技术总结</h1>
 <p>这几天突然接到了之前接受的今朝龙翔社区的项目即将上线的消息，于是开始抓紧时间赶紧进度，同时在需求方面又发生了很大的变动，原本是以将webAPP融入微信的方式（通过菜单链接直接链到webAPP中）,现在需要改成将webAPP的功能直接拆分到微信端，通过微信菜单直接获取资讯图文或者链接到单页面，所以在此基础上为了后期可拓展性，我并没有把原来的webAPP之前拆了，而是在此基础上进行了功能的拓展。下面是新旧版本的对比：</p>
 <p><img src="http://imgx.sinacloud.net/myblog-image/w_350,h_600/2016/01-27/01.png" alt="旧的版本"> <img src="http://imgx.sinacloud.net/myblog-image/w_350,h_600/2016/01-27/02.png" alt="新的版本"></p>
-<p>之后经过这几天的赶工，项目总算是完工了，现总结一下这次项目的一些心得。 ## 一、微信接口获取用户信息 微信获取用户信息可以通过两种方式，两种方式用到的接口也不一样。 ### 1、通过自定义菜单的click类型获取用户信息（无需高级接口） 如果是通过自定义菜单的click类型，以图文链接的方式获取用户信息，可以先通过FromUserName获取到用户的openID，之后即可通过获取用户信息的接口https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&amp;openid=OPENID&amp;lang=zh_CN 获取用户基本信息。</p>
+<p>之后经过这几天的赶工，项目总算是完工了，现总结一下这次项目的一些心得。</p>
+<h2 id="一微信接口获取用户信息">一、微信接口获取用户信息</h2>
+<p>微信获取用户信息可以通过两种方式，两种方式用到的接口也不一样。 ### 1、通过自定义菜单的click类型获取用户信息（无需高级接口） 如果是通过自定义菜单的click类型，以图文链接的方式获取用户信息，可以先通过FromUserName获取到用户的openID，之后即可通过获取用户信息的接口： (https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&amp;openid=OPENID&amp;lang=zh_CN)<br>
+获取用户基本信息。</p>
 <h3 id="通过自定义菜单的view类型获取用户信息需要高级接口即认证服务号另外还需要域名">2、通过自定义菜单的view类型获取用户信息（需要高级接口，即认证服务号，另外还需要域名）</h3>
-<p>如果是通过自定义菜单的view类型，以自定义菜单直接链接到获取用户信息的页面，菜单的url是一个授权回调url，这样才能在菜单点击的时候使用oauth2.0授权获得openid，接口如下https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&amp;redirect_uri=REDIRECT_URI&amp;response_type=code&amp;scope=SCOPE&amp;state=STATE#wechat_redirect 。其中的redirect_uri便是回调页面的链接，不过页面所在的域名必须在微信公众号的后台进行绑定授权，授权后可以回调该域名下面的页面；其中的scope参数分为snsapi_base和snsapi_userinfo两种：</p>
+<p>如果是通过自定义菜单的view类型，以自定义菜单直接链接到获取用户信息的页面，菜单的url是一个授权回调url，这样才能在菜单点击的时候使用oauth2.0授权获得openid，接口如下：(https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&amp;redirect_uri=REDIRECT_URI&amp;response_type=code&amp;scope=SCOPE&amp;state=STATE#wechat_redirect)<br>
+其中的redirect_uri便是回调页面的链接，不过页面所在的域名必须在微信公众号的后台进行绑定授权，授权后可以回调该域名下面的页面；其中的scope参数分为snsapi_base和snsapi_userinfo两种：</p>
 <ul>
 <li><p>以snsapi_base为scope发起的网页授权，是用来获取进入页面的用户的openid的，并且是静默授权并自动跳转到回调页的。用户感知的就是直接进入了回调页（往往是业务页面）</p></li>
 <li><p>以snsapi_userinfo为scope发起的网页授权，是用来获取用户的基本信息的。但这种授权需要用户手动同意，并且由于用户同意过，所以无须关注，就可在授权后获取该用户的基本信息。</p></li>
@@ -570,7 +584,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#今朝龙翔微信社区技术总结"><span class="nav-number">1.</span> <span class="nav-text">今朝龙翔微信社区技术总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通过自定义菜单的view类型获取用户信息需要高级接口即认证服务号另外还需要域名"><span class="nav-number">1.0.1.</span> <span class="nav-text">2、通过自定义菜单的view类型获取用户信息（需要高级接口，即认证服务号，另外还需要域名）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两种方式总结"><span class="nav-number">1.0.2.</span> <span class="nav-text">两种方式总结：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二多图文上传"><span class="nav-number">1.1.</span> <span class="nav-text">二、多图文上传</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三微信app下载"><span class="nav-number">1.2.</span> <span class="nav-text">三、微信APP下载</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#今朝龙翔微信社区技术总结"><span class="nav-number">1.</span> <span class="nav-text">今朝龙翔微信社区技术总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一微信接口获取用户信息"><span class="nav-number">1.1.</span> <span class="nav-text">一、微信接口获取用户信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通过自定义菜单的view类型获取用户信息需要高级接口即认证服务号另外还需要域名"><span class="nav-number">1.1.1.</span> <span class="nav-text">2、通过自定义菜单的view类型获取用户信息（需要高级接口，即认证服务号，另外还需要域名）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两种方式总结"><span class="nav-number">1.1.2.</span> <span class="nav-text">两种方式总结：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二多图文上传"><span class="nav-number">1.2.</span> <span class="nav-text">二、多图文上传</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三微信app下载"><span class="nav-number">1.3.</span> <span class="nav-text">三、微信APP下载</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -600,6 +614,17 @@
   <span class="author" itemprop="copyrightHolder">luxingwu</span>
   <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <span id="busuanzi_container_site_pv">本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+   <div class="comment"></div>
+    <script>
+        new Valine({
+            // AV 对象来自上面引入av-min.js(老司机们不要开车➳♡゛扎心了老铁)
+            av: AV, 
+            el: '.comment', // 
+            app_id: 'Your APP ID', // 这里填写上面得到的APP ID
+            app_key: 'Your APP KEY', // 这里填写上面得到的APP KEY
+            placeholder: 'ヾﾉ≧∀≦)o来啊，快活啊!' // [v1.0.7 new]留言框占位提示文字
+        });
+    </script>
   <script>
 	(function(){
 		var bp = document.createElement('script');
@@ -614,7 +639,7 @@
 		s.parentNode.insertBefore(bp, s);
 	})();
   </script>
-
+	
 </div>
 
 

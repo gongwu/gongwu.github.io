@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="NLP,深度学习,ACL,Dialogue Generation,CVAE," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders PDF 这是我本周要讲的论文，发表在17年ACL会议上。本文将条件变分自编码的机制融入到对话生成模型中来解决safe answer的问题。作者还提出基于知识指导的条件变分自编码模型通过融入语">
+<meta name="keywords" content="NLP,深度学习,ACL,Dialogue Generation,CVAE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders">
+<meta property="og:url" content="http://yoursite.com/2018/03/25/2018-03-25/index.html">
+<meta property="og:site_name" content="宫悟桑的小屋">
+<meta property="og:description" content="Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders PDF 这是我本周要讲的论文，发表在17年ACL会议上。本文将条件变分自编码的机制融入到对话生成模型中来解决safe answer的问题。作者还提出基于知识指导的条件变分自编码模型通过融入语">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/03/25/2018-03-25/01.png">
+<meta property="og:image" content="http://yoursite.com/2018/03/25/2018-03-25/02.png">
+<meta property="og:image" content="http://yoursite.com/2018/03/25/2018-03-25/03.png">
+<meta property="og:image" content="http://yoursite.com/2018/03/25/2018-03-25/04.png">
+<meta property="og:image" content="http://yoursite.com/2018/03/25/2018-03-25/05.png">
+<meta property="og:image" content="http://yoursite.com/2018/03/25/2018-03-25/06.png">
+<meta property="og:image" content="http://yoursite.com/2018/03/25/2018-03-25/07.png">
+<meta property="og:image" content="http://yoursite.com/2018/03/25/2018-03-25/08.png">
+<meta property="og:image" content="http://yoursite.com/2018/03/25/2018-03-25/09.png">
+<meta property="og:updated_time" content="2018-05-06T08:44:16.229Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders">
+<meta name="twitter:description" content="Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders PDF 这是我本周要讲的论文，发表在17年ACL会议上。本文将条件变分自编码的机制融入到对话生成模型中来解决safe answer的问题。作者还提出基于知识指导的条件变分自编码模型通过融入语">
+<meta name="twitter:image" content="http://yoursite.com/2018/03/25/2018-03-25/01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/25/2018-03-25/"/>
+
+
+
+
+
+  <title>Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders | 宫悟桑的小屋</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">宫悟桑的小屋</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/25/2018-03-25/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luxingwu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/headimage.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宫悟桑的小屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-25T17:45:01+08:00">
+                2018-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/论文阅读/" itemprop="url" rel="index">
+                    <span itemprop="name">论文阅读</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="learning-discourse-level-diversity-for-neural-dialog-models-using-conditional-variational-autoencoders">Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders</h1>
+<p><a href="https://arxiv.org/abs/1703.10960" target="_blank" rel="external">PDF</a></p>
+<p>这是我本周要讲的论文，发表在17年ACL会议上。本文将条件变分自编码的机制融入到对话生成模型中来解决safe answer的问题。作者还提出基于知识指导的条件变分自编码模型通过融入语言学特征来提高性能，以及提出bag-of-word loss来解决训练过程中隐变量消失的问题。</p>
+<h1 id="background">Background</h1>
+<p><strong>two categories(solve this safe answer):</strong></p>
+<ul>
+<li>Other features should be extracted and provided to the models as conditionals in order to generate more specific responses</li>
+<li>improve the encoder-decoder model itself (beam-search, RL, GAN)</li>
+</ul>
+<h1 id="motivation">Motivation</h1>
+<p><strong>shortcomings</strong>:</p>
+<ul>
+<li>encoder-decoder models often generate dull and generic responses .</li>
+</ul>
+<p>past work focused on diversifying the output of the decoder at word-level.</p>
+<ul>
+<li>VAE with LSTM decoder has vanishing latent variable problem.</li>
+</ul>
+<p><strong>solutions</strong>:</p>
+<p>captures the discourse-level diversity in the encoder using conditional variational autoencoders</p>
+<ul>
+<li>present a novel neural dialog model adapted from (CVAE)</li>
+<li>propose Knowledge-Guided CVAE</li>
+<li>We develop a training method in addressing the difficulty of optimizing CVAE for natural language generation</li>
+</ul>
+<h1 id="model">Model</h1>
+<h3 id="cvae-for-dialog-generation">CVAE for Dialog Generation</h3>
+<img src="/2018/03/25/2018-03-25/01.png" alt="01.png" title="">
+<p><strong>Define:</strong></p>
+<ul>
+<li>the dialog context c (context window size k - 1)</li>
+<li>c is composed of the dialog history: the preceding k-1 utterances</li>
+<li>conversational floor (1 if the utterance is from the same speaker of x, otherwise 0)</li>
+<li>and meta features m (e.g. the topic)</li>
+<li>the response utterance x (the <span class="math inline">\(k^{th}\)</span> utterance)</li>
+<li>a latent variable z</li>
+</ul>
+<hr>
+<ul>
+<li>conditional distribution: <span class="math inline">\(p(x,z|c) = p(x|z,c)p(z|c)\)</span></li>
+<li>prior network: <span class="math inline">\(p(z|c)\)</span></li>
+<li>response decoder: <span class="math inline">\(p(x|z,c)\)</span></li>
+</ul>
+<img src="/2018/03/25/2018-03-25/02.png" alt="02.png" title="">
+<p><strong>generative process</strong>:</p>
+<ul>
+<li>Sample a latent variable z from the prior network <span class="math inline">\(p_\theta(z|c)\)</span>.</li>
+<li>Generate x through the response decoder <span class="math inline">\(p_\theta(x|z, c)\)</span>.</li>
+</ul>
+<p><strong>trained</strong>:</p>
+<ul>
+<li>maximize the conditional log likelihood of x given c</li>
+<li>involves an intractable marginalization over the latent variable z</li>
+<li>maximizing the variational lower bound of the conditional log likelihood</li>
+</ul>
+$$
+<span class="math display">\[\begin{aligned}
+L(\theta,\phi;x,c)  &amp;= -KL(q\phi(z|x,c)||p\theta(z|c)) \\
+
+                               &amp;+ E_{q\phi(z|c,x)}[logp_\theta(x|z,c)]\\
+
+                               &amp;&lt;= logp(x|c)
+\end{aligned}\]</span>
+<p>$$</p>
+<p>introduce a recognition network <span class="math inline">\(q_\phi(z|x,c)\)</span> to approximate the true posterior distribution <span class="math inline">\(p_\theta(z|c)\)</span></p>
+<p><strong>model</strong>:</p>
+<ul>
+<li>utterance encoder: bidirectional recurrent neural network with a GRU</li>
+</ul>
+<p>input: encode each utterance and x</p>
+<p>output: <span class="math inline">\(u_{i:k}\)</span></p>
+<ul>
+<li>context encoder: 1-layer GRU network</li>
+</ul>
+<p>input: <span class="math inline">\(u_{i:k}\)</span> and corresponding conversation floor</p>
+<p>output: last hidden state <span class="math inline">\(h^c\)</span> concatenated with meta features</p>
+<ul>
+<li><p>recognition network: <span class="math inline">\(q_\phi(z|x,c) \sim N(\mu,\sigma^2I)\)</span> <span class="math display">\[
+  \left[ \begin{matrix} \mu \\ \log{\sigma^{2}}  \end{matrix}  \right] = W_r\left[ \begin{matrix} x\\ c \end{matrix}  \right] + b_r
+  \]</span></p></li>
+<li><p>prior network: <span class="math inline">\(p_\theta(z|c) \sim N(\mu^{&#39;},\sigma^{&#39;2}I)\)</span> <span class="math display">\[
+  \left[ \begin{matrix} \mu^{&#39;} \\ \log{\sigma^{&#39;2}}  \end{matrix}  \right] = MLP_p(c)
+  \]</span></p></li>
+<li><p>response decoder: 1-layer GRU</p></li>
+</ul>
+<p>initial state: <span class="math inline">\(s_0 = W_i[z,c]+b_i\)</span></p>
+<h3 id="knowledge-guided-cvae-kgcvae">Knowledge-Guided CVAE (kgCVAE)</h3>
+<p>incorporate the linguistic features into the basic CVAE model will be beneficial for the model to learn meaningful latent z.</p>
+<p><strong>define:</strong></p>
+<ul>
+<li><p>set of linguistic features as y</p></li>
+<li><p>generation of x depends on c, z and y. y relies on z and c.</p></li>
+</ul>
+<div class="image-size-200" style="width:50%; text-align: center">
+<p>​ <img src="/2018/03/25/2018-03-25/03.png" alt="03.png" title=""></p>
+</div>
+<p><strong>model:</strong></p>
+<p>train:</p>
+<ul>
+<li>response decoder:</li>
+</ul>
+<p>the response decoder is <span class="math inline">\(s_0 = W_i[z,c,y] + b_i\)</span></p>
+<p>the input at every step is [et; y]</p>
+<ul>
+<li>MLP : predict <span class="math inline">\(y^{&#39;} = MLP_y(z, c)\)</span> based on z and c</li>
+</ul>
+<p>test: predicted <span class="math inline">\(y^{&#39;}\)</span> is used by the response. <span class="math display">\[
+\begin{aligned}
+L(\theta,\phi;x,c,y)  &amp; = -KL(q\phi(z|x,c,y)||p\theta(z|c)) \\
+                                 &amp; + E_{q\phi(z|c,x,y)}[logp(x|z,c,y)]\\
+                                 &amp; +  E_{q\phi(z|c,x,y)}[logp(y|z,c)]\\
+                                 &amp; &lt;= logp(x|c)
+\end{aligned}
+\]</span></p>
+<h3 id="optimization-challenges">Optimization Challenges</h3>
+<p><strong><a href="https://arxiv.org/abs/1511.06349" target="_blank" rel="external">vanishing latent variable problem</a></strong>:</p>
+<p>VAE with RNN decoder fails to encode meaningful information in z.</p>
+<ul>
+<li>KL annealing: gradually increasing the weight of the KL term from 0 to 1 during training;</li>
+<li>word drop decoding: setting a certain percentage of the target words to 0.</li>
+</ul>
+<p><strong>bag-of-word loss</strong></p>
+<ul>
+<li><span class="math inline">\(x_o\)</span> with word order</li>
+<li><span class="math inline">\(x_{bow}\)</span> without order</li>
+</ul>
+<p><span class="math inline">\(f = MLP_b(z, x)\)</span></p>
+<p><span class="math display">\[logp(x_{bow}|z,c) = log\prod_{t=1}^{|x|}\frac{e^{fx_t}}{\sum_{j}^{V}e^{f_j}}\]</span></p>
+<p><span class="math display">\[L^{&#39;}(\theta,\phi;x,c) = L(\theta,\phi;x,c) + E_{q_\phi(z|c,x,y)}[logp(x_{bow}|z,c)]\]</span></p>
+<h1 id="experiment">Experiment</h1>
+<h3 id="dataset">Dataset</h3>
+<p><strong>Switchboard (SW) 1 Release 2 Corpus</strong>:</p>
+<ul>
+<li>train: 207; 833</li>
+<li>validate: 5; 225</li>
+<li>test: 5; 481</li>
+</ul>
+<p><strong>features</strong>：</p>
+<ul>
+<li>unigram and bigram of the utterance</li>
+<li>contextual features of the last 3 utterances</li>
+</ul>
+<p><strong>dialog acts</strong>：</p>
+<p>42 types of dialog acts and the SVM achieved 77.3% accuracy on held-out data</p>
+<h3 id="setting">Setting</h3>
+<ul>
+<li>word embedding: size of 200</li>
+<li>utterance encoder: hidden size 300 for each direction</li>
+<li>context encoder: hidden size 600</li>
+<li>response decoder: hidden size 400</li>
+<li>prior network and the MLP for predicting y: 1 hidden layer of size 400</li>
+<li>latent variable z: size of 200</li>
+<li>context window: k is 10</li>
+<li>mini-batch size: 30</li>
+<li>Adam optimizer: learning rate of 0.001 and gradient clipping at 5</li>
+</ul>
+<h3 id="baseline-model">baseline model</h3>
+<ul>
+<li>a strong baseline model</li>
+<li>CVAE</li>
+<li>kgCVAE</li>
+</ul>
+<h3 id="quantitative-analysis">Quantitative Analysis</h3>
+<h3 id="metric">Metric</h3>
+<p><strong>distance functions</strong></p>
+<ul>
+<li>Smoothed Sentence-level BLEU</li>
+<li>Cosine Distance of Bag-of-word Embedding</li>
+<li>Dialog Act Match</li>
+</ul>
+<div class="image-size-200" style="width:60%; text-align: center;">
+<p>​ <img src="/2018/03/25/2018-03-25/04.png" alt="04.png" title=""></p>
+</div>
+<img src="/2018/03/25/2018-03-25/05.png" alt="05.png" title="">
+<h3 id="qualitative-analysis">Qualitative Analysis</h3>
+<ul>
+<li>case study</li>
+</ul>
+<img src="/2018/03/25/2018-03-25/06.png" alt="06.png" title="">
+<ul>
+<li>posterior z outputted from the recognition network should cluster the responses into meaningful groups</li>
+</ul>
+<div class="image-size-200" style="width:60%; text-align: center">
+<p>​ <img src="/2018/03/25/2018-03-25/07.png" alt="07.png" title=""></p>
+</div>
+<h3 id="results-for-bag-of-word-loss">Results for Bag-of-Word Loss</h3>
+<p>conducted the same language modelling (LM) task on Penn Treebank using VAE</p>
+<ul>
+<li>standard VAE without any heuristics</li>
+<li>VAE with KL annealing (KLA)</li>
+<li>VAE with BOW loss</li>
+<li>VAE with both BOW loss and KLA</li>
+</ul>
+<div class="image-size-200" style="width:60%; text-align: center">
+<p>​ <img src="/2018/03/25/2018-03-25/08.png" alt="08.png" title=""></p>
+</div>
+<div class="image-size-200" style="width:60%; text-align: center">
+<p>​ <img src="/2018/03/25/2018-03-25/09.png" alt="09.png" title=""></p>
+</div>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+            <a href="/tags/深度学习/" rel="tag"># 深度学习</a>
+          
+            <a href="/tags/ACL/" rel="tag"># ACL</a>
+          
+            <a href="/tags/Dialogue-Generation/" rel="tag"># Dialogue Generation</a>
+          
+            <a href="/tags/CVAE/" rel="tag"># CVAE</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/21/2018-03-21/" rel="next" title="Neural Response Generation with Dynamic Vocabularies">
+                <i class="fa fa-chevron-left"></i> Neural Response Generation with Dynamic Vocabularies
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/27/2018-03-27/" rel="prev" title="Neural Network Dialog System Papers">
+                Neural Network Dialog System Papers <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/headimage.png"
+               alt="luxingwu" />
+          <p class="site-author-name" itemprop="name">luxingwu</p>
+           
+              <p class="site-description motion-element" itemprop="description">爱生活，爱动漫，爱IT</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#learning-discourse-level-diversity-for-neural-dialog-models-using-conditional-variational-autoencoders"><span class="nav-number">1.</span> <span class="nav-text">Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#motivation"><span class="nav-number">3.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#model"><span class="nav-number">4.</span> <span class="nav-text">Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cvae-for-dialog-generation"><span class="nav-number">4.0.1.</span> <span class="nav-text">CVAE for Dialog Generation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#knowledge-guided-cvae-kgcvae"><span class="nav-number">4.0.2.</span> <span class="nav-text">Knowledge-Guided CVAE (kgCVAE)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#optimization-challenges"><span class="nav-number">4.0.3.</span> <span class="nav-text">Optimization Challenges</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#experiment"><span class="nav-number">5.</span> <span class="nav-text">Experiment</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#dataset"><span class="nav-number">5.0.1.</span> <span class="nav-text">Dataset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#setting"><span class="nav-number">5.0.2.</span> <span class="nav-text">Setting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#baseline-model"><span class="nav-number">5.0.3.</span> <span class="nav-text">baseline model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#quantitative-analysis"><span class="nav-number">5.0.4.</span> <span class="nav-text">Quantitative Analysis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#metric"><span class="nav-number">5.0.5.</span> <span class="nav-text">Metric</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#qualitative-analysis"><span class="nav-number">5.0.6.</span> <span class="nav-text">Qualitative Analysis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#results-for-bag-of-word-loss"><span class="nav-number">5.0.7.</span> <span class="nav-text">Results for Bag-of-Word Loss</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">luxingwu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

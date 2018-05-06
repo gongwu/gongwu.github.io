@@ -267,6 +267,1559 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/28/2018-03-28/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luxingwu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/headimage.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宫悟桑的小屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/28/2018-03-28/" itemprop="url">ACL17-Sequential Matching Network: A New Architecture for Multi-turn Response Selection in Retrieval-Based Chatbots</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-28T09:52:50+08:00">
+                2018-03-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/论文阅读/" itemprop="url" rel="index">
+                    <span itemprop="name">论文阅读</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="acl17-sequential-matching-network-a-new-architecture-for-multi-turn-response-selection-in-retrieval-based-chatbots">ACL17-Sequential Matching Network: A New Architecture for Multi-turn Response Selection in Retrieval-Based Chatbots</h1>
+<p>这是我本周要讲的论文，发表在17年ACL会议上。本文实现了基于检索的多轮对话系统，针对之前的模型存在的两点问题：不能充分捕获对话历史之间的序列关系以及不能充分捕获重要的上下文信息，提出了序列匹配模型，通过使用不同粒度卷积操作捕获重要的上下文信息，通过循环神经网络捕获对话历史之间的序列关系。</p>
+<h1 id="background">Background</h1>
+<ul>
+<li><strong>Retrieval based V.S Generation based</strong></li>
+</ul>
+<p>advantage of informative and fluent responses</p>
+<ul>
+<li><strong>multi-turn V.S single-turn</strong></li>
+</ul>
+<p>matching between responses and utterances in previous turns</p>
+<ul>
+<li>how to identify important information in context.</li>
+<li>how to model relationships among the utterances in the context.</li>
+</ul>
+<h1 id="motivate">Motivate</h1>
+<p><strong>shortcomings(multiturn conversation &amp; retrieval-based)</strong>:</p>
+<ul>
+<li>lose relationships among utterances (concatenates utterances)</li>
+</ul>
+<p>历史的对话信息之间的序列关系是很重要的，当然最后一句话最为重要，这就很适合用循环神经网络。</p>
+<ul>
+<li>lose important contextual information(highly abstract context vector)</li>
+</ul>
+<p>分层的编码解码模型虽然可以对对话历史信息进行序列建模，但是他没有考虑到历史信息与回复之间的匹配关系，只是对历史信息进行一个更高的抽象，最后一步得到的向量才与回复作匹配。这样容易丢失一些重要的上下文信息。</p>
+<p><strong>solutions</strong>:</p>
+<ul>
+<li>the proposal of a new context based matching model for multi-turn response selection in retrieval-based chatbots</li>
+<li>the publication of a large human-labeled data set to research communities</li>
+<li>empirical verification of the effectiveness of the model on public data sets.</li>
+</ul>
+<h1 id="model-overview">Model Overview</h1>
+<img src="/2018/03/28/2018-03-28/01.png" alt="01.png" title="">
+<p><strong>advantages：</strong></p>
+<ul>
+<li>a response candidate can match each utterance in the context at the very beginning</li>
+<li>information extraction from each utterance is conducted on different levels of granularity and under sufficient supervision from the response</li>
+<li>matching and utterance relationships are coupled rather than separately modeled</li>
+</ul>
+<p><strong>Utterance-Response Matching</strong>：</p>
+<ul>
+<li>word-word similarity matrix：</li>
+</ul>
+<p><span class="math display">\[e_{1,i,j} = e^T_{u,i}.e_{i,j}\]</span></p>
+<ul>
+<li>sequence-sequence similarity matrix</li>
+</ul>
+<p><span class="math display">\[e_{2,i,j} = h^T_{i,j}Ah_{i,j}\]</span></p>
+<p><strong>Matching Accumulation</strong>:</p>
+<p>GRU:</p>
+<ul>
+<li>it models the dependency and the temporal relationship of utterances in the context</li>
+<li>it leverages the temporal relationship to supervise the accumulation of the pair matching as a context based matching.</li>
+</ul>
+<p><strong>Matching Prediction and Learning</strong>:</p>
+<ul>
+<li>最后一个隐层</li>
+<li>静态加权求和</li>
+<li>attention</li>
+<li>objective function:</li>
+</ul>
+<p><span class="math display">\[-\sum_{i=1}^N[y_ilog(g(s_i,r_i))+(1-y_i)log(1-g(s_i,r_i))]\]</span></p>
+<p><strong>Response Candidate Retrieval</strong>:</p>
+<p>extract the top 5 keywords from <span class="math inline">\({u_1,.....,u_{n-1}}\)</span> based on their <span class="math inline">\(tf-idf\)</span> scores1 and expand <span class="math inline">\(u_n\)</span> with the keywords.</p>
+<h1 id="experiments">Experiments</h1>
+<h3 id="corpus">Corpus</h3>
+<p><strong>Ubuntu Corpus</strong>:</p>
+<ul>
+<li>training: 1 million pairs</li>
+<li>validation: 0.5 million pairs</li>
+<li>testing: 0.5 million pairs</li>
+</ul>
+<p>negative ones are randomly sampled: 1:1 in training, and 1:9 in validation and testing.</p>
+<p><strong>Douban Conversation Corpus</strong>:</p>
+<p><strong>sample</strong>:</p>
+<ul>
+<li>training set: 0.5 million dialogues</li>
+<li>validation set: 25 thousand dialogues</li>
+<li>test set: 1, 000 dialogues</li>
+</ul>
+<p><strong>sample negative</strong>:</p>
+<ul>
+<li>training and validation: sampled another response as a negative response</li>
+<li>test set: retrieved 10 response candidates from the index of Sina Weibo following the method Response Candidate Retrieval</li>
+</ul>
+<p><strong>finally formed</strong>:</p>
+<ul>
+<li>training set: 1 million dialogues</li>
+<li>validation set: 50 thousand dialogues</li>
+<li>test set: 10, 000 dialogues</li>
+</ul>
+<h3 id="baseline">Baseline</h3>
+<ul>
+<li>Basic models: TF-IDF, RNN, CNN, LSTM and BiLSTM</li>
+<li>Multi-view</li>
+<li>Deep learning to respond</li>
+<li>Advanced single-turn matching models: MV-LSTM, Match-LSTM, Attentive-LSTM</li>
+</ul>
+<h3 id="setting">Setting</h3>
+<ul>
+<li>window size of convolution and pooling: (3, 3)</li>
+<li>Multi-Channel GRU: 200</li>
+<li>matching vectors GRU: 50</li>
+<li>maximum utterance length: 50</li>
+<li>maximum context length: 10</li>
+<li>learning rate: 0.001</li>
+</ul>
+<h3 id="evaluation-results">Evaluation Results</h3>
+<img src="/2018/03/28/2018-03-28/02.png" alt="02.png" title="">
+<h3 id="further-analysis">Further Analysis</h3>
+<p><strong>Model ablation</strong>：</p>
+<img src="/2018/03/28/2018-03-28/03.png" alt="03.png" title="">
+<p><strong>Performance across context length</strong>：</p>
+<img src="/2018/03/28/2018-03-28/04.png" alt="04.png" title="">
+<p><strong>Maximum context length:</strong></p>
+<img src="/2018/03/28/2018-03-28/05.png" alt="05.png" title="">
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/27/2018-03-27/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luxingwu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/headimage.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宫悟桑的小屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/27/2018-03-27/" itemprop="url">Neural Network Dialog System Papers</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-27T12:12:38+08:00">
+                2018-03-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/论文列表/" itemprop="url" rel="index">
+                    <span itemprop="name">论文列表</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="neural-network-dialog-system-papers">Neural Network Dialog System Papers</h1>
+<p>A list of papers about creating dialog systems using deep nets! Please feel free to add an issue for suggesting missing <strong>good</strong> paper.</p>
+<h1 id="bookmarks">Bookmarks</h1>
+<ul>
+<li><a href="#long-term-context">Long-term Context</a></li>
+<li><a href="#task-bots">Task Bots</a></li>
+<li><a href="#chat-bots">Chat Bots</a></li>
+<li><a href="#reinforcement-learning">Reinforcement Learning</a></li>
+</ul>
+<h2 id="long-term-context">Long-term Context</h2>
+<p>Mostly the models are evaluated at CNN/Daily Mail and Children's Book Test (CBT) corpora.</p>
+<ul>
+<li><a href="https://arxiv.org/abs/1506.03340" target="_blank" rel="external">Teaching Machines to Read and Comprehend</a>, Karl Moritz Hermann et al., <em>arXiv</em>, 2015.</li>
+<li><p>Deep LSTM/Attentive Reader/Impatient Reader</p></li>
+<li><p><a href="https://arxiv.org/abs/1603.01547" target="_blank" rel="external">Text Understanding with the Attention Sum Reader Network</a>, Rudolf Kadlec et al., <em>arXiv</em>, 2016.</p></li>
+<li><a href="https://arxiv.org/abs/1511.02301" target="_blank" rel="external">The Goldlocks Principle: Reading Children's Books With Explicit Memory Representations</a>, Felix Hill., <em>arXiv</em>, 2016.</li>
+<li><p>Memory Network</p></li>
+<li><p><a href="http://arxiv.org/abs/1503.08895v5" target="_blank" rel="external">End-To-End Memory Networks</a>, Sainbayar Sukhbaatar et al., <em>arXiv</em>, 2015.</p></li>
+<li><p><a href="http://www.cl.ecei.tohoku.ac.jp/publications/2016/kobayashi-dynamic-entity-naacl2016.pdf" target="_blank" rel="external">Dynamic Entity Representation with Max-pooling Improves Machine Reading</a>, Sosuke Kobayashi et al., <em>arXiv</em>, 2016.</p></li>
+<li><p><a href="https://arxiv.org/abs/1606.01549" target="_blank" rel="external">Gated-Attention Readers for Text Comprehension</a>, Bhuwan Dhingra et al., <em>arXiv</em>, 2016.</p></li>
+<li><p><a href="http://arxiv.org/abs/1606.02245v3" target="_blank" rel="external">Iterative Alternating Neural Attention for Machine Reading</a>, Alessandro Sordoni et al., <em>arXiv</em>, 2016.</p></li>
+<li><p><a href="https://michaelauli.github.io/papers/chitchat.pdf" target="_blank" rel="external">A Neural Network Approach to Context-Senstive Generation of Conversational Responses</a>, Alessandro Sordoni et al, 2015</p></li>
+<li><p><a href="https://arxiv.org/abs/1607.04423" target="_blank" rel="external">Attention-over-Attention Neural Networks for Reading Comprehension</a> Yiming Cui et al., <em>arXiv</em> 2016</p></li>
+<li><p><a href="https://arxiv.org/pdf/1701.07149.pdf" target="_blank" rel="external">Hierarchical Recurrent Attention Network for Response Generation</a> Chen Xing et al., 2017</p></li>
+<li><p><a href="http://www.aclweb.org/anthology/P17-2036" target="_blank" rel="external">How to Make Context More Useful? An Empirical Study on Context-Aware Neural Conversational Models</a> Zhiliang Tian et al., 2017</p></li>
+</ul>
+<h2 id="task-bots">Task Bots</h2>
+<ul>
+<li><p><a href="http://arxiv.org/abs/1609.01462v1" target="_blank" rel="external">Joint Online Spoken Language Understanding and Language Modeling with Recurrent Neural Networks</a>, Bing Liu, <em>arXiv</em>, 2016</p></li>
+<li><p><a href="http://arxiv.org/abs/1609.01454v1" target="_blank" rel="external">Attention-Based Recurrent Neural Network Models for Joint Intent Detection and Slot Filling</a>, Bing Liu, <em>arXiv</em>, 2016</p></li>
+<li><p><a href="https://arxiv.org/abs/1604.04562" target="_blank" rel="external">A Network-based End-to-End Trainable Task-oriented Dialogue System</a> Tsung-Hsien Wen et al, 2016</p></li>
+<li><p><a href="https://arxiv.org/abs/1606.03352" target="_blank" rel="external">Conditional Generation and Snapshot Learning in Neural Dialogue Systems</a> Tsung-Hsien Wen et al, 2016</p></li>
+<li><p><a href="http://media.wix.com/ugd/b6d786_137894b7b3a341a09ed0c0b45b46dbb6.pdf" target="_blank" rel="external">Incorporating Unstructured Textual Knowledge Sources into Neural Dialogue</a> Ryan Lowe et al., 2016</p></li>
+<li><p><a href="http://arxiv.org/pdf/1606.01269v1.pdf" target="_blank" rel="external">End-to-end LSTM-based dialog control optimized with supervised and reinforcement learning</a>, Jason D. Williams et al., 2016</p></li>
+<li><p><a href="https://arxiv.org/pdf/1606.02560v1.pdf" target="_blank" rel="external">Towards End-to-End Learning for Dialog State Tracking and Management using Deep Reinforcement Learning</a> Tiancheng Zhao et al., 2016</p></li>
+<li><p><a href="http://arxiv.org/abs/1609.00777" target="_blank" rel="external">End-to-End Reinforcement Learning of Dialogue Agents for Information Access</a> Bhuwan Dhingra et al., 2016</p></li>
+<li><p><a href="https://arxiv.org/abs/1612.05688" target="_blank" rel="external">A User Simulator for Task-Completion Dialogues</a> Xinjun Li et al., 2016</p></li>
+<li><p><a href="https://arxiv.org/abs/1612.00913" target="_blank" rel="external">End-to-End Joint Learning of Natural Language Understanding and Dialogue Manager</a> Xuesong Yang et al., 2016</p></li>
+<li><p><a href="https://arxiv.org/abs/1702.03274" target="_blank" rel="external">Hybrid Code Networks: practical and efficient end-to-end dialog control with supervised and reinforcement learning</a> Jason D. Williams et al., 2017</p></li>
+<li><p><a href="https://arxiv.org/abs/1704.07130" target="_blank" rel="external">Learning Symmetric Collaborative Dialogue Agents with Dynamic Knowledge Graph Embeddings</a> He He et al., 2017</p></li>
+<li><p><a href="https://arxiv.org/abs/1705.05414" target="_blank" rel="external">Key-Value Retrieval Networks for Task-Oriented Dialogue</a> M Eric et al., 2017</p></li>
+<li><p><a href="https://arxiv.org/abs/1706.05125" target="_blank" rel="external">Deal or No Deal? End-to-End Learning for Negotiation Dialogues</a> Mike Lewis et al., 2017</p></li>
+<li><p><a href="https://arxiv.org/abs/1706.08476" target="_blank" rel="external">Generative Encoder-Decoder Models for Task-Oriented Spoken Dialog Systems with Chatting Capability</a> Tiancheng Zhao et al., 2017</p></li>
+<li><p><a href="https://arxiv.org/pdf/1708.05956.pdf" target="_blank" rel="external">An End-to-End Trainable Neural Network Model with Belief Tracking for Task-Oriented Dialog</a> Liu Bing et al., 2017</p></li>
+<li><p><a href="https://arxiv.org/pdf/1706.06210.pdf" target="_blank" rel="external">Sub-domain Modelling for Dialogue Management with Hierarchical Reinforcement Learning</a> Paweł et al., 2017</p></li>
+<li><p><a href="http://workshop.colips.org/dstc6/papers/track1_paper02_wu.pdf" target="_blank" rel="external">End-to-End Recurrent Entity Network for Entity-Value Independent Goal-Oriented Dialog Learning</a> CS Wu et al 2017</p></li>
+<li><p><a href="https://arxiv.org/pdf/1712.09943.pdf" target="_blank" rel="external">Toward Continual Learning for Conversational Agents</a> S Lee 2017</p></li>
+<li><p><a href="https://arxiv.org/abs/1801.04871" target="_blank" rel="external">Building a Conversational Agent Overnight with Dialogue Self-Play</a> Pararth Shah et al 2018</p></li>
+</ul>
+<h2 id="chat-bots">Chat Bots</h2>
+<h3 id="general">General</h3>
+<ul>
+<li><p><a href="http://arxiv.org/abs/1506.05869" target="_blank" rel="external">A Neural Conversational Model</a> Oriol Vinyals et al., <em>arXiv</em> 2015]</p></li>
+<li><p><a href="https://arxiv.org/pdf/1506.06714v1.pdf" target="_blank" rel="external">A Neural Network Approach to Context-Sensitive Generation of Conversational Responses∗</a> Alessandro Sordoni et al., <em>arXiv</em> 2015]</p></li>
+<li><p><a href="https://arxiv.org/pdf/1606.00776v2.pdf" target="_blank" rel="external">Multiresolution Recurrent Neural Networks: An Application to Dialogue Response Generation</a> Iulian Vlad Serban et al., <em>arXiv</em> 2016s</p></li>
+<li><p><a href="https://arxiv.org/abs/1605.06069" target="_blank" rel="external">A Hierarchical Latent Variable Encoder-Decoder Model for Generating Dialogues</a> Iulian Vlad Serban et al., 2016</p></li>
+<li><p><a href="https://arxiv.org/abs/1612.03929" target="_blank" rel="external">Online Sequence-to-Sequence Reinforcement Learning for Open-Domain Conversational Agents</a> Nabiha Asghar et al., 2016</p></li>
+<li><p><a href="https://arxiv.org/abs/1802.02032" target="_blank" rel="external">Improving Variational Encoder-Decoders in Dialogue Generation</a> X Shen et al 2018.</p></li>
+</ul>
+<h3 id="rich-dialog-context">Rich Dialog Context</h3>
+<ul>
+<li><p><a href="https://arxiv.org/abs/1603.06155" target="_blank" rel="external">A Persona-Based Neural Conversation Model</a> Jiwei Li et al, <em>arXiv</em>, 2016</p></li>
+<li><p><a href="http://arxiv.org/pdf/1606.00372v1.pdf" target="_blank" rel="external">Conversational Contextual Cues: The Case of Personalization and History for Response Ranking</a> Rami Al-Rfou et al., 2016</p></li>
+<li><p><a href="https://arxiv.org/abs/1709.05453" target="_blank" rel="external">Augmenting End-to-End Dialog Systems with Commonsense Knowledge</a> Tom Young et al., 2017</p></li>
+<li><p><a href="https://arxiv.org/abs/1712.09783" target="_blank" rel="external">Topic Compositional Neural Language Model</a> W Wang et al 2017</p></li>
+</ul>
+<h3 id="diversity">Diversity</h3>
+<ul>
+<li><p><a href="http://www.aclweb.org/anthology/N16-1014" target="_blank" rel="external">A Diversity-Promoting Objective Function for Neural Conversation Models</a> Jiwei Li et al. 2016</p></li>
+<li><p><a href="https://arxiv.org/abs/1611.08562" target="_blank" rel="external">A Simple, Fast Diverse Decoding Algorithm for Neural Generation</a> Jiwei Li et al., 2016</p></li>
+<li><p><a href="https://arxiv.org/abs/1702.06703" target="_blank" rel="external">Data Distillation for Controlling Specificity in Dialogue Generation</a> Jiwei Li et al., 2017</p></li>
+<li><p><a href="https://arxiv.org/abs/1701.03185" target="_blank" rel="external">Generating High-Quality and Informative Conversation Responses with Sequence-to-Sequence Models</a> Louis Shao et al., 2017</p></li>
+<li><p><a href="https://arxiv.org/abs/1703.10960" target="_blank" rel="external">Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders</a> Tiancheng Zhao et al., 2017</p></li>
+<li><p><a href="https://arxiv.org/abs/1702.05962" target="_blank" rel="external">Latent variable dialogue models and their diversity</a> Cao, Kris et al 2017</p></li>
+</ul>
+<h3 id="reinforcement-learning-and-adversarial">Reinforcement Learning and Adversarial</h3>
+<ul>
+<li><p><a href="https://arxiv.org/abs/1606.01541" target="_blank" rel="external">Deep Reinforcement Learning for Dialogue Generation</a> Jiwei Li et al., <em>arXiv</em>, 2016</p></li>
+<li><p><a href="https://arxiv.org/abs/1701.06547" target="_blank" rel="external">Adversarial Learning for Neural Dialogue Generation</a> Jiwei Li et al., 2017</p></li>
+<li><p><a href="https://arxiv.org/abs/1709.02349" target="_blank" rel="external">A deep reinforcement learning chatbot</a> Serban et al 2017</p></li>
+<li><p><a href="https://arxiv.org/abs/1711.10122" target="_blank" rel="external">End-to-end Adversarial Learning for Generative Conversational Agents</a> Ludwig, O. 2017.</p></li>
+</ul>
+<h2 id="reinforcement-learning">Reinforcement Learning</h2>
+<ul>
+<li><p><a href="https://arxiv.org/abs/1511.08099" target="_blank" rel="external">Strategic Dialogue Management via Deep Reinforcement Learning</a> Heriberto Cuayáhuitl et al., 2015</p></li>
+<li><p><a href="http://arxiv.org/abs/1510.09202" target="_blank" rel="external">Generating Text with Deep Reinforcement Learning</a>, Hongyu Guo, <em>arXiv</em>, 2015</p></li>
+<li><p><a href="http://arxiv.org/abs/1511.04636v5" target="_blank" rel="external">Deep Reinforcement Learning with a Natural Language Action Space</a>, Ji He et al., <em>arXiv</em>, 2016.</p></li>
+<li><p><a href="https://arxiv.org/abs/1506.08941" target="_blank" rel="external">Language Understanding for Text-based Games using Deep Reinforcement Learning</a>, Karthik Narasimhan <em>arXiv</em>, 2016</p></li>
+<li><p><a href="https://arxiv.org/abs/1606.01541" target="_blank" rel="external">Deep reinforcement learning for dialogue generation</a> Jiwei Li et al., 2016</p></li>
+<li><p><a href="https://arxiv.org/abs/1703.01008" target="_blank" rel="external">End-to-end task-completion neural dialogue systems</a> Xiujun Li et al., 2017</p></li>
+<li><p><a href="https://arxiv.org/abs/1706.06210" target="_blank" rel="external">Sub-domain Modelling for Dialogue Management with Hierarchical Reinforcement Learning</a> Paweł Budzianowski et al., 2017</p></li>
+<li><p><a href="https://arxiv.org/abs/1707.00130" target="_blank" rel="external">Sample-efficient Actor-Critic Reinforcement Learning with Supervised Data for Dialogue Management</a> Pei-Hao Su et al., 2017</p></li>
+<li><p><a href="https://arxiv.org/abs/1704.03084" target="_blank" rel="external">Composite Task-Completion Dialogue Policy Learning via Hierarchical Deep Reinforcement Learning</a> Baolin Peng et al., 2017</p></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/25/2018-03-25/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luxingwu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/headimage.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宫悟桑的小屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/25/2018-03-25/" itemprop="url">Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-25T17:45:01+08:00">
+                2018-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/论文阅读/" itemprop="url" rel="index">
+                    <span itemprop="name">论文阅读</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="learning-discourse-level-diversity-for-neural-dialog-models-using-conditional-variational-autoencoders">Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders</h1>
+<p><a href="https://arxiv.org/abs/1703.10960" target="_blank" rel="external">PDF</a></p>
+<p>这是我本周要讲的论文，发表在17年ACL会议上。本文将条件变分自编码的机制融入到对话生成模型中来解决safe answer的问题。作者还提出基于知识指导的条件变分自编码模型通过融入语言学特征来提高性能，以及提出bag-of-word loss来解决训练过程中隐变量消失的问题。</p>
+<h1 id="background">Background</h1>
+<p><strong>two categories(solve this safe answer):</strong></p>
+<ul>
+<li>Other features should be extracted and provided to the models as conditionals in order to generate more specific responses</li>
+<li>improve the encoder-decoder model itself (beam-search, RL, GAN)</li>
+</ul>
+<h1 id="motivation">Motivation</h1>
+<p><strong>shortcomings</strong>:</p>
+<ul>
+<li>encoder-decoder models often generate dull and generic responses .</li>
+</ul>
+<p>past work focused on diversifying the output of the decoder at word-level.</p>
+<ul>
+<li>VAE with LSTM decoder has vanishing latent variable problem.</li>
+</ul>
+<p><strong>solutions</strong>:</p>
+<p>captures the discourse-level diversity in the encoder using conditional variational autoencoders</p>
+<ul>
+<li>present a novel neural dialog model adapted from (CVAE)</li>
+<li>propose Knowledge-Guided CVAE</li>
+<li>We develop a training method in addressing the difficulty of optimizing CVAE for natural language generation</li>
+</ul>
+<h1 id="model">Model</h1>
+<h3 id="cvae-for-dialog-generation">CVAE for Dialog Generation</h3>
+<img src="/2018/03/25/2018-03-25/01.png" alt="01.png" title="">
+<p><strong>Define:</strong></p>
+<ul>
+<li>the dialog context c (context window size k - 1)</li>
+<li>c is composed of the dialog history: the preceding k-1 utterances</li>
+<li>conversational floor (1 if the utterance is from the same speaker of x, otherwise 0)</li>
+<li>and meta features m (e.g. the topic)</li>
+<li>the response utterance x (the <span class="math inline">\(k^{th}\)</span> utterance)</li>
+<li>a latent variable z</li>
+</ul>
+<hr>
+<ul>
+<li>conditional distribution: <span class="math inline">\(p(x,z|c) = p(x|z,c)p(z|c)\)</span></li>
+<li>prior network: <span class="math inline">\(p(z|c)\)</span></li>
+<li>response decoder: <span class="math inline">\(p(x|z,c)\)</span></li>
+</ul>
+<img src="/2018/03/25/2018-03-25/02.png" alt="02.png" title="">
+<p><strong>generative process</strong>:</p>
+<ul>
+<li>Sample a latent variable z from the prior network <span class="math inline">\(p_\theta(z|c)\)</span>.</li>
+<li>Generate x through the response decoder <span class="math inline">\(p_\theta(x|z, c)\)</span>.</li>
+</ul>
+<p><strong>trained</strong>:</p>
+<ul>
+<li>maximize the conditional log likelihood of x given c</li>
+<li>involves an intractable marginalization over the latent variable z</li>
+<li>maximizing the variational lower bound of the conditional log likelihood</li>
+</ul>
+$$
+<span class="math display">\[\begin{aligned}
+L(\theta,\phi;x,c)  &amp;= -KL(q\phi(z|x,c)||p\theta(z|c)) \\
+
+                               &amp;+ E_{q\phi(z|c,x)}[logp_\theta(x|z,c)]\\
+
+                               &amp;&lt;= logp(x|c)
+\end{aligned}\]</span>
+<p>$$</p>
+<p>introduce a recognition network <span class="math inline">\(q_\phi(z|x,c)\)</span> to approximate the true posterior distribution <span class="math inline">\(p_\theta(z|c)\)</span></p>
+<p><strong>model</strong>:</p>
+<ul>
+<li>utterance encoder: bidirectional recurrent neural network with a GRU</li>
+</ul>
+<p>input: encode each utterance and x</p>
+<p>output: <span class="math inline">\(u_{i:k}\)</span></p>
+<ul>
+<li>context encoder: 1-layer GRU network</li>
+</ul>
+<p>input: <span class="math inline">\(u_{i:k}\)</span> and corresponding conversation floor</p>
+<p>output: last hidden state <span class="math inline">\(h^c\)</span> concatenated with meta features</p>
+<ul>
+<li><p>recognition network: <span class="math inline">\(q_\phi(z|x,c) \sim N(\mu,\sigma^2I)\)</span> <span class="math display">\[
+  \left[ \begin{matrix} \mu \\ \log{\sigma^{2}}  \end{matrix}  \right] = W_r\left[ \begin{matrix} x\\ c \end{matrix}  \right] + b_r
+  \]</span></p></li>
+<li><p>prior network: <span class="math inline">\(p_\theta(z|c) \sim N(\mu^{&#39;},\sigma^{&#39;2}I)\)</span> <span class="math display">\[
+  \left[ \begin{matrix} \mu^{&#39;} \\ \log{\sigma^{&#39;2}}  \end{matrix}  \right] = MLP_p(c)
+  \]</span></p></li>
+<li><p>response decoder: 1-layer GRU</p></li>
+</ul>
+<p>initial state: <span class="math inline">\(s_0 = W_i[z,c]+b_i\)</span></p>
+<h3 id="knowledge-guided-cvae-kgcvae">Knowledge-Guided CVAE (kgCVAE)</h3>
+<p>incorporate the linguistic features into the basic CVAE model will be beneficial for the model to learn meaningful latent z.</p>
+<p><strong>define:</strong></p>
+<ul>
+<li><p>set of linguistic features as y</p></li>
+<li><p>generation of x depends on c, z and y. y relies on z and c.</p></li>
+</ul>
+<div class="image-size-200" style="width:50%; text-align: center">
+<p>​ <img src="/2018/03/25/2018-03-25/03.png" alt="03.png" title=""></p>
+</div>
+<p><strong>model:</strong></p>
+<p>train:</p>
+<ul>
+<li>response decoder:</li>
+</ul>
+<p>the response decoder is <span class="math inline">\(s_0 = W_i[z,c,y] + b_i\)</span></p>
+<p>the input at every step is [et; y]</p>
+<ul>
+<li>MLP : predict <span class="math inline">\(y^{&#39;} = MLP_y(z, c)\)</span> based on z and c</li>
+</ul>
+<p>test: predicted <span class="math inline">\(y^{&#39;}\)</span> is used by the response. <span class="math display">\[
+\begin{aligned}
+L(\theta,\phi;x,c,y)  &amp; = -KL(q\phi(z|x,c,y)||p\theta(z|c)) \\
+                                 &amp; + E_{q\phi(z|c,x,y)}[logp(x|z,c,y)]\\
+                                 &amp; +  E_{q\phi(z|c,x,y)}[logp(y|z,c)]\\
+                                 &amp; &lt;= logp(x|c)
+\end{aligned}
+\]</span></p>
+<h3 id="optimization-challenges">Optimization Challenges</h3>
+<p><strong><a href="https://arxiv.org/abs/1511.06349" target="_blank" rel="external">vanishing latent variable problem</a></strong>:</p>
+<p>VAE with RNN decoder fails to encode meaningful information in z.</p>
+<ul>
+<li>KL annealing: gradually increasing the weight of the KL term from 0 to 1 during training;</li>
+<li>word drop decoding: setting a certain percentage of the target words to 0.</li>
+</ul>
+<p><strong>bag-of-word loss</strong></p>
+<ul>
+<li><span class="math inline">\(x_o\)</span> with word order</li>
+<li><span class="math inline">\(x_{bow}\)</span> without order</li>
+</ul>
+<p><span class="math inline">\(f = MLP_b(z, x)\)</span></p>
+<p><span class="math display">\[logp(x_{bow}|z,c) = log\prod_{t=1}^{|x|}\frac{e^{fx_t}}{\sum_{j}^{V}e^{f_j}}\]</span></p>
+<p><span class="math display">\[L^{&#39;}(\theta,\phi;x,c) = L(\theta,\phi;x,c) + E_{q_\phi(z|c,x,y)}[logp(x_{bow}|z,c)]\]</span></p>
+<h1 id="experiment">Experiment</h1>
+<h3 id="dataset">Dataset</h3>
+<p><strong>Switchboard (SW) 1 Release 2 Corpus</strong>:</p>
+<ul>
+<li>train: 207; 833</li>
+<li>validate: 5; 225</li>
+<li>test: 5; 481</li>
+</ul>
+<p><strong>features</strong>：</p>
+<ul>
+<li>unigram and bigram of the utterance</li>
+<li>contextual features of the last 3 utterances</li>
+</ul>
+<p><strong>dialog acts</strong>：</p>
+<p>42 types of dialog acts and the SVM achieved 77.3% accuracy on held-out data</p>
+<h3 id="setting">Setting</h3>
+<ul>
+<li>word embedding: size of 200</li>
+<li>utterance encoder: hidden size 300 for each direction</li>
+<li>context encoder: hidden size 600</li>
+<li>response decoder: hidden size 400</li>
+<li>prior network and the MLP for predicting y: 1 hidden layer of size 400</li>
+<li>latent variable z: size of 200</li>
+<li>context window: k is 10</li>
+<li>mini-batch size: 30</li>
+<li>Adam optimizer: learning rate of 0.001 and gradient clipping at 5</li>
+</ul>
+<h3 id="baseline-model">baseline model</h3>
+<ul>
+<li>a strong baseline model</li>
+<li>CVAE</li>
+<li>kgCVAE</li>
+</ul>
+<h3 id="quantitative-analysis">Quantitative Analysis</h3>
+<h3 id="metric">Metric</h3>
+<p><strong>distance functions</strong></p>
+<ul>
+<li>Smoothed Sentence-level BLEU</li>
+<li>Cosine Distance of Bag-of-word Embedding</li>
+<li>Dialog Act Match</li>
+</ul>
+<div class="image-size-200" style="width:60%; text-align: center;">
+<p>​ <img src="/2018/03/25/2018-03-25/04.png" alt="04.png" title=""></p>
+</div>
+<img src="/2018/03/25/2018-03-25/05.png" alt="05.png" title="">
+<h3 id="qualitative-analysis">Qualitative Analysis</h3>
+<ul>
+<li>case study</li>
+</ul>
+<img src="/2018/03/25/2018-03-25/06.png" alt="06.png" title="">
+<ul>
+<li>posterior z outputted from the recognition network should cluster the responses into meaningful groups</li>
+</ul>
+<div class="image-size-200" style="width:60%; text-align: center">
+<p>​ <img src="/2018/03/25/2018-03-25/07.png" alt="07.png" title=""></p>
+</div>
+<h3 id="results-for-bag-of-word-loss">Results for Bag-of-Word Loss</h3>
+<p>conducted the same language modelling (LM) task on Penn Treebank using VAE</p>
+<ul>
+<li>standard VAE without any heuristics</li>
+<li>VAE with KL annealing (KLA)</li>
+<li>VAE with BOW loss</li>
+<li>VAE with both BOW loss and KLA</li>
+</ul>
+<div class="image-size-200" style="width:60%; text-align: center">
+<p>​ <img src="/2018/03/25/2018-03-25/08.png" alt="08.png" title=""></p>
+</div>
+<div class="image-size-200" style="width:60%; text-align: center">
+<p>​ <img src="/2018/03/25/2018-03-25/09.png" alt="09.png" title=""></p>
+</div>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/21/2018-03-21/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luxingwu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/headimage.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宫悟桑的小屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/21/2018-03-21/" itemprop="url">Neural Response Generation with Dynamic Vocabularies</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-21T12:12:38+08:00">
+                2018-03-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/论文阅读/" itemprop="url" rel="index">
+                    <span itemprop="name">论文阅读</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="aaai-18-neural-response-generation-with-dynamic-vocabularies">AAAI-18 Neural Response Generation with Dynamic Vocabularies</h1>
+<p><a href="https://arxiv.org/abs/1711.11191" target="_blank" rel="external">PDF</a></p>
+<p>这是我本周要讲的论文，发表在18年AAAI会议上。本文针对采用静态词表解码容易生成不相关回复以及解码效率过低的问题，提出了使用动态词表解码来解决。</p>
+<h1 id="motivation">Motivation</h1>
+<p><strong>shortcomings(open domain conversation)</strong>:</p>
+<ul>
+<li>words that are semantically far from the current conversation also take part in decoding, irrelevant responses and generic responses.</li>
+<li>the decoding process becomes unnecessarily slow.</li>
+</ul>
+<p><strong>solutions</strong>:</p>
+<ul>
+<li>dynamic vocabulary sequence-to-sequence (DVS2S) model</li>
+<li>In training: vocabulary construction and response generation are jointly learned by maximizing a lower bound of the true objective with a Monte Carlo sampling method.</li>
+<li>In inference: word prediction model dynamically allocates a small vocabulary for an input</li>
+</ul>
+<h1 id="problem-formalization">Problem Formalization</h1>
+<p><span class="math display">\[p(Y_i|X_i) = p(Y_i|T_i,X_i)p(T_i|X_i)\]</span></p>
+<p>target vocabulary : <span class="math inline">\(T_i\)</span> (sampled from a multivariate Bernoulli distribution)</p>
+<p>response:<span class="math inline">\(Y_i\)</span> input:<span class="math inline">\(X_i\)</span></p>
+<p>word selection model: <span class="math inline">\(f(X)\)</span></p>
+<p>response generation model: <span class="math inline">\(g(X, T)\)</span></p>
+<h1 id="model">Model</h1>
+<img src="/2018/03/21/2018-03-21/01.png" alt="01.png" title="">
+<ul>
+<li>[<strong>Sequence-to-Sequence Model</strong>]</li>
+</ul>
+<p>略</p>
+<ul>
+<li><p>[<strong>word selection model</strong>]</p></li>
+<li><p><strong>Function words</strong></p>
+<p>We collect words appearing more than times 10 in the training data, excluding nouns, verbs, adjectives and adverbs from them, and use the remaining ones to form a function word set.</p>
+<p>There are 701 function words</p></li>
+<li><p><strong>Content words</strong></p>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/03/21/2018-03-21/02.png" alt="02.png" title=""></p>
+</div>
+<ul>
+<li><p>The input vector is given by the last hidden state of the encoder</p></li>
+<li><p>MLP is employed to predict the vocabulary</p></li>
+</ul>
+<p><span class="math display">\[\beta_{I(c)} = \sigma(W_c^Th_t + b_c)\]</span></p>
+<ul>
+<li>The word prediction loss is formulated as</li>
+</ul>
+<p><span class="math display">\[𝑃(𝑤_{𝑝𝑜𝑠} = 1|𝑋)+𝑝(𝑤_{𝑛𝑒𝑔} = 0|𝑋)\]</span></p>
+<p>where <span class="math inline">\(𝑤_{𝑛𝑒𝑔}\)</span> are sampled by frequency, and $ 𝑤_{𝑝𝑜𝑠}$ are words in the ground-truth response.</p>
+<p>-:)这边原文没有说明，这预训练的过程中，词表构造模型是通过负采样的方法进行的，负样本是通过词频进行采样的，因为频率高的词越容易导致在回复中出现，正样本是标注数据中的词。</p></li>
+</ul>
+<h1 id="model-training">Model Training</h1>
+<ul>
+<li><strong>Joint learning</strong></li>
+</ul>
+<p><span class="math display">\[\sum_{i=1}^{N}log(p(Y_i|X_i)) = \sum_{i=1}^{N}log(\sum_{Ti}log(\sum_{T_i}p(Y_i|T_i,X_i)p(T_i|X_i)))\]</span></p>
+<ol style="list-style-type: decimal">
+<li>With a latent variable T, it is difficult to optimize as logarithm is outside the summation.</li>
+</ol>
+<p>instead maximize a variational lower bound of <span class="math inline">\(\sum_{i=1}^{N}log(p(Y_i|X_i))\)</span>：</p>
+<div class="image-size-200" style="width:60%; text-align: center">
+<p>​ <img src="/2018/03/21/2018-03-21/03.png" alt="03.png" title=""></p>
+</div>
+<ol start="2" style="list-style-type: decimal">
+<li>log trick:</li>
+</ol>
+<p><span class="math display">\[\frac{dlog(f(x))}{dx} = \frac{1}{f(x)}\frac{df(x)}{dx}\]</span></p>
+<p><span class="math display">\[\nabla log(f(x)) = \frac{\nabla f(x)}{f(x)}\]</span></p>
+<p><span class="math display">\[\nabla p(T_i|X_i) = p(T_i|X_i)\frac{\nabla p(T_i|X_i)}{p(T_i|X_i)} = p(T_i|X_i)\nabla logp(T_i|X_i)\]</span></p>
+<p><span class="math inline">\(\frac{\partial L_i(\theta)}{\partial \theta}\)</span> :</p>
+<div class="image-size-200" style="width:60%; text-align: center">
+<p>​ <img src="/2018/03/21/2018-03-21/04.png" alt="04.png" title=""></p>
+</div>
+<ol start="3" style="list-style-type: decimal">
+<li>we employ the Monte Carlo sampling technique to approximate <span class="math inline">\(\frac{\partial L_i(\theta)}{\partial \theta}\)</span>:</li>
+</ol>
+<div class="image-size-200" style="width:60%; text-align: center">
+<p>​ <img src="/2018/03/21/2018-03-21/05.png" alt="05.png" title=""></p>
+</div>
+<p>$T_{(i,s)} $ a multivariate Bernoulli distribution <span class="math inline">\((\{\beta\}^{|V|})\)</span></p>
+<ol start="4" style="list-style-type: decimal">
+<li>To reduce variance, we normalize the gradient with the length of the response:</li>
+</ol>
+<div class="image-size-200" style="width:60%; text-align: center">
+<p>​ <img src="/2018/03/21/2018-03-21/06.png" alt="06.png" title=""></p>
+</div>
+<div class="image-size-200" style="width:60%; text-align: center">
+<p>​ <img src="/2018/03/21/2018-03-21/07.png" alt="07.png" title=""></p>
+</div>
+<ul>
+<li><strong>Algorithm</strong></li>
+</ul>
+<div class="image-size-200" style="width:60%; text-align: center">
+<p>​ <img src="/2018/03/21/2018-03-21/08.png" alt="08.png" title=""></p>
+</div>
+<h1 id="experiment">Experiment</h1>
+<ul>
+<li><p><strong>Experiment Setup</strong></p></li>
+<li><p><strong>dataset</strong>: Baidu Tieba</p>
+<p>training set: 5 million pairs validation set: 10000 pairs test set: 1; 000 pairs</p></li>
+<li><p>samples S: 5</p>
+<p>function words: 701</p>
+<p>content words: rank according to <span class="math inline">\(\{\beta_i\}\)</span> and select top 1000 words to form a target vocabulary</p>
+<p>beam size: 20</p></li>
+<li><p><strong>Evaluation Metrics</strong></p></li>
+<li>Word overlap based metrics</li>
+<li>Embedding based metrics</li>
+<li>Distinct-1 &amp; distinct-2</li>
+<li><p>3-scale human annotation</p></li>
+<li><p><strong>Comparison Methods</strong></p></li>
+<li>S2SA: https://github.com/mila-udem/blocks</li>
+<li>S2SA-MMI: https://github.com/jiweil/Neural-Dialogue-Generation</li>
+<li>TA-S2S: https://github.com/LynetteXing1991/TAJA-Seq2Seq</li>
+<li>CVAE: https://github.com/snakeztc/NeuralDialog-CVAE</li>
+<li><p>S-DVS2S: separately learn a generation model and a word prediction model</p></li>
+<li><p><strong>Evaluation Results</strong></p></li>
+<li><p>automatic metrics evaluation:</p>
+<img src="/2018/03/21/2018-03-21/09.png" alt="09.png" title=""></li>
+<li><p>human evaluation:</p>
+<div class="image-size-200" style="width:70%; text-align: center">
+<p>​ <img src="/2018/03/21/2018-03-21/10.png" alt="10.png" title=""></p>
+</div></li>
+<li><p>efficiency of decoding:</p>
+<div class="image-size-200" style="width:90%; text-align: center">
+<p>​ <img src="/2018/03/21/2018-03-21/11.png" alt="11.png" title=""></p>
+</div>
+<p>​</p></li>
+</ul>
+<h1 id="discussions">Discussions</h1>
+<ul>
+<li><strong>Dynamic vocabulary coverage</strong>:</li>
+</ul>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/03/21/2018-03-21/12.png" alt="12.png" title=""></p>
+</div>
+<ul>
+<li><strong>Performance across different dynamic vocabulary sizes</strong></li>
+</ul>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/03/21/2018-03-21/13.png" alt="13.png" title=""></p>
+</div>
+<ul>
+<li><strong>Case study</strong></li>
+</ul>
+<img src="/2018/03/21/2018-03-21/14.png" alt="14.png" title="">
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/20/2018-03-20/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luxingwu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/headimage.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宫悟桑的小屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/20/2018-03-20/" itemprop="url">Multi-Task Learning in Machine Learning</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-20T11:01:05+08:00">
+                2018-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/知识小结/" itemprop="url" rel="index">
+                    <span itemprop="name">知识小结</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="multi-task-learning-in-machine-learning">Multi-Task Learning in Machine Learning</h1>
+<p>​ 对于阅读理解而言，答案选择是一个关键问题，对于Squad这样的数据集，对于训练集和测试集，都给出了答案所在的段落，对应的问题，要求从段落中找出答案所在的位置。对于这样的数据集，指针网络有着良好的效果。在Squad这样的数据集上，由于答案所在的段落已经锁定，通过使用Encoder-Decoder的模型就可以简单的根据段落生成答案<a href="https://arxiv.org/abs/1705.00106" target="_blank" rel="external">[ACL-17]</a>。或者通过问题模板的方式<a href="https://arxiv.org/abs/1706.02027" target="_blank" rel="external">[EMNLP-17]</a>，通过检索+生成的方法，利用检索的方法检索与问题模板最相关的模型，同时用Encoder-Decoder模型生成相应模板，再通过选取主题词的方式选取段落中的主题词填入模板生成问题，通过生成问题和答案选择进行对偶学习提高QA的性能。</p>
+<p>​ 在<a href="https://arxiv.org/abs/1711.05073" target="_blank" rel="external">DuReader</a>的数据集上，没有给出明确的答案所在的段落，而是给出多个文档，需要通过相应的匹配方法匹配出答案最有可能所在的段落，再进行训练。但是对于测试集而言，只给出问题而没有，只能通过问题进行匹配，导致最终的结果非常不理想。那么是否可以通过多任务学习的方式，对问题生成和答案选择进行joint-learning。问题生成模型通过使用<a href="Incorporating%20Copying%20Mechanism%20in%20Sequence-to-Sequence%20Learning">CopyNet</a>，用训练集进行预训练，根据答案匹配出的段落作编码，通过解码生成相应的问题，同时将答案作为特征加入。之后用问题匹配到的段落进行编码，生成出问题，将生成的问题拼接进行答案选择，来提高阅读理解的性能，再用选择到的更高质量的段落训练问题生成模型，提高问题生成的质量，以此进行多任务学习。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/15/2018-03-15/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luxingwu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/headimage.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宫悟桑的小屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/15/2018-03-15/" itemprop="url">ICLR18-A DEEP REINFORCED MODEL FOR ABSTRACTIVE SUMMARIZATION</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-15T22:51:04+08:00">
+                2018-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/论文阅读/" itemprop="url" rel="index">
+                    <span itemprop="name">论文阅读</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="iclr18-a-deep-reinforced-model-for-abstractive-summarization">ICLR18-A DEEP REINFORCED MODEL FOR ABSTRACTIVE SUMMARIZATION</h1>
+<h1 id="motivation">Motivation</h1>
+<p>For longer documents and summaries these models often include repetitive and incoherent phrases.</p>
+<h1 id="model">Model</h1>
+<ul>
+<li>novel intra attention that attends over the input and continuously generated output separately</li>
+<li>combines standard supervised word prediction and reinforcement learning (RL)</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/09/2018-03-09/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luxingwu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/headimage.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宫悟桑的小屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/09/2018-03-09/" itemprop="url">ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-09T21:18:13+08:00">
+                2018-03-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/论文阅读/" itemprop="url" rel="index">
+                    <span itemprop="name">论文阅读</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="acl16-incorporating-copying-mechanism-in-sequence-to-sequence-learning">ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning</h2>
+<p><a href="https://arxiv.org/abs/1603.06393" target="_blank" rel="external">PDF</a></p>
+<h2 id="motivation">Motivation</h2>
+<p><strong>copying mechanism</strong>: locates a certain segment of the input sentence and puts the segment into the output sequence.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/06/2018-03-06/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -374,7 +1927,7 @@
 <li>reproduce factual details inaccurately and inability to deal with out-of-vocabulary</li>
 <li>tend to repeat themselves</li>
 </ul>
-<p><strong>Two solution:</strong></p>
+<p><strong>Two solutions:</strong></p>
 <ul>
 <li>copying words from the source text via pointing</li>
 <li>coverage vector</li>
@@ -831,1084 +2384,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/16/2017-01-16/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="luxingwu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/headimage.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="宫悟桑的小屋">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/16/2017-01-16/" itemprop="url">中文分词之百度大脑nlp_sdk</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-16T23:30:28+08:00">
-                2017-01-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术小结/" itemprop="url" rel="index">
-                    <span itemprop="name">技术小结</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>最强大脑VS百度大脑最近很是热闹，于是乎发现百度大脑平台在1月06日开放了nlp自然语言处理的接口，于是试用了1.0版本。使用方法分为API和SDK两种方式。 ## API接口调用 - 首先获取access_token,需要用到API Key和Secret Key</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public static String getAccess_token() &#123;</div><div class="line">		List&lt;NameValuePair&gt; nameValuePairs = new ArrayList&lt;NameValuePair&gt;();</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;grant_type&quot;, Message.GRANT_TYPE));</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;client_id&quot;, Message.CLIENT_ID));</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;client_secret&quot;, Message.CLIENT_SECRET));</div><div class="line">		String result = null;</div><div class="line">		try &#123;</div><div class="line">			result = postNameValuePair(Message.TOKEN_URL,nameValuePairs);</div><div class="line">		&#125; catch (IOException e) &#123;</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		return result;</div><div class="line">		</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>接下来用获取的access_token（目前为1个月重新获取一次）调用相关接口即可。 ## JAVA SDK接口调用</li>
-<li>首先通过API Key和Secret Key以及APP_ID创建一个客户端对象。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public static AipNlp client = new AipNlp(Message.APP_ID, Message.CLIENT_ID, Message.CLIENT_SECRET);</div></pre></td></tr></table></figure>
-<ul>
-<li>接着用客户端对象调用相关接口即可。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"> public void wordseg(String sentence) &#123;</div><div class="line">        // 使用指定语言分词</div><div class="line">        JSONObject response = NlpUtil.client.wordseg(sentence, NlpLangId.LANG_CHINESE);</div><div class="line">        JSONObject scw_out = response.getJSONObject(&quot;scw_out&quot;);</div><div class="line">        String wordsepbuf = scw_out.getString(&quot;wordsepbuf&quot;);</div><div class="line">        String wpcompbuf = scw_out.getString(&quot;wpcompbuf&quot;);</div><div class="line">        String subphrbuf = scw_out.getString(&quot;subphrbuf&quot;);</div><div class="line">        String str[] = wpcompbuf.split(&quot;\t&quot;);</div><div class="line">        for (int i = 0; i &lt; str.length; i++) &#123;</div><div class="line">			System.out.println(str[i]);</div><div class="line">		&#125;</div><div class="line">        System.out.println(&quot;基本词粒度结果:&quot;+wordsepbuf);</div><div class="line">        System.out.println(&quot;混排粒度结果&quot;+wpcompbuf);</div><div class="line">        System.out.println(&quot;所有识别出来的短语&quot;+subphrbuf);       </div><div class="line">    &#125; </div><div class="line"></div><div class="line">public List&lt;Word&gt; wordpos(String sentence) &#123;</div><div class="line">    	 JSONObject response = NlpUtil.client.wordpos(sentence);</div><div class="line">    	 JSONArray result_out = response.getJSONArray(&quot;result_out&quot;);</div><div class="line">    	 List&lt;Word&gt; words = new ArrayList&lt;Word&gt;();</div><div class="line">    	 Word word;</div><div class="line">    	 for (int i = 0; i &lt; result_out.length(); i++) &#123;</div><div class="line">    		 word = new Word();</div><div class="line">			 word.setLength(result_out.getJSONObject(i).getInt(&quot;length&quot;));</div><div class="line">			 word.setConfidence(result_out.getJSONObject(i).getInt(&quot;confidence&quot;));</div><div class="line">			 word.setType(result_out.getJSONObject(i).getString(&quot;type&quot;));</div><div class="line">			 word.setWord(result_out.getJSONObject(i).getString(&quot;word&quot;));</div><div class="line">			 words.add(word);</div><div class="line">		&#125;</div><div class="line">    	return words;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>测试分词结果： <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public class Test &#123;</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		String sentence = &quot;如何成为一名优雅的程序员&quot;;</div><div class="line">		WordSeg wordSeg = new WordSeg();</div><div class="line">		List&lt;Word&gt; words = wordSeg.wordpos(sentence);</div><div class="line">		for (Word word : words) &#123;</div><div class="line">			System.out.println(&quot;单词：&quot;+word.getWord()+&quot;  &quot;+&quot;词性：&quot;+word.getType()+&quot; &quot;+&quot;置信度：&quot;+word.getConfidence());</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></li>
-</ul>
-<p>结果相当准确：</p>
-<div class="figure">
-<img src="http://cdn.sinacloud.net/myblog-image/2017/01-16/01.PNG" alt="分词结果">
-<p class="caption">分词结果</p>
-</div>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/15/2017-01-15/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="luxingwu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/headimage.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="宫悟桑的小屋">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/15/2017-01-15/" itemprop="url">网络爬虫之HttpClient</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-15T22:41:54+08:00">
-                2017-01-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/知识小结/" itemprop="url" rel="index">
-                    <span itemprop="name">知识小结</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>今天网络爬虫开始入门，看了《自己动手写网络爬虫》第一章，作者文中提出了使用httpclient-4.1.2.jar,结果在示例中自己用的httpclient-4.3.0以上的版本，在小节最后的总结程序Java网页抓取示例程序中又用了commons-httpclient的jar包，这三者在写法上有很大差别，尤其是commons-httpclient，已经是遗留版本，官方不推荐使用了，于是我就索性学习了下httpclient最新的文档，把Java网页抓取示例程序重写了一遍。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public class RetrievePage &#123;</div><div class="line">	private static HttpClient httpClient = HttpClients.createDefault();</div><div class="line">	public static boolean downloadPage(String path) throws ClientProtocolException, IOException &#123;</div><div class="line">		HttpPost httpPost = new HttpPost(path); </div><div class="line">//		HttpHost proxy = new HttpHost(&quot;172.17.18.84&quot;,8080,&quot;http&quot;);</div><div class="line">//	    RequestConfig rq = RequestConfig.custom().setProxy(proxy).build();</div><div class="line">//		httpPost.setConfig(rq);</div><div class="line">		InputStream input = null;</div><div class="line">		OutputStream output = null;</div><div class="line">//		HttpGet httpGet = new HttpGet(path);</div><div class="line">		List&lt;NameValuePair&gt; nameValuePairs = new ArrayList&lt;NameValuePair&gt;(2);</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;name&quot;, &quot;lietu&quot;));</div><div class="line">		nameValuePairs.add(new BasicNameValuePair(&quot;password&quot;, &quot;*****&quot;));</div><div class="line">		httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,&quot;UTF-8&quot;));</div><div class="line">		HttpResponse response = httpClient.execute(httpPost);</div><div class="line">		int statusCode = response.getStatusLine().getStatusCode();</div><div class="line">		System.out.println(statusCode);</div><div class="line">		if(statusCode == HttpStatus.SC_OK) &#123;</div><div class="line">			String bodyAsString = EntityUtils.toString(response.getEntity(),&quot;utf-8&quot;);</div><div class="line">			input = new ByteArrayInputStream(bodyAsString.getBytes());</div><div class="line">			String filename = path.substring(path.lastIndexOf(&apos;/&apos;)+1);</div><div class="line">			System.out.println(filename);</div><div class="line">			output = new FileOutputStream(filename);</div><div class="line">			int tempByte = -1;</div><div class="line">			while((tempByte = input.read()) &gt; 0) &#123;</div><div class="line">				output.write(tempByte);</div><div class="line">			&#125;</div><div class="line">			if(input != null) &#123;</div><div class="line">				input.close();</div><div class="line">			&#125;</div><div class="line">			if(output != null) &#123;</div><div class="line">				output.close();</div><div class="line">			&#125;</div><div class="line">			return true;</div><div class="line">		&#125;</div><div class="line">		return false;</div><div class="line">	&#125;</div><div class="line">	public static void main(String[] args) &#123;</div><div class="line">		try &#123;</div><div class="line">			RetrievePage.downloadPage(&quot;http://www.lietu.com&quot;);</div><div class="line">		&#125; catch (IOException e) &#123;</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>注释掉的地方是设置代理，以及Get通信方式，可以根据需要使用。个人感悟：IT方面更新太快，一切都要以官方文档为主要依据。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/14/2017-01-14/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="luxingwu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/headimage.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="宫悟桑的小屋">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/14/2017-01-14/" itemprop="url">中文分词原理之最大长度匹配法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-14T23:17:41+08:00">
-                2017-01-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/知识小结/" itemprop="url" rel="index">
-                    <span itemprop="name">知识小结</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="最大长度匹配法">最大长度匹配法</h2>
-<p>最常见的分词方法为查找词典算法，其中最常用就是最大长度匹配法——从字符串的指定位置开始，匹配词典，找出最长词。 ### 正向最大长度匹配法 人们用句的时候往往更倾向与使用更短的词，只有在必要的情况下才会用长词来表述，比如大学和大学生，如果大学能够表示大学生，那么人们更倾向与用短词，既然长词出现，那么就肯定是有含义的，需要优先匹配。这便是最大长度匹配法。最大长度匹配法常用前缀树（标准Trie树)进行匹配。 ### 逆向最大长度匹配法 我们会发现正向最大长度匹配的精度不高，会出现歧义，比如大学生活丰富多彩，切分结果为大学生/活/丰富多彩，而采用逆向最大长度匹配的结果为大学/生活/丰富多彩，可见逆向最大长度匹配可以消除部分歧义，精度稍高。逆向最大长度匹配常用后缀树进行匹配。 ### 标准Trie树（前缀树） <img src="http://cdn.sinacloud.net/myblog-image/2017/01-14/01.png" alt="标准Trie树"></p>
-<p>前缀树的搜索速度快在于其每一个节点都指向一个直接定址表，无需处理冲突，而且树的高度小，所以 搜索 速度很快。但是它是空间换时间的算法，以内存消耗为代价。如果只是26个英文字母，每个节点就要保存26个指针，但并不是每个指针数组都保存记录，空的指针数组导致内存空间的浪费。</p>
-<div class="figure">
-<img src="http://imgx.sinacloud.net/myblog-image/w_600,h_600/2017/01-14/02.png" alt="标准Trie树">
-<p class="caption">标准Trie树</p>
-</div>
-<p>因而我们可以结合了Trie树时间效率的优势和二叉搜索树空间效率的三叉搜索树。 ### 三叉搜索树 三叉搜索树使用了一种聪明的手段去解决Trie的内存问题（空的指针数组）。为了避免多余的指针占用内存，三叉搜索树的节点表示成“树中有树”的形式。与Trie树不同的是，三叉搜索树的结构与读入顺序有关，三叉树是否平衡取决于其读入顺序。我们可以把词典按词的首字母大小排序，每次取中间值读入来构建平衡树，这样在进行正向最大长度匹配时，从一句话的指定位置开始，如果将该字首字母与根节点的字的首字母匹配，如果相等则继续访问中间孩子节点，如果小于则比较左孩子节点，如果大于则继续比较右孩子节点。匹配完一个词则回到根节点继续匹配。直到匹配到该句结尾，如果没有匹配的词则按单字切分。</p>
-<div class="figure">
-<img src="http://cdn.sinacloud.net/myblog-image/2017/01-14/03.png" alt="三叉Trie树">
-<p class="caption">三叉Trie树</p>
-</div>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/13/2017-01-13/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="luxingwu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/headimage.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="宫悟桑的小屋">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/13/2017-01-13/" itemprop="url">小站二迁</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-13T18:05:29+08:00">
-                2017-01-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术，生活/" itemprop="url" rel="index">
-                    <span itemprop="name">技术，生活</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="octopress到hexo一些简单的个人体会">Octopress到Hexo一些简单的个人体会</h1>
-<p>距离上次小站建成已经过去快一年了，然而这一年却也没能写点什么，这和之前说好的成为一个优雅的程序员走的有点远了，其实这一年是考研去了，不管结果如何，从现在开始新的生活，首先给自己买了一台电脑，索性就从写一篇博开始。</p>
-<p>结果安装完ruby及依赖项之后总是会一运行rake命令就出错。当初在搭建octopress的时候完全没有考虑ruby对windows的支持。于是我发现了基于 Node.js 得Hexo，便索性用Hexo重新搭建了站点。</p>
-<p>Hexo和octopress很相像，而且都是Markdown语法编辑，所以站点迁起来也很快。不同之处在于Hexo基于node.js，在windows环境下支持更好而且环境搭建也更容易。于是新的站点也代表新的开始，继续加油吧。</p>
-<p>另附：这次建站用的是NexT的主题，该主题有详细的中文文档。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/02/07/2016-02-07-theLastSum/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="luxingwu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/headimage.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="宫悟桑的小屋">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/02/07/2016-02-07-theLastSum/" itemprop="url">2015年终总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-07T21:19:56+08:00">
-                2016-02-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/生活/" itemprop="url" rel="index">
-                    <span itemprop="name">生活</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="年终总结">2015年终总结</h1>
-<p>炮竹声中一岁除，新的一年猴年即将到来，在此对过去的一年做一个总结，希望在接下来的一年里收获更多。</p>
-<h2 id="学业方面">学业方面</h2>
-<p>这一年在学业方面虽然以些微之差没能获得年级第一有点小遗憾，不过还是有惊无险的得到特等奖学金，与去年相比有一个名次的进步，这我已经满足了，毕竟这一学我已经把重点从课业上注意到了项目实践能力上了，所以取得这样成绩已经满意了。</p>
-<h2 id="学生工作">学生工作</h2>
-<ul>
-<li><p>今年在完成了换届工作后我就正式结束电子学院科协与技术协会秘书长的工作，再见了，两年科协，很充实，很快乐。之后在5月份收到科协发过来的聘书。</p></li>
-<li><p>另外在班级上继续担当学习委员职务，感觉相比之前，任务已经没有那么多了。</p></li>
-<li><p>成立了电子学院微信俱乐部</p></li>
-</ul>
-<h2 id="科研项目">科研项目</h2>
-<ul>
-<li><p>今年五月份开始进行的科研立项的省级指导项目“基于微信的教学管理云平台” 正按计划进行性，已经获得了国家级二等奖证书一份，软件著作权一份，同时顺利通过了中期检查，项目已基本完工。</p></li>
-<li><p>之后接手的社会横向项目“今朝龙翔微信社区”项目已在年底完工。</p></li>
-</ul>
-<h2 id="学科竞赛">学科竞赛</h2>
-<ul>
-<li><p>中国大学生服务外包创新创业大赛国家二等奖。</p></li>
-<li><p>2015年“甲骨文杯”全国Java程序设计大赛华东赛区三等奖</p></li>
-</ul>
-<h2 id="思想政治">思想政治</h2>
-<p>今年五月份通过党支部大会成为了一名预备党员，同时通过党校培训顺利结业。</p>
-<h2 id="看过的好书">看过的好书</h2>
-<p>今年看过的一些好书有：《headfirst 设计模式》、《JavaScript高级程序设计》、《HTML 5移动Web开发实战详解》</p>
-<p>以上就是今年的简单总结，其他的也暂时想不起什么了，要说的话就是火影完结了。追了十年的，感谢有你陪伴。</p>
-<p>至于明年的计划，也在计划中，主要有两点，一是希望能在算法再提升一下，二是打算深入学习一下JavaScript。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/01/27/2016-01-27-smartcommunity/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="luxingwu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/headimage.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="宫悟桑的小屋">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/01/27/2016-01-27-smartcommunity/" itemprop="url">今朝龙翔微信社区</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-27T00:16:56+08:00">
-                2016-01-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术小结/" itemprop="url" rel="index">
-                    <span itemprop="name">技术小结</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="今朝龙翔微信社区技术总结">今朝龙翔微信社区技术总结</h1>
-<p>这几天突然接到了之前接受的今朝龙翔社区的项目即将上线的消息，于是开始抓紧时间赶紧进度，同时在需求方面又发生了很大的变动，原本是以将webAPP融入微信的方式（通过菜单链接直接链到webAPP中）,现在需要改成将webAPP的功能直接拆分到微信端，通过微信菜单直接获取资讯图文或者链接到单页面，所以在此基础上为了后期可拓展性，我并没有把原来的webAPP之前拆了，而是在此基础上进行了功能的拓展。下面是新旧版本的对比：</p>
-<p><img src="http://imgx.sinacloud.net/myblog-image/w_350,h_600/2016/01-27/01.png" alt="旧的版本"> <img src="http://imgx.sinacloud.net/myblog-image/w_350,h_600/2016/01-27/02.png" alt="新的版本"></p>
-<p>之后经过这几天的赶工，项目总算是完工了，现总结一下这次项目的一些心得。 ## 一、微信接口获取用户信息 微信获取用户信息可以通过两种方式，两种方式用到的接口也不一样。 ###（1）通过自定义菜单的click类型获取用户信息（无需高级接口） 如果是通过自定义菜单的click类型，以图文链接的方式获取用户信息，可以先通过FromUserName获取到用户的openID，之后即可通过获取用户信息的接口https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&amp;openid=OPENID&amp;lang=zh_CN 获取用户基本信息。 ###（2）通过自定义菜单的view类型获取用户信息（需要高级接口，即认证服务号，另外还需要域名） 如果是通过自定义菜单的view类型，以自定义菜单直接链接到获取用户信息的页面，菜单的url是一个授权回调url，这样才能在菜单点击的时候使用oauth2.0授权获得openid，接口如下https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&amp;redirect_uri=REDIRECT_URI&amp;response_type=code&amp;scope=SCOPE&amp;state=STATE#wechat_redirect 。其中的redirect_uri便是回调页面的链接，不过页面所在的域名必须在微信公众号的后台进行绑定授权，授权后可以回调该域名下面的页面；其中的scope参数分为snsapi_base和snsapi_userinfo两种：</p>
-<p>1、以snsapi_base为scope发起的网页授权，是用来获取进入页面的用户的openid的，并且是静默授权并自动跳转到回调页的。用户感知的就是直接进入了回调页（往往是业务页面）</p>
-<p>2、以snsapi_userinfo为scope发起的网页授权，是用来获取用户的基本信息的。但这种授权需要用户手动同意，并且由于用户同意过，所以无须关注，就可在授权后获取该用户的基本信息。</p>
-<h3 id="两种方式总结">（3）两种方式总结：</h3>
-<p>用户管理类接口中的“获取用户基本信息接口”，是在用户和公众号产生消息交互或关注后事件推送后，才能根据用户OpenID来获取用户基本信息。这个接口，包括其他微信接口，都是需要该用户（即openid）关注了公众号后，才能调用成功的。</p>
-<h2 id="二多图文上传">二、多图文上传</h2>
-<p>原本是打算找一个合适插件来做随手拍的功能的，但找来找去并没找到符合要求的插件，接口那边需要通过POST文件的方式，而我发现大多数插件都是通过ajax并发上传单文件的方式，所以为此很头疼，所以最终索性自己来实现这个功能，用HTML5的File API来做多图上传及预览的随手拍功能。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">funUploadFiles : function() &#123;</div><div class="line">		var self = this;  </div><div class="line">		var formdata = new FormData();</div><div class="line">		var xhr = new XMLHttpRequest();</div><div class="line">		for (var i = 0; i &lt; this.uploadFile.length; i++) &#123;</div><div class="line">			var file = this.uploadFile[i];</div><div class="line">		    formdata.append(&apos;file[]&apos;, file);</div><div class="line">		&#125;</div><div class="line">		xhr.addEventListener(&quot;load&quot;, function(e)&#123;</div><div class="line">	    		for(var i = 0; i &lt; self.uploadFile.length; i++) &#123;</div><div class="line">	    			var file = self.uploadFile[i];</div><div class="line">	    			self.onSuccess(file, xhr.responseText);</div><div class="line">			    	if(self.uploadFile.length==0)&#123;</div><div class="line">			    		self.onComplete(&quot;全部完成&quot;);</div><div class="line">			    	&#125;</div><div class="line">	    		&#125;</div><div class="line">		    &#125;, false);  </div><div class="line">		xhr.open(&quot;POST&quot;,this.url+$(&quot;#title&quot;).val()+&quot;&amp;UserID=&quot;+$(&quot;#userid&quot;).val()+&quot;&amp;name=&quot;+$(&quot;#name&quot;).val()+&quot;&amp;phone=&quot;+$(&quot;#phone&quot;).val(), true);</div><div class="line">		xhr.send(formdata);</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<h2 id="三微信app下载">三、微信APP下载</h2>
-<p>最后一个需要拿出来特别提一下的就是微信中实现app下载的功能，这是一个比较坑的地方，微信公众号拦截APPStore跳转和APK下载，允许使用腾讯域名下面的下载链接，所以解决方法有两个：</p>
-<ul>
-<li>1 把应用拿到应用宝，换得应用宝的APP下载地址，放到微信里就能跳转了</li>
-<li>2 做一个漂亮点的下载页面，并提示用户在浏览器中打开</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/01/23/2016-01-23-blogstart/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="luxingwu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/headimage.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="宫悟桑的小屋">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/01/23/2016-01-23-blogstart/" itemprop="url">小站初成</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-23T00:16:56+08:00">
-                2016-01-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术，生活/" itemprop="url" rel="index">
-                    <span itemprop="name">技术，生活</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="小站初成用octopress搭建个人网站">小站初成：用octopress搭建个人网站</h1>
-<h2 id="我的博客之路">我的博客之路</h2>
-<p>经过一天的折腾，终于用octopress搭建了属于自己的个人网站，同时还第一次申请了属于自己的域名，现在的个人页已经是绑定了自己的域名了，从此走向了自己博客之路，记录接下来工作生活的点滴。</p>
-<p>虽说之前也有打算用WordPress搭建自己个人站的想法，不过放弃了，至于原因╮(╯_╰)╭，主要是WordPress太重了，而且需要依赖于数据库和服务器，我想找到一个轻便一点的系统来写博客，之后也尝试过用一些第三方的博客平台，不过总归还是用自己的放心，之后便发现了octopress非常满足我的需求，于是就索性花了一点时间，搭建了自己的个人站。虽说大体上是搭建完成了，不过途中还是遇到过不少问题，有的甚至还没有解决，像是贴代码时的codeblock标签不能设置编程语言，一设置就出错，之后还会再找时间解决一下。</p>
-<p>另外还有一点就是目前的个人页还是很简陋的原始样式，接下来会找时间好好装饰一下，同时功能上也会应需求增加一些。第一篇就到这吧，希望以后能越写越多（如果我还是一个优雅的程序员）。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1954,7 +2434,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1965,7 +2445,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1976,7 +2456,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

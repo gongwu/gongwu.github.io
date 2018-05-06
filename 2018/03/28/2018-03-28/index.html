@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="NLP,深度学习,ACL,Dialogue Retrieval,Multi-turn," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="ACL17-Sequential Matching Network: A New Architecture for Multi-turn Response Selection in Retrieval-Based Chatbots 这是我本周要讲的论文，发表在17年ACL会议上。本文实现了基于检索的多轮对话系统，针对之前的模型存在的两点问题：不能充分捕获对话历史之间的序列关系以及不能充分捕获重要">
+<meta name="keywords" content="NLP,深度学习,ACL,Dialogue Retrieval,Multi-turn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ACL17-Sequential Matching Network: A New Architecture for Multi-turn Response Selection in Retrieval-Based Chatbots">
+<meta property="og:url" content="http://yoursite.com/2018/03/28/2018-03-28/index.html">
+<meta property="og:site_name" content="宫悟桑的小屋">
+<meta property="og:description" content="ACL17-Sequential Matching Network: A New Architecture for Multi-turn Response Selection in Retrieval-Based Chatbots 这是我本周要讲的论文，发表在17年ACL会议上。本文实现了基于检索的多轮对话系统，针对之前的模型存在的两点问题：不能充分捕获对话历史之间的序列关系以及不能充分捕获重要">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/03/28/2018-03-28/01.png">
+<meta property="og:image" content="http://yoursite.com/2018/03/28/2018-03-28/02.png">
+<meta property="og:image" content="http://yoursite.com/2018/03/28/2018-03-28/03.png">
+<meta property="og:image" content="http://yoursite.com/2018/03/28/2018-03-28/04.png">
+<meta property="og:image" content="http://yoursite.com/2018/03/28/2018-03-28/05.png">
+<meta property="og:updated_time" content="2018-05-06T08:30:50.045Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ACL17-Sequential Matching Network: A New Architecture for Multi-turn Response Selection in Retrieval-Based Chatbots">
+<meta name="twitter:description" content="ACL17-Sequential Matching Network: A New Architecture for Multi-turn Response Selection in Retrieval-Based Chatbots 这是我本周要讲的论文，发表在17年ACL会议上。本文实现了基于检索的多轮对话系统，针对之前的模型存在的两点问题：不能充分捕获对话历史之间的序列关系以及不能充分捕获重要">
+<meta name="twitter:image" content="http://yoursite.com/2018/03/28/2018-03-28/01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/28/2018-03-28/"/>
+
+
+
+
+
+  <title>ACL17-Sequential Matching Network: A New Architecture for Multi-turn Response Selection in Retrieval-Based Chatbots | 宫悟桑的小屋</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">宫悟桑的小屋</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/28/2018-03-28/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luxingwu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/headimage.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宫悟桑的小屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ACL17-Sequential Matching Network: A New Architecture for Multi-turn Response Selection in Retrieval-Based Chatbots</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-28T09:52:50+08:00">
+                2018-03-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/论文阅读/" itemprop="url" rel="index">
+                    <span itemprop="name">论文阅读</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="acl17-sequential-matching-network-a-new-architecture-for-multi-turn-response-selection-in-retrieval-based-chatbots">ACL17-Sequential Matching Network: A New Architecture for Multi-turn Response Selection in Retrieval-Based Chatbots</h1>
+<p>这是我本周要讲的论文，发表在17年ACL会议上。本文实现了基于检索的多轮对话系统，针对之前的模型存在的两点问题：不能充分捕获对话历史之间的序列关系以及不能充分捕获重要的上下文信息，提出了序列匹配模型，通过使用不同粒度卷积操作捕获重要的上下文信息，通过循环神经网络捕获对话历史之间的序列关系。</p>
+<h1 id="background">Background</h1>
+<ul>
+<li><strong>Retrieval based V.S Generation based</strong></li>
+</ul>
+<p>advantage of informative and fluent responses</p>
+<ul>
+<li><strong>multi-turn V.S single-turn</strong></li>
+</ul>
+<p>matching between responses and utterances in previous turns</p>
+<ul>
+<li>how to identify important information in context.</li>
+<li>how to model relationships among the utterances in the context.</li>
+</ul>
+<h1 id="motivate">Motivate</h1>
+<p><strong>shortcomings(multiturn conversation &amp; retrieval-based)</strong>:</p>
+<ul>
+<li>lose relationships among utterances (concatenates utterances)</li>
+</ul>
+<p>历史的对话信息之间的序列关系是很重要的，当然最后一句话最为重要，这就很适合用循环神经网络。</p>
+<ul>
+<li>lose important contextual information(highly abstract context vector)</li>
+</ul>
+<p>分层的编码解码模型虽然可以对对话历史信息进行序列建模，但是他没有考虑到历史信息与回复之间的匹配关系，只是对历史信息进行一个更高的抽象，最后一步得到的向量才与回复作匹配。这样容易丢失一些重要的上下文信息。</p>
+<p><strong>solutions</strong>:</p>
+<ul>
+<li>the proposal of a new context based matching model for multi-turn response selection in retrieval-based chatbots</li>
+<li>the publication of a large human-labeled data set to research communities</li>
+<li>empirical verification of the effectiveness of the model on public data sets.</li>
+</ul>
+<h1 id="model-overview">Model Overview</h1>
+<img src="/2018/03/28/2018-03-28/01.png" alt="01.png" title="">
+<p><strong>advantages：</strong></p>
+<ul>
+<li>a response candidate can match each utterance in the context at the very beginning</li>
+<li>information extraction from each utterance is conducted on different levels of granularity and under sufficient supervision from the response</li>
+<li>matching and utterance relationships are coupled rather than separately modeled</li>
+</ul>
+<p><strong>Utterance-Response Matching</strong>：</p>
+<ul>
+<li>word-word similarity matrix：</li>
+</ul>
+<p><span class="math display">\[e_{1,i,j} = e^T_{u,i}.e_{i,j}\]</span></p>
+<ul>
+<li>sequence-sequence similarity matrix</li>
+</ul>
+<p><span class="math display">\[e_{2,i,j} = h^T_{i,j}Ah_{i,j}\]</span></p>
+<p><strong>Matching Accumulation</strong>:</p>
+<p>GRU:</p>
+<ul>
+<li>it models the dependency and the temporal relationship of utterances in the context</li>
+<li>it leverages the temporal relationship to supervise the accumulation of the pair matching as a context based matching.</li>
+</ul>
+<p><strong>Matching Prediction and Learning</strong>:</p>
+<ul>
+<li>最后一个隐层</li>
+<li>静态加权求和</li>
+<li>attention</li>
+<li>objective function:</li>
+</ul>
+<p><span class="math display">\[-\sum_{i=1}^N[y_ilog(g(s_i,r_i))+(1-y_i)log(1-g(s_i,r_i))]\]</span></p>
+<p><strong>Response Candidate Retrieval</strong>:</p>
+<p>extract the top 5 keywords from <span class="math inline">\({u_1,.....,u_{n-1}}\)</span> based on their <span class="math inline">\(tf-idf\)</span> scores1 and expand <span class="math inline">\(u_n\)</span> with the keywords.</p>
+<h1 id="experiments">Experiments</h1>
+<h3 id="corpus">Corpus</h3>
+<p><strong>Ubuntu Corpus</strong>:</p>
+<ul>
+<li>training: 1 million pairs</li>
+<li>validation: 0.5 million pairs</li>
+<li>testing: 0.5 million pairs</li>
+</ul>
+<p>negative ones are randomly sampled: 1:1 in training, and 1:9 in validation and testing.</p>
+<p><strong>Douban Conversation Corpus</strong>:</p>
+<p><strong>sample</strong>:</p>
+<ul>
+<li>training set: 0.5 million dialogues</li>
+<li>validation set: 25 thousand dialogues</li>
+<li>test set: 1, 000 dialogues</li>
+</ul>
+<p><strong>sample negative</strong>:</p>
+<ul>
+<li>training and validation: sampled another response as a negative response</li>
+<li>test set: retrieved 10 response candidates from the index of Sina Weibo following the method Response Candidate Retrieval</li>
+</ul>
+<p><strong>finally formed</strong>:</p>
+<ul>
+<li>training set: 1 million dialogues</li>
+<li>validation set: 50 thousand dialogues</li>
+<li>test set: 10, 000 dialogues</li>
+</ul>
+<h3 id="baseline">Baseline</h3>
+<ul>
+<li>Basic models: TF-IDF, RNN, CNN, LSTM and BiLSTM</li>
+<li>Multi-view</li>
+<li>Deep learning to respond</li>
+<li>Advanced single-turn matching models: MV-LSTM, Match-LSTM, Attentive-LSTM</li>
+</ul>
+<h3 id="setting">Setting</h3>
+<ul>
+<li>window size of convolution and pooling: (3, 3)</li>
+<li>Multi-Channel GRU: 200</li>
+<li>matching vectors GRU: 50</li>
+<li>maximum utterance length: 50</li>
+<li>maximum context length: 10</li>
+<li>learning rate: 0.001</li>
+</ul>
+<h3 id="evaluation-results">Evaluation Results</h3>
+<img src="/2018/03/28/2018-03-28/02.png" alt="02.png" title="">
+<h3 id="further-analysis">Further Analysis</h3>
+<p><strong>Model ablation</strong>：</p>
+<img src="/2018/03/28/2018-03-28/03.png" alt="03.png" title="">
+<p><strong>Performance across context length</strong>：</p>
+<img src="/2018/03/28/2018-03-28/04.png" alt="04.png" title="">
+<p><strong>Maximum context length:</strong></p>
+<img src="/2018/03/28/2018-03-28/05.png" alt="05.png" title="">
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+            <a href="/tags/深度学习/" rel="tag"># 深度学习</a>
+          
+            <a href="/tags/ACL/" rel="tag"># ACL</a>
+          
+            <a href="/tags/Dialogue-Retrieval/" rel="tag"># Dialogue Retrieval</a>
+          
+            <a href="/tags/Multi-turn/" rel="tag"># Multi-turn</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/27/2018-03-27/" rel="next" title="Neural Network Dialog System Papers">
+                <i class="fa fa-chevron-left"></i> Neural Network Dialog System Papers
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/headimage.png"
+               alt="luxingwu" />
+          <p class="site-author-name" itemprop="name">luxingwu</p>
+           
+              <p class="site-description motion-element" itemprop="description">爱生活，爱动漫，爱IT</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#acl17-sequential-matching-network-a-new-architecture-for-multi-turn-response-selection-in-retrieval-based-chatbots"><span class="nav-number">1.</span> <span class="nav-text">ACL17-Sequential Matching Network: A New Architecture for Multi-turn Response Selection in Retrieval-Based Chatbots</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#background"><span class="nav-number">2.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#motivate"><span class="nav-number">3.</span> <span class="nav-text">Motivate</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#model-overview"><span class="nav-number">4.</span> <span class="nav-text">Model Overview</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#experiments"><span class="nav-number">5.</span> <span class="nav-text">Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#corpus"><span class="nav-number">5.0.1.</span> <span class="nav-text">Corpus</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#baseline"><span class="nav-number">5.0.2.</span> <span class="nav-text">Baseline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#setting"><span class="nav-number">5.0.3.</span> <span class="nav-text">Setting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#evaluation-results"><span class="nav-number">5.0.4.</span> <span class="nav-text">Evaluation Results</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#further-analysis"><span class="nav-number">5.0.5.</span> <span class="nav-text">Further Analysis</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">luxingwu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

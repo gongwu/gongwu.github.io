@@ -5,10 +5,10 @@
     
   <url>
     <loc>http://luxingwu.com/2018/05/14/2018-05-14/</loc>
-    <lastmod>2018-05-14T15:28:06.239Z</lastmod>
+    <lastmod>2018-05-16T06:32:23.725Z</lastmod>
     <data>
         <display>
-        <title>2018-05-14</title>
+        <title>Dialogue and Interactive Systems & Generation Papers & Summarization in ACL2018</title>
         <pubTime>2018-05-14T15:07:34.000Z</pubTime>
         
         <tag>NLP</tag>
@@ -67,9 +67,9 @@
          
         <tag>深度学习</tag>
          
-        <tag>Abstractive Summarization</tag>
-         
         <tag>ACL</tag>
+         
+        <tag>Abstractive Summarization</tag>
          
         <tag>Multi-turn</tag>
          
@@ -97,9 +97,9 @@
          
         <tag>ACL</tag>
          
-        <tag>Dialogue Retrieval</tag>
-         
         <tag>Multi-turn</tag>
+         
+        <tag>Dialogue Retrieval</tag>
          
          
            
@@ -197,9 +197,9 @@
          
         <tag>深度学习</tag>
          
-        <tag>ICLR</tag>
-         
         <tag>Abstractive Summarization</tag>
+         
+        <tag>ICLR</tag>
          
         <tag>Reinforcement Learning</tag>
          
@@ -225,9 +225,9 @@
          
         <tag>深度学习</tag>
          
-        <tag>Dialogue Generation</tag>
-         
         <tag>AAAI</tag>
+         
+        <tag>Dialogue Generation</tag>
          
          
            
@@ -251,9 +251,9 @@
          
         <tag>深度学习</tag>
          
-        <tag>Abstractive Summarization</tag>
-         
         <tag>ACL</tag>
+         
+        <tag>Abstractive Summarization</tag>
          
          
            
@@ -277,9 +277,9 @@
          
         <tag>深度学习</tag>
          
-        <tag>Abstractive Summarization</tag>
-         
         <tag>ACL</tag>
+         
+        <tag>Abstractive Summarization</tag>
          
          
            
@@ -299,11 +299,11 @@
         <title>中文分词之百度大脑nlp_sdk</title>
         <pubTime>2017-01-16T15:30:28.000Z</pubTime>
         
+        <tag>Java</tag>
+         
         <tag>机器学习</tag>
          
         <tag>NLP</tag>
-         
-        <tag>Java</tag>
          
          
            

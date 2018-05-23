@@ -79,7 +79,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="NLP,深度学习,ACL,Abstractive Summarization," />
+  <meta name="keywords" content="NLP,深度学习,Abstractive Summarization,ACL," />
 
 
 
@@ -95,18 +95,27 @@
 
 
 
-<meta name="description" content="ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning PDF Motivation copying mechanism: locates a certain segment of the input sentence and puts the segment into the output sequenc">
-<meta name="keywords" content="NLP,深度学习,ACL,Abstractive Summarization">
+<meta name="description" content="ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning PDF Motivation  humans tend to repeat entity names or even long phrases in conversation. encoder-decoder and its variants wi">
+<meta name="keywords" content="NLP,深度学习,Abstractive Summarization,ACL">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning">
 <meta property="og:url" content="http://luxingwu.com/2018/03/09/2018-03-09/index.html">
 <meta property="og:site_name" content="宫悟桑的小屋">
-<meta property="og:description" content="ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning PDF Motivation copying mechanism: locates a certain segment of the input sentence and puts the segment into the output sequenc">
+<meta property="og:description" content="ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning PDF Motivation  humans tend to repeat entity names or even long phrases in conversation. encoder-decoder and its variants wi">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-09T13:54:29.316Z">
+<meta property="og:image" content="d:/Hexo/source_posts/2018-03-09/09.png">
+<meta property="og:image" content="d:/Hexo/source_posts/2018-03-09/01.png">
+<meta property="og:image" content="d:/Hexo/source_posts/2018-03-09/02.png">
+<meta property="og:image" content="d:/Hexo/source_posts/2018-03-09/03.png">
+<meta property="og:image" content="d:/Hexo/source_posts/2018-03-09/04.png">
+<meta property="og:image" content="d:/Hexo/source_posts/2018-03-09/05.png">
+<meta property="og:image" content="d:/Hexo/source_posts/2018-03-09/06.png">
+<meta property="og:image" content="d:/Hexo/source_posts/2018-03-09/07.png">
+<meta property="og:updated_time" content="2018-05-23T09:57:57.744Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning">
-<meta name="twitter:description" content="ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning PDF Motivation copying mechanism: locates a certain segment of the input sentence and puts the segment into the output sequenc">
+<meta name="twitter:description" content="ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning PDF Motivation  humans tend to repeat entity names or even long phrases in conversation. encoder-decoder and its variants wi">
+<meta name="twitter:image" content="d:/Hexo/source_posts/2018-03-09/09.png">
 
 
 
@@ -372,7 +381,104 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="acl16-incorporating-copying-mechanism-in-sequence-to-sequence-learning">ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning</h2>
 <p><a href="https://arxiv.org/abs/1603.06393" target="_blank" rel="external">PDF</a></p>
 <h2 id="motivation">Motivation</h2>
-<p><strong>copying mechanism</strong>: locates a certain segment of the input sentence and puts the segment into the output sequence.</p>
+<ul>
+<li>humans tend to repeat entity names or even long phrases in conversation.</li>
+<li>encoder-decoder and its variants with attention mechanism rely heavily on the representation of “meaning”, system needs to refer to sub-sequences of input like entity names or dates may be inaccurate.</li>
+<li><strong>challenge</strong>: needed to decide when to perform the operation.</li>
+<li><strong>copying mechanism</strong>: locates a certain segment of the input sentence and puts the segment into the output sequence.</li>
+</ul>
+<h2 id="model">Model</h2>
+<h3 id="neural-models-for-sequence-to-sequence-learning">Neural Models for Sequence-to-sequence Learning</h3>
+<p>略</p>
+<h3 id="copynet">COPYNET</h3>
+<h4 id="model-overview">Model Overview</h4>
+<div class="figure">
+<img src="D:\Hexo\source_posts\2018-03-09\09.png" alt="09">
+<p class="caption">09</p>
+</div>
+<ul>
+<li>Encoder</li>
+</ul>
+<p>略</p>
+<ul>
+<li>Decoder</li>
+</ul>
+<p>differences：</p>
+<ul>
+<li><p>Prediction</p>
+<p>mixed probabilistic model of two modes：generate-mode and the copy-mode</p>
+<p>这里的不同点在于预测单词概率的时候不仅只算词表的概率，同时计算原文单词的概率，通过一个shared softmax归一化。</p></li>
+<li><p>State Update</p>
+<p>uses not only its word-embedding but also its corresponding location-specific hidden state in M</p>
+<p>这里的不用点在于更新解码状态s时，不仅只用上一个词的输出的词向量作为输入，同时还考虑了编码端的隐层信息，也就是位置信息。</p></li>
+<li><p>ReadingM</p>
+<p>in addition to the attentive read to M, COPYNET also has “selective read” to M</p>
+<p>相比于传统seq2seq+attention不同点在于，可以混合利用基于内容和基于位置的信息，这里我就很迷了，难道传统的attention没能利用基于位置的信息？</p></li>
+</ul>
+<h4 id="prediction-with-copying-and-generation">Prediction with Copying and Generation</h4>
+<p>词表包括未登录词用unk表示：V = {v1, ..., vN}</p>
+<p>在输入源文中出现的词表：X = {x1, ..., xTS}</p>
+<p>instance-specific vocabulary for source X：<span class="math inline">\(V \cup UNK \cup X\)</span></p>
+<p>the probability of generating any target word <span class="math inline">\(y_t\)</span>:</p>
+<div class="figure">
+<img src="D:\Hexo\source_posts\2018-03-09\01.png" alt="01">
+<p class="caption">01</p>
+</div>
+<p>probability of the two modes are given respectively by:</p>
+<div class="figure">
+<img src="D:\Hexo\source_posts\2018-03-09\02.png" alt="02">
+<p class="caption">02</p>
+</div>
+<p>Z is the normalization term shared by the two modes. Due to the shared normalization term, the two modes are basically competing through a softmax function.</p>
+<div class="figure">
+<img src="D:\Hexo\source_posts\2018-03-09\03.png" alt="03">
+<p class="caption">03</p>
+</div>
+<p>The score of each mode is calculated:</p>
+<ul>
+<li>Generate-Mode:</li>
+</ul>
+<div class="figure">
+<img src="D:\Hexo\source_posts\2018-03-09\04.png" alt="04">
+<p class="caption">04</p>
+</div>
+<ul>
+<li>Copy-Mode:</li>
+</ul>
+<div class="figure">
+<img src="D:\Hexo\source_posts\2018-03-09\05.png" alt="05">
+<p class="caption">05</p>
+</div>
+<ul>
+<li><p><strong>trick</strong>: non-linear transformation in Eq.( 8) can help project <span class="math inline">\(s_t\)</span> and <span class="math inline">\(h_j\)</span> in the same semantic space. using the <span class="math inline">\(tanh\)</span> non-linearity worked better than linear transformation.</p></li>
+<li><p>The location informaton is important for copying</p>
+<p>吐槽：这里和attention有什么区别吗，感觉就是再做了一遍双仿射attention的操作</p></li>
+</ul>
+<p>概率计算结果如图：</p>
+<div class="figure">
+<img src="D:\Hexo\source_posts\2018-03-09\06.png" alt="06">
+<p class="caption">06</p>
+</div>
+<p>#### State Update</p>
+<p><span class="math inline">\(y_{t-1}\)</span> 表示为 <span class="math inline">\([e(y_{t-1});\zeta(y_{t-1})]^{T}\)</span></p>
+<div class="figure">
+<img src="D:\Hexo\source_posts\2018-03-09\07.png" alt="07">
+<p class="caption">07</p>
+</div>
+<p>K is the normalization term, <span class="math inline">\(K = \sum_{\tau^{&#39;}:x_{\tau^{&#39;}}=y_{t-1}}p(x_{\tau^{&#39;}},c|s_{t-1},M)\)</span>，considering there may exist multiple positions with <span class="math inline">\(y_{t−1}\)</span> in the source sequence.</p>
+<p>实质上这里的是把source中与<span class="math inline">\(y_{t-1}\)</span>相同的词加权求和了，权重与多个相同词概率的归一化</p>
+<p>#### Hybrid Addressing of M</p>
+<p>combines both content-based and location-based addressing.</p>
+<ul>
+<li><p>Location-based Addressing:</p>
+<ul>
+<li>the attentive read of COPYNET is driven more by the semantics and language model</li>
+<li>selective read <span class="math inline">\(ζ(y_{t-1}) \longrightarrow{update} \ s_t \longrightarrow predict \ y_t \longrightarrow sel. read \ ζ(y_t)\)</span></li>
+</ul></li>
+<li><p>Handling Out-of-Vocabulary Words:</p>
+<p>can copy a fairly long segment full of OOV words</p></li>
+</ul>
+<h2 id="experiments">Experiments</h2>
 
       
     </div>
@@ -394,9 +500,9 @@
           
             <a href="/tags/深度学习/" rel="tag"># 深度学习</a>
           
-            <a href="/tags/ACL/" rel="tag"># ACL</a>
-          
             <a href="/tags/Abstractive-Summarization/" rel="tag"># Abstractive Summarization</a>
+          
+            <a href="/tags/ACL/" rel="tag"># ACL</a>
           
         </div>
       
@@ -511,7 +617,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">26</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -533,7 +639,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">26</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -568,7 +674,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#acl16-incorporating-copying-mechanism-in-sequence-to-sequence-learning"><span class="nav-number">1.</span> <span class="nav-text">ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#motivation"><span class="nav-number">2.</span> <span class="nav-text">Motivation</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#acl16-incorporating-copying-mechanism-in-sequence-to-sequence-learning"><span class="nav-number">1.</span> <span class="nav-text">ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#motivation"><span class="nav-number">2.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#model"><span class="nav-number">3.</span> <span class="nav-text">Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#neural-models-for-sequence-to-sequence-learning"><span class="nav-number">3.1.</span> <span class="nav-text">Neural Models for Sequence-to-sequence Learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#copynet"><span class="nav-number">3.2.</span> <span class="nav-text">COPYNET</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#model-overview"><span class="nav-number">3.2.1.</span> <span class="nav-text">Model Overview</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#prediction-with-copying-and-generation"><span class="nav-number">3.2.2.</span> <span class="nav-text">Prediction with Copying and Generation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#experiments"><span class="nav-number">4.</span> <span class="nav-text">Experiments</span></a></li></ol></div>
             
 
           </div>

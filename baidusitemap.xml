@@ -4,11 +4,201 @@
 
     
   <url>
-    <loc>http://luxingwu.com/2018/05/14/2018-05-14/</loc>
-    <lastmod>2018-05-16T06:32:23.725Z</lastmod>
+    <loc>http://luxingwu.com/2018/05/20/2018-05-20/</loc>
+    <lastmod>2018-05-23T11:51:33.615Z</lastmod>
     <data>
         <display>
-        <title>Dialogue and Interactive Systems & Generation Papers & Summarization in ACL2018</title>
+        <title>AAAI18-Sequential Copying Networks</title>
+        <pubTime>2018-05-20T06:35:18.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>Abstractive Summarization</tag>
+         
+        <tag>AAAI</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/03/09/2018-03-09/</loc>
+    <lastmod>2018-05-23T09:57:57.744Z</lastmod>
+    <data>
+        <display>
+        <title>ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning</title>
+        <pubTime>2018-03-09T13:18:13.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>Abstractive Summarization</tag>
+         
+        <tag>ACL</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/05/11/2018-05-11/</loc>
+    <lastmod>2018-05-23T05:36:49.067Z</lastmod>
+    <data>
+        <display>
+        <title>ACL17-Selective Encoding for Abstractive Sentence Summarization</title>
+        <pubTime>2018-05-11T15:16:20.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>Abstractive Summarization</tag>
+         
+        <tag>ACL</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/05/16/2018-05-17/</loc>
+    <lastmod>2018-05-20T06:43:52.735Z</lastmod>
+    <data>
+        <display>
+        <title>ACL17-How to Make Context More Useful? An Empirical Study on Context-Aware Neural Conversational Models</title>
+        <pubTime>2018-05-16T10:23:44.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>ACL</tag>
+         
+        <tag>Dialogue Generation</tag>
+         
+        <tag>Multi-turn Dialogue</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/05/16/2018-05-16/</loc>
+    <lastmod>2018-05-17T00:11:26.886Z</lastmod>
+    <data>
+        <display>
+        <title>AAAI18-Sentence Ordering and Coherence Modeling using Recurrent Neural Networks</title>
+        <pubTime>2018-05-16T07:36:26.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>AAAI</tag>
+         
+        <tag>Coherence Modeling</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/03/25/2018-03-25/</loc>
+    <lastmod>2018-05-16T10:25:46.990Z</lastmod>
+    <data>
+        <display>
+        <title>Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders</title>
+        <pubTime>2018-03-25T09:45:01.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>ACL</tag>
+         
+        <tag>Dialogue Generation</tag>
+         
+        <tag>CVAE</tag>
+         
+        <tag>Multi-turn Dialogue</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/03/28/2018-03-28/</loc>
+    <lastmod>2018-05-16T10:25:05.531Z</lastmod>
+    <data>
+        <display>
+        <title>ACL17-Sequential Matching Network: A New Architecture for Multi-turn Response Selection in Retrieval-Based Chatbots</title>
+        <pubTime>2018-03-28T01:52:50.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>ACL</tag>
+         
+        <tag>Multi-turn Dialogue</tag>
+         
+        <tag>Dialogue Retrieval</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/05/14/2018-05-14/</loc>
+    <lastmod>2018-05-16T06:45:52.326Z</lastmod>
+    <data>
+        <display>
+        <title>Dialogue and Interactive Systems & Generation & Summarization Papers in ACL2018</title>
         <pubTime>2018-05-14T15:07:34.000Z</pubTime>
         
         <tag>NLP</tag>
@@ -49,62 +239,6 @@
            
              
               <breadCrumb title="论文列表" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E5%88%97%E8%A1%A8/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://luxingwu.com/2018/05/11/2018-05-11/</loc>
-    <lastmod>2018-05-14T15:14:11.931Z</lastmod>
-    <data>
-        <display>
-        <title>ACL17-Selective Encoding for Abstractive Sentence Summarization</title>
-        <pubTime>2018-05-11T15:16:20.000Z</pubTime>
-        
-        <tag>NLP</tag>
-         
-        <tag>深度学习</tag>
-         
-        <tag>ACL</tag>
-         
-        <tag>Abstractive Summarization</tag>
-         
-        <tag>Multi-turn</tag>
-         
-         
-           
-             
-              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://luxingwu.com/2018/03/28/2018-03-28/</loc>
-    <lastmod>2018-05-14T05:41:52.180Z</lastmod>
-    <data>
-        <display>
-        <title>ACL17-Sequential Matching Network: A New Architecture for Multi-turn Response Selection in Retrieval-Based Chatbots</title>
-        <pubTime>2018-03-28T01:52:50.000Z</pubTime>
-        
-        <tag>NLP</tag>
-         
-        <tag>深度学习</tag>
-         
-        <tag>ACL</tag>
-         
-        <tag>Multi-turn</tag>
-         
-        <tag>Dialogue Retrieval</tag>
-         
-         
-           
-             
-              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
           
         </display>
     </data>
@@ -158,34 +292,6 @@
 
     
   <url>
-    <loc>http://luxingwu.com/2018/03/25/2018-03-25/</loc>
-    <lastmod>2018-05-06T11:16:43.529Z</lastmod>
-    <data>
-        <display>
-        <title>Learning Discourse-level Diversity for Neural Dialog Models using Conditional Variational Autoencoders</title>
-        <pubTime>2018-03-25T09:45:01.000Z</pubTime>
-        
-        <tag>NLP</tag>
-         
-        <tag>深度学习</tag>
-         
-        <tag>ACL</tag>
-         
-        <tag>Dialogue Generation</tag>
-         
-        <tag>CVAE</tag>
-         
-         
-           
-             
-              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://luxingwu.com/2018/03/15/2018-03-15/</loc>
     <lastmod>2018-05-06T08:57:08.388Z</lastmod>
     <data>
@@ -197,9 +303,9 @@
          
         <tag>深度学习</tag>
          
-        <tag>Abstractive Summarization</tag>
-         
         <tag>ICLR</tag>
+         
+        <tag>Abstractive Summarization</tag>
          
         <tag>Reinforcement Learning</tag>
          
@@ -225,9 +331,9 @@
          
         <tag>深度学习</tag>
          
-        <tag>AAAI</tag>
-         
         <tag>Dialogue Generation</tag>
+         
+        <tag>AAAI</tag>
          
          
            
@@ -251,35 +357,9 @@
          
         <tag>深度学习</tag>
          
-        <tag>ACL</tag>
-         
         <tag>Abstractive Summarization</tag>
          
-         
-           
-             
-              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://luxingwu.com/2018/03/09/2018-03-09/</loc>
-    <lastmod>2018-03-09T13:54:29.316Z</lastmod>
-    <data>
-        <display>
-        <title>ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning</title>
-        <pubTime>2018-03-09T13:18:13.000Z</pubTime>
-        
-        <tag>NLP</tag>
-         
-        <tag>深度学习</tag>
-         
         <tag>ACL</tag>
-         
-        <tag>Abstractive Summarization</tag>
          
          
            

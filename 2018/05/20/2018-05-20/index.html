@@ -116,7 +116,7 @@
 <meta property="og:image" content="http://luxingwu.com/2018/05/20/2018-05-20/11.png">
 <meta property="og:image" content="http://luxingwu.com/2018/05/20/2018-05-20/13.png">
 <meta property="og:image" content="http://luxingwu.com/2018/05/20/2018-05-20/14.png">
-<meta property="og:updated_time" content="2018-05-23T14:37:07.294Z">
+<meta property="og:updated_time" content="2018-05-23T14:59:48.993Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AAAI18-Sequential Copying Networks">
 <meta name="twitter:description" content="AAAI18-Sequential Copying Networks Motivation  only considers single word copying from the source sentences copied words usually form a continuous chunk of the output, exhibiting a “sequential cop">
@@ -462,12 +462,15 @@
 <p>decoder consumes the last generated word <span class="math inline">\(y_{t−1}\)</span> and GRU state <span class="math inline">\(s_{t−1}\)</span> at time step t</p>
 <h2 id="experiments">Experiments</h2>
 <p>Task 1: Question Generation give a sentence and its desired answer</p>
-<p>Dataset: Question Generation dataset based on SQuAD Evaluation Metric: BLEU-4</p>
+<p>Dataset: Question Generation dataset based on SQuAD</p>
+<p>Evaluation Metric: BLEU-4</p>
 <div class="image-size-200" style="width:100%; text-align: center">
 <p>​ <img src="/2018/05/20/2018-05-20/11.png" alt="11.png" title=""></p>
 </div>
-<p>Task 2: Abstractive Sentence Summarization Dataset: English Gigaword: Rush, Chopra, and Weston (2015)*, Zhou et al. (2017b) and our internal test sets Evaluation Metric: ROUGE F1</p>
-<div class="image-size-200" style="width:50%; text-align: center">
+<p>Task 2: Abstractive Sentence Summarization</p>
+<p>Dataset: English Gigaword: Rush, Chopra, and Weston (2015)*, Zhou et al. (2017b) and our internal test sets</p>
+<p>Evaluation Metric: ROUGE F1</p>
+<div class="image-size-200" style="width:100%; text-align: center">
 <p>​ <img src="/2018/05/20/2018-05-20/13.png" alt="13.png" title=""></p>
 </div>
 <h3 id="example-output">Example Output</h3>
@@ -478,7 +481,7 @@
 <li>noun phrases</li>
 <li>After copying a long span, the decoder can still generate well</li>
 </ul>
-<div class="image-size-200" style="width:50%; text-align: center">
+<div class="image-size-200" style="width:100%; text-align: center">
 <p>​ <img src="/2018/05/20/2018-05-20/14.png" alt="14.png" title=""></p>
 </div>
 <h1 id="conclusion">Conclusion</h1>

@@ -4,34 +4,8 @@
 
     
   <url>
-    <loc>http://luxingwu.com/2018/05/20/2018-05-20/</loc>
-    <lastmod>2018-05-23T14:37:07.294Z</lastmod>
-    <data>
-        <display>
-        <title>AAAI18-Sequential Copying Networks</title>
-        <pubTime>2018-05-20T06:35:18.000Z</pubTime>
-        
-        <tag>NLP</tag>
-         
-        <tag>深度学习</tag>
-         
-        <tag>Abstractive Summarization</tag>
-         
-        <tag>AAAI</tag>
-         
-         
-           
-             
-              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://luxingwu.com/2018/03/09/2018-03-09/</loc>
-    <lastmod>2018-05-23T09:57:57.744Z</lastmod>
+    <lastmod>2018-05-23T15:02:10.129Z</lastmod>
     <data>
         <display>
         <title>ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning</title>
@@ -44,6 +18,32 @@
         <tag>ACL</tag>
          
         <tag>Abstractive Summarization</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/05/20/2018-05-20/</loc>
+    <lastmod>2018-05-23T14:59:48.993Z</lastmod>
+    <data>
+        <display>
+        <title>AAAI18-Sequential Copying Networks</title>
+        <pubTime>2018-05-20T06:35:18.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>Abstractive Summarization</tag>
+         
+        <tag>AAAI</tag>
          
          
            
@@ -331,9 +331,9 @@
          
         <tag>深度学习</tag>
          
-        <tag>AAAI</tag>
-         
         <tag>Dialogue Generation</tag>
+         
+        <tag>AAAI</tag>
          
          
            

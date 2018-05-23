@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://luxingwu.com/2018/03/09/2018-03-09/</loc>
-    <lastmod>2018-05-23T15:02:10.129Z</lastmod>
+    <lastmod>2018-05-23T15:11:25.400Z</lastmod>
     <data>
         <display>
         <title>ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning</title>
@@ -31,7 +31,7 @@
     
   <url>
     <loc>http://luxingwu.com/2018/05/20/2018-05-20/</loc>
-    <lastmod>2018-05-23T14:59:48.993Z</lastmod>
+    <lastmod>2018-05-23T15:09:39.530Z</lastmod>
     <data>
         <display>
         <title>AAAI18-Sequential Copying Networks</title>
@@ -331,9 +331,9 @@
          
         <tag>深度学习</tag>
          
-        <tag>Dialogue Generation</tag>
-         
         <tag>AAAI</tag>
+         
+        <tag>Dialogue Generation</tag>
          
          
            

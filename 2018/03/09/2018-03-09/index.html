@@ -114,7 +114,7 @@
 <meta property="og:image" content="http://luxingwu.com/2018/03/09/2018-03-09/10.png">
 <meta property="og:image" content="http://luxingwu.com/2018/03/09/2018-03-09/11.png">
 <meta property="og:image" content="http://luxingwu.com/2018/03/09/2018-03-09/12.png">
-<meta property="og:updated_time" content="2018-05-23T15:02:10.129Z">
+<meta property="og:updated_time" content="2018-05-23T15:11:25.400Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning">
 <meta name="twitter:description" content="ACL16-Incorporating Copying Mechanism in Sequence-to-Sequence Learning PDF Motivation  humans tend to repeat entity names or even long phrases in conversation. encoder-decoder and its variants wi">
@@ -455,14 +455,14 @@
 <div class="image-size-200" style="width:100%; text-align: center">
 <p>​ <img src="/2018/03/09/2018-03-09/06.png" alt="06.png" title=""></p>
 </div>
-<p>###State Update</p>
+<p>### State Update</p>
 <p><span class="math inline">\(y_{t-1}\)</span> 表示为 <span class="math inline">\([e(y_{t-1});\zeta(y_{t-1})]^{T}\)</span></p>
 <div class="image-size-200" style="width:50%; text-align: center">
 <p>​ <img src="/2018/03/09/2018-03-09/07.png" alt="07.png" title=""></p>
 </div>
 <p>K is the normalization term, <span class="math inline">\(K = \sum_{\tau^{&#39;}:x_{\tau^{&#39;}}=y_{t-1}}p(x_{\tau^{&#39;}},c|s_{t-1},M)\)</span>，considering there may exist multiple positions with <span class="math inline">\(y_{t−1}\)</span> in the source sequence.</p>
 <p>实质上这里的是把source中与<span class="math inline">\(y_{t-1}\)</span>相同的词加权求和了，权重与多个相同词概率的归一化</p>
-<p>###Hybrid Addressing of M</p>
+<p>### Hybrid Addressing of M</p>
 <p>combines both content-based and location-based addressing.</p>
 <ul>
 <li><p>Location-based Addressing:</p>

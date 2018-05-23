@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://luxingwu.com/2018/05/20/2018-05-20/</loc>
-    <lastmod>2018-05-23T15:13:52.732Z</lastmod>
+    <lastmod>2018-05-23T15:16:03.936Z</lastmod>
     <data>
         <display>
         <title>AAAI18-Sequential Copying Networks</title>
@@ -331,9 +331,9 @@
          
         <tag>深度学习</tag>
          
-        <tag>Dialogue Generation</tag>
-         
         <tag>AAAI</tag>
+         
+        <tag>Dialogue Generation</tag>
          
          
            
@@ -379,11 +379,11 @@
         <title>中文分词之百度大脑nlp_sdk</title>
         <pubTime>2017-01-16T15:30:28.000Z</pubTime>
         
+        <tag>Java</tag>
+         
         <tag>机器学习</tag>
          
         <tag>NLP</tag>
-         
-        <tag>Java</tag>
          
          
            
@@ -531,9 +531,9 @@
         <title>自动问答之微信图灵机器人</title>
         <pubTime>2017-01-20T15:22:05.000Z</pubTime>
         
-        <tag>微信</tag>
-         
         <tag>Java</tag>
+         
+        <tag>微信</tag>
          
         <tag>图灵机器人</tag>
          

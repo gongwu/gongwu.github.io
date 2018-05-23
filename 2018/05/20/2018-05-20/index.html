@@ -103,21 +103,24 @@
 <meta property="og:site_name" content="宫悟桑的小屋">
 <meta property="og:description" content="AAAI18-Sequential Copying Networks Motivation  only considers single word copying from the source sentences copied words usually form a continuous chunk of the output, exhibiting a “sequential cop">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="d:/Hexo/source_posts/2018-05-20/01.png">
-<meta property="og:image" content="d:/Hexo/source_posts/2018-05-20/02.png">
-<meta property="og:image" content="d:/Hexo/source_posts/2018-05-20/03.png">
-<meta property="og:image" content="d:/Hexo/source_posts/2018-05-20/04.png">
-<meta property="og:image" content="d:/Hexo/source_posts/2018-05-20/05.png">
-<meta property="og:image" content="d:/Hexo/source_posts/2018-05-20/06.png">
-<meta property="og:image" content="d:/Hexo/source_posts/2018-05-20/07.png">
-<meta property="og:image" content="d:/Hexo/source_posts/2018-05-20/08.png">
-<meta property="og:image" content="d:/Hexo/source_posts/2018-05-20/09.png">
-<meta property="og:image" content="d:/Hexo/source_posts/2018-05-20/10.png">
-<meta property="og:updated_time" content="2018-05-23T11:51:33.615Z">
+<meta property="og:image" content="http://luxingwu.com/2018/05/20/2018-05-20/01.png">
+<meta property="og:image" content="http://luxingwu.com/2018/05/20/2018-05-20/02.png">
+<meta property="og:image" content="http://luxingwu.com/2018/05/20/2018-05-20/03.png">
+<meta property="og:image" content="http://luxingwu.com/2018/05/20/2018-05-20/04.png">
+<meta property="og:image" content="http://luxingwu.com/2018/05/20/2018-05-20/05.png">
+<meta property="og:image" content="http://luxingwu.com/2018/05/20/2018-05-20/06.png">
+<meta property="og:image" content="http://luxingwu.com/2018/05/20/2018-05-20/07.png">
+<meta property="og:image" content="http://luxingwu.com/2018/05/20/2018-05-20/08.png">
+<meta property="og:image" content="http://luxingwu.com/2018/05/20/2018-05-20/09.png">
+<meta property="og:image" content="http://luxingwu.com/2018/05/20/2018-05-20/10.png">
+<meta property="og:image" content="http://luxingwu.com/2018/05/20/2018-05-20/11.png">
+<meta property="og:image" content="http://luxingwu.com/2018/05/20/2018-05-20/13.png">
+<meta property="og:image" content="http://luxingwu.com/2018/05/20/2018-05-20/14.png">
+<meta property="og:updated_time" content="2018-05-23T14:37:07.294Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AAAI18-Sequential Copying Networks">
 <meta name="twitter:description" content="AAAI18-Sequential Copying Networks Motivation  only considers single word copying from the source sentences copied words usually form a continuous chunk of the output, exhibiting a “sequential cop">
-<meta name="twitter:image" content="d:/Hexo/source_posts/2018-05-20/01.png">
+<meta name="twitter:image" content="http://luxingwu.com/2018/05/20/2018-05-20/01.png">
 
 
 
@@ -387,11 +390,7 @@
 <li><p>copied words usually form a continuous chunk of the output, exhibiting a “sequential copying” phenomenon</p></li>
 <li><p>Therefore, this “single word copy” paradigm may introduce errors due to these separate decisions.</p></li>
 </ul>
-<p>​</p>
-<div class="figure">
-<img src="D:\Hexo\source_posts\2018-05-20\01.png" alt="01">
-<p class="caption">01</p>
-</div>
+<p><img src="/2018/05/20/2018-05-20/01.png" alt="01.png" title=""></p>
 <h2 id="model">Model</h2>
 <h3 id="overview">Overview</h3>
 <p>three main components:</p>
@@ -406,10 +405,7 @@
 <li><p>copy state transducer</p>
 <p>update the copying state so that the pointer network can predict the end position</p></li>
 </ul>
-<div class="figure">
-<img src="D:\Hexo\source_posts\2018-05-20\02.png" alt="02">
-<p class="caption">02</p>
-</div>
+<img src="/2018/05/20/2018-05-20/02.png" alt="02.png" title="">
 <h3 id="encoder">Encoder</h3>
 <p>略</p>
 <h3 id="sequential-copying-mechanism">Sequential Copying Mechanism</h3>
@@ -420,46 +416,78 @@
 <li>the decoder should switch between the generate mode and copy mode smoothly</li>
 </ul>
 <p>In SeqCopyNet, the decoder memory vector <span class="math inline">\(m_t\)</span> plays an important role:</p>
-<div class="figure">
-<img src="D:\Hexo\source_posts\2018-05-20\03.png" alt="03">
-<p class="caption">03</p>
+<div class="image-size-200" style="width:50%; text-align: center">
+<p>​ <img src="/2018/05/20/2018-05-20/03.png" alt="03.png" title=""></p>
 </div>
 <p>the copy switch gate network (G) is a Multilayer Perceptron (MLP) with two hidden layers:</p>
-<div class="figure">
-<img src="D:\Hexo\source_posts\2018-05-20\04.png" alt="04">
-<p class="caption">04</p>
+<div class="image-size-200" style="width:50%; text-align: center">
+<p>​ <img src="/2018/05/20/2018-05-20/04.png" alt="04.png" title=""></p>
 </div>
 <p>The copy probability <span class="math inline">\(p_c\)</span>and generate probability <span class="math inline">\(p_g\)</span> are defined as:</p>
-<div class="figure">
-<img src="D:\Hexo\source_posts\2018-05-20\05.png" alt="05">
-<p class="caption">05</p>
+<div class="image-size-200" style="width:50%; text-align: center">
+<p>​ <img src="/2018/05/20/2018-05-20/05.png" alt="05.png" title=""></p>
 </div>
 <p><strong>Generate Mode</strong>:</p>
-<div class="figure">
-<img src="D:\Hexo\source_posts\2018-05-20\06.png" alt="06">
-<p class="caption">06</p>
+<div class="image-size-200" style="width:50%; text-align: center">
+<p>​ <img src="/2018/05/20/2018-05-20/06.png" alt="06.png" title=""></p>
 </div>
 <p><strong>Copy Mode</strong>:</p>
-<p>start query vector <span class="math inline">\(q_s\)</span>: <img src="D:\Hexo\source_posts\2018-05-20\07.png" alt="07"></p>
+<p>start query vector <span class="math inline">\(q_s\)</span>:</p>
+<div class="image-size-200" style="width:50%; text-align: center">
+<p>​ <img src="/2018/05/20/2018-05-20/07.png" alt="07.png" title=""></p>
+</div>
 <p><span class="math inline">\(copy_s\)</span> is the end position and <span class="math inline">\(p_{copy_s}\)</span> is the probability of <span class="math inline">\(copy_s\)</span></p>
 <p>copying context state vector <span class="math inline">\(c_s\)</span></p>
-<div class="figure">
-<img src="D:\Hexo\source_posts\2018-05-20\08.png" alt="08">
-<p class="caption">08</p>
+<div class="image-size-200" style="width:50%; text-align: center">
+<p>​ <img src="/2018/05/20/2018-05-20/08.png" alt="08.png" title=""></p>
 </div>
 <p><span class="math inline">\(copy_e\)</span> is the end position and <span class="math inline">\(p_{copy_e}\)</span> is the probability of <span class="math inline">\(copy_e\)</span></p>
-<div class="figure">
-<img src="D:\Hexo\source_posts\2018-05-20\09.png" alt="09">
-<p class="caption">09</p>
+<div class="image-size-200" style="width:50%; text-align: center">
+<p>​ <img src="/2018/05/20/2018-05-20/09.png" alt="09.png" title=""></p>
 </div>
 <p>the probability of copying this sub-span:</p>
-<div class="figure">
-<img src="D:\Hexo\source_posts\2018-05-20\10.png" alt="10">
-<p class="caption">10</p>
+<div class="image-size-200" style="width:50%; text-align: center">
+<p>​ <img src="/2018/05/20/2018-05-20/10.png" alt="10.png" title=""></p>
 </div>
 <p><strong>Copy Run for Multi-word Span</strong>:</p>
 <p>adapt itself to smoothly switching between these two modes:</p>
 <p>make the decoder GRU keep its state updated when it copies a long sequence</p>
+<ul>
+<li>During training:</li>
+</ul>
+<p>keeping the decoder running over all output words</p>
+<ul>
+<li>During testing:</li>
+</ul>
+<p>decoder consumes the last generated word <span class="math inline">\(y_{t−1}\)</span> and GRU state <span class="math inline">\(s_{t−1}\)</span> at time step t</p>
+<h2 id="experiments">Experiments</h2>
+<p>Task 1: Question Generation give a sentence and its desired answer</p>
+<p>Dataset: Question Generation dataset based on SQuAD Evaluation Metric: BLEU-4</p>
+<div class="image-size-200" style="width:100%; text-align: center">
+<p>​ <img src="/2018/05/20/2018-05-20/11.png" alt="11.png" title=""></p>
+</div>
+<p>Task 2: Abstractive Sentence Summarization Dataset: English Gigaword: Rush, Chopra, and Weston (2015)*, Zhou et al. (2017b) and our internal test sets Evaluation Metric: ROUGE F1</p>
+<div class="image-size-200" style="width:50%; text-align: center">
+<p>​ <img src="/2018/05/20/2018-05-20/13.png" alt="13.png" title=""></p>
+</div>
+<h3 id="example-output">Example Output</h3>
+<ul>
+<li>SeqCopyNet can copy long spans from input sentence</li>
+<li>SeqCopyNet is good at detecting boundaries:</li>
+<li>named entities</li>
+<li>noun phrases</li>
+<li>After copying a long span, the decoder can still generate well</li>
+</ul>
+<div class="image-size-200" style="width:50%; text-align: center">
+<p>​ <img src="/2018/05/20/2018-05-20/14.png" alt="14.png" title=""></p>
+</div>
+<h1 id="conclusion">Conclusion</h1>
+<p>SeqCopyNet enables multi-word span copying, and can be integrated with seq2seq framework</p>
+<ul>
+<li>SeqCopyNet is good at detecting boundaries, such as named entity</li>
+<li>We release a new abstractive sentence summarization test set</li>
+<li>Future work: apply SeqCopyNet to other tasks such as dialogue generation</li>
+</ul>
 
       
     </div>
@@ -651,7 +679,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#aaai18-sequential-copying-networks"><span class="nav-number">1.</span> <span class="nav-text">AAAI18-Sequential Copying Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#model"><span class="nav-number">1.2.</span> <span class="nav-text">Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#overview"><span class="nav-number">1.2.1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#encoder"><span class="nav-number">1.2.2.</span> <span class="nav-text">Encoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sequential-copying-mechanism"><span class="nav-number">1.2.3.</span> <span class="nav-text">Sequential Copying Mechanism</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#aaai18-sequential-copying-networks"><span class="nav-number">1.</span> <span class="nav-text">AAAI18-Sequential Copying Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#motivation"><span class="nav-number">1.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#model"><span class="nav-number">1.2.</span> <span class="nav-text">Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#overview"><span class="nav-number">1.2.1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#encoder"><span class="nav-number">1.2.2.</span> <span class="nav-text">Encoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sequential-copying-mechanism"><span class="nav-number">1.2.3.</span> <span class="nav-text">Sequential Copying Mechanism</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#experiments"><span class="nav-number">1.3.</span> <span class="nav-text">Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#example-output"><span class="nav-number">1.3.1.</span> <span class="nav-text">Example Output</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#conclusion"><span class="nav-number">2.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
             
 
           </div>

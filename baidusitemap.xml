@@ -4,8 +4,72 @@
 
     
   <url>
+    <loc>http://luxingwu.com/2018/06/20/2018-06-20/</loc>
+    <lastmod>2018-06-20T15:44:36.245Z</lastmod>
+    <data>
+        <display>
+        <title>2018-06-20</title>
+        <pubTime>2018-06-20T15:25:41.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="生活" url="http://luxingwu.com/categories/%E7%94%9F%E6%B4%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2017/01/13/2017-01-13/</loc>
+    <lastmod>2018-06-20T15:31:33.057Z</lastmod>
+    <data>
+        <display>
+        <title>小站二迁</title>
+        <pubTime>2017-01-13T10:05:29.000Z</pubTime>
+        
+        <tag>建站</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术，生活" url="http://luxingwu.com/categories/%E6%8A%80%E6%9C%AF%EF%BC%8C%E7%94%9F%E6%B4%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/03/06/2018-06-06/</loc>
+    <lastmod>2018-06-10T12:51:54.524Z</lastmod>
+    <data>
+        <display>
+        <title>ACL18-A Unified Model for Extractive and Abstractive Summarization using Inconsistency Loss</title>
+        <pubTime>2018-03-06T10:16:12.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>ACL</tag>
+         
+        <tag>Abstractive Summarization</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://luxingwu.com/2018/05/20/2018-05-20/</loc>
-    <lastmod>2018-05-23T15:16:03.936Z</lastmod>
+    <lastmod>2018-05-25T01:05:40.861Z</lastmod>
     <data>
         <display>
         <title>AAAI18-Sequential Copying Networks</title>
@@ -18,6 +82,32 @@
         <tag>Abstractive Summarization</tag>
          
         <tag>AAAI</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/03/06/2018-03-06/</loc>
+    <lastmod>2018-05-24T02:02:33.081Z</lastmod>
+    <data>
+        <display>
+        <title>ACL17-Get To The Point: Summarization with Pointer-Generator Networks</title>
+        <pubTime>2018-03-06T10:16:12.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>ACL</tag>
+         
+        <tag>Abstractive Summarization</tag>
          
          
            
@@ -346,32 +436,6 @@
 
     
   <url>
-    <loc>http://luxingwu.com/2018/03/06/2018-03-06/</loc>
-    <lastmod>2018-03-21T09:56:17.189Z</lastmod>
-    <data>
-        <display>
-        <title>ACL17-Get To The Point: Summarization with Pointer-Generator Networks</title>
-        <pubTime>2018-03-06T10:16:12.000Z</pubTime>
-        
-        <tag>NLP</tag>
-         
-        <tag>深度学习</tag>
-         
-        <tag>ACL</tag>
-         
-        <tag>Abstractive Summarization</tag>
-         
-         
-           
-             
-              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://luxingwu.com/2017/01/16/2017-01-16/</loc>
     <lastmod>2018-03-07T08:23:18.683Z</lastmod>
     <data>
@@ -381,9 +445,9 @@
         
         <tag>Java</tag>
          
-        <tag>机器学习</tag>
-         
         <tag>NLP</tag>
+         
+        <tag>机器学习</tag>
          
          
            
@@ -403,9 +467,9 @@
         <title>中文分词原理之最大长度匹配法</title>
         <pubTime>2017-01-14T15:17:41.000Z</pubTime>
         
-        <tag>机器学习</tag>
-         
         <tag>NLP</tag>
+         
+        <tag>机器学习</tag>
          
         <tag>算法</tag>
          
@@ -457,26 +521,6 @@
            
              
               <breadCrumb title="知识小结" url="http://luxingwu.com/categories/%E7%9F%A5%E8%AF%86%E5%B0%8F%E7%BB%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://luxingwu.com/2017/01/13/2017-01-13/</loc>
-    <lastmod>2017-08-11T10:13:58.500Z</lastmod>
-    <data>
-        <display>
-        <title>小站二迁</title>
-        <pubTime>2017-01-13T10:05:29.000Z</pubTime>
-        
-        <tag>建站</tag>
-         
-         
-           
-             
-              <breadCrumb title="技术，生活" url="http://luxingwu.com/categories/%E6%8A%80%E6%9C%AF%EF%BC%8C%E7%94%9F%E6%B4%BB/"/>
           
         </display>
     </data>

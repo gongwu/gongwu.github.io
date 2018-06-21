@@ -5,16 +5,42 @@
     
   <url>
     <loc>http://luxingwu.com/2018/06/20/2018-06-20/</loc>
-    <lastmod>2018-06-20T19:03:43.509Z</lastmod>
+    <lastmod>2018-06-21T03:27:55.233Z</lastmod>
     <data>
         <display>
-        <title>2018-06-20</title>
+        <title>暑期读书计划与书单列表</title>
         <pubTime>2018-06-20T15:25:41.000Z</pubTime>
         
          
            
              
               <breadCrumb title="生活" url="http://luxingwu.com/categories/%E7%94%9F%E6%B4%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/03/06/2018-06-06/</loc>
+    <lastmod>2018-06-21T02:57:33.999Z</lastmod>
+    <data>
+        <display>
+        <title>ACL18-A Unified Model for Extractive and Abstractive Summarization using Inconsistency Loss</title>
+        <pubTime>2018-03-06T10:16:12.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>ACL</tag>
+         
+        <tag>Abstractive Summarization</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
           
         </display>
     </data>
@@ -35,32 +61,6 @@
            
              
               <breadCrumb title="技术，生活" url="http://luxingwu.com/categories/%E6%8A%80%E6%9C%AF%EF%BC%8C%E7%94%9F%E6%B4%BB/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://luxingwu.com/2018/03/06/2018-06-06/</loc>
-    <lastmod>2018-06-10T12:51:54.524Z</lastmod>
-    <data>
-        <display>
-        <title>ACL18-A Unified Model for Extractive and Abstractive Summarization using Inconsistency Loss</title>
-        <pubTime>2018-03-06T10:16:12.000Z</pubTime>
-        
-        <tag>NLP</tag>
-         
-        <tag>深度学习</tag>
-         
-        <tag>ACL</tag>
-         
-        <tag>Abstractive Summarization</tag>
-         
-         
-           
-             
-              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
           
         </display>
     </data>
@@ -421,9 +421,9 @@
          
         <tag>深度学习</tag>
          
-        <tag>AAAI</tag>
-         
         <tag>Dialogue Generation</tag>
+         
+        <tag>AAAI</tag>
          
          
            
@@ -443,11 +443,11 @@
         <title>中文分词之百度大脑nlp_sdk</title>
         <pubTime>2017-01-16T15:30:28.000Z</pubTime>
         
+        <tag>Java</tag>
+         
         <tag>机器学习</tag>
          
         <tag>NLP</tag>
-         
-        <tag>Java</tag>
          
          
            

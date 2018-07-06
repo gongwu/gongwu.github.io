@@ -4,6 +4,34 @@
 
     
   <url>
+    <loc>http://luxingwu.com/2018/07/06/2018-07-06/</loc>
+    <lastmod>2018-07-06T16:13:57.633Z</lastmod>
+    <data>
+        <display>
+        <title>Dialogue and Interactive Systems & Generation & Summarization Papers in COLING2018</title>
+        <pubTime>2018-07-06T15:07:34.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>Abstractive Summarization</tag>
+         
+        <tag>Dialogue Generation</tag>
+         
+        <tag>Text Generation</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文列表" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E5%88%97%E8%A1%A8/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://luxingwu.com/2018/06/20/2018-06-20/</loc>
     <lastmod>2018-06-21T03:27:55.233Z</lastmod>
     <data>
@@ -33,9 +61,9 @@
          
         <tag>深度学习</tag>
          
-        <tag>ACL</tag>
-         
         <tag>Abstractive Summarization</tag>
+         
+        <tag>ACL</tag>
          
          
            
@@ -105,9 +133,9 @@
          
         <tag>深度学习</tag>
          
-        <tag>ACL</tag>
-         
         <tag>Abstractive Summarization</tag>
+         
+        <tag>ACL</tag>
          
          
            
@@ -131,9 +159,9 @@
          
         <tag>深度学习</tag>
          
-        <tag>ACL</tag>
-         
         <tag>Abstractive Summarization</tag>
+         
+        <tag>ACL</tag>
          
          
            
@@ -157,9 +185,9 @@
          
         <tag>深度学习</tag>
          
-        <tag>ACL</tag>
-         
         <tag>Abstractive Summarization</tag>
+         
+        <tag>ACL</tag>
          
          
            
@@ -393,9 +421,9 @@
          
         <tag>深度学习</tag>
          
-        <tag>Abstractive Summarization</tag>
-         
         <tag>ICLR</tag>
+         
+        <tag>Abstractive Summarization</tag>
          
         <tag>Reinforcement Learning</tag>
          
@@ -575,9 +603,9 @@
         <title>自动问答之微信图灵机器人</title>
         <pubTime>2017-01-20T15:22:05.000Z</pubTime>
         
-        <tag>微信</tag>
-         
         <tag>Java</tag>
+         
+        <tag>微信</tag>
          
         <tag>图灵机器人</tag>
          

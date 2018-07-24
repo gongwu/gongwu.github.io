@@ -4,6 +4,58 @@
 
     
   <url>
+    <loc>http://luxingwu.com/2018/07/22/2018-07-22/</loc>
+    <lastmod>2018-07-24T15:18:52.885Z</lastmod>
+    <data>
+        <display>
+        <title>IJCAI18-Get The Point of My Utterance! Learning Towards Effective Responses with Multi-Head Attention Mechanism</title>
+        <pubTime>2018-07-22T11:19:41.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>Dialogue Generation</tag>
+         
+        <tag>IJCAI</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://luxingwu.com/2018/07/21/2018-07-21/</loc>
+    <lastmod>2018-07-22T11:05:49.954Z</lastmod>
+    <data>
+        <display>
+        <title>NAACL18-Neural Text Generation in Stories Using Entity Representations as Context</title>
+        <pubTime>2018-07-21T11:51:31.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+        <tag>深度学习</tag>
+         
+        <tag>Text Generation</tag>
+         
+        <tag>NAACL</tag>
+         
+         
+           
+             
+              <breadCrumb title="论文阅读" url="http://luxingwu.com/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://luxingwu.com/2018/07/06/2018-07-06/</loc>
     <lastmod>2018-07-06T16:13:57.633Z</lastmod>
     <data>
@@ -213,9 +265,9 @@
          
         <tag>ACL</tag>
          
-        <tag>Dialogue Generation</tag>
-         
         <tag>Multi-turn Dialogue</tag>
+         
+        <tag>Dialogue Generation</tag>
          
          
            
@@ -267,11 +319,11 @@
          
         <tag>ACL</tag>
          
+        <tag>Multi-turn Dialogue</tag>
+         
         <tag>Dialogue Generation</tag>
          
         <tag>CVAE</tag>
-         
-        <tag>Multi-turn Dialogue</tag>
          
          
            
@@ -297,9 +349,9 @@
          
         <tag>ACL</tag>
          
-        <tag>Multi-turn Dialogue</tag>
-         
         <tag>Dialogue Retrieval</tag>
+         
+        <tag>Multi-turn Dialogue</tag>
          
          
            
@@ -603,9 +655,9 @@
         <title>自动问答之微信图灵机器人</title>
         <pubTime>2017-01-20T15:22:05.000Z</pubTime>
         
-        <tag>Java</tag>
-         
         <tag>微信</tag>
+         
+        <tag>Java</tag>
          
         <tag>图灵机器人</tag>
          

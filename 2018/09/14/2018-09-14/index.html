@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+ <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+ <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="NLP,深度学习,ACL,AAAI,Dialogue,Commonsense Knowledge," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="对话系统外部知识引入小结  Augmenting End-to-End Dialogue Systems with Commonsense Knowledge AAAI-2018 A Knowledge-Grounded Neural Conversation Model AAAI-2018 Commonsense Knowledge Aware Conversation Generati">
+<meta name="keywords" content="NLP,深度学习,ACL,AAAI,Dialogue,Commonsense Knowledge">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对话系统外部知识引入小结">
+<meta property="og:url" content="http://luxingwu.com/2018/09/14/2018-09-14/index.html">
+<meta property="og:site_name" content="宫悟桑的小屋">
+<meta property="og:description" content="对话系统外部知识引入小结  Augmenting End-to-End Dialogue Systems with Commonsense Knowledge AAAI-2018 A Knowledge-Grounded Neural Conversation Model AAAI-2018 Commonsense Knowledge Aware Conversation Generati">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://luxingwu.com/2018/09/14/2018-09-14/01.png">
+<meta property="og:image" content="http://luxingwu.com/2018/09/14/2018-09-14/02.png">
+<meta property="og:image" content="http://luxingwu.com/2018/09/14/2018-09-14/17.png">
+<meta property="og:image" content="http://luxingwu.com/2018/09/14/2018-09-14/18.png">
+<meta property="og:image" content="http://luxingwu.com/2018/09/14/2018-09-14/19.png">
+<meta property="og:image" content="http://luxingwu.com/2018/09/14/2018-09-14/20.png">
+<meta property="og:image" content="http://luxingwu.com/2018/09/14/2018-09-14/03.png">
+<meta property="og:image" content="http://luxingwu.com/2018/09/14/2018-09-14/04.png">
+<meta property="og:image" content="http://luxingwu.com/2018/09/14/2018-09-14/05.png">
+<meta property="og:image" content="http://luxingwu.com/2018/09/14/2018-09-14/07.png">
+<meta property="og:image" content="http://luxingwu.com/2018/09/14/2018-09-14/08.png">
+<meta property="og:image" content="http://luxingwu.com/2018/09/14/2018-09-14/09.png">
+<meta property="og:image" content="http://luxingwu.com/2018/09/14/2018-09-14/10.png">
+<meta property="og:image" content="http://luxingwu.com/2018/09/14/2018-09-14/11.png">
+<meta property="og:image" content="http://luxingwu.com/2018/09/14/2018-09-14/12.png">
+<meta property="og:image" content="http://luxingwu.com/2018/09/14/2018-09-14/13.png">
+<meta property="og:image" content="http://luxingwu.com/2018/09/14/2018-09-14/14.png">
+<meta property="og:image" content="http://luxingwu.com/2018/09/14/2018-09-14/15.png">
+<meta property="og:image" content="http://luxingwu.com/2018/09/14/2018-09-14/16.png">
+<meta property="og:updated_time" content="2018-10-05T04:49:50.995Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="对话系统外部知识引入小结">
+<meta name="twitter:description" content="对话系统外部知识引入小结  Augmenting End-to-End Dialogue Systems with Commonsense Knowledge AAAI-2018 A Knowledge-Grounded Neural Conversation Model AAAI-2018 Commonsense Knowledge Aware Conversation Generati">
+<meta name="twitter:image" content="http://luxingwu.com/2018/09/14/2018-09-14/01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://luxingwu.com/2018/09/14/2018-09-14/"/>
+
+
+
+
+
+  <title>对话系统外部知识引入小结 | 宫悟桑的小屋</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">宫悟桑的小屋</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://luxingwu.com/2018/09/14/2018-09-14/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luxingwu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/headimage.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宫悟桑的小屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">对话系统外部知识引入小结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-14T14:55:57+08:00">
+                2018-09-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/论文阅读/" itemprop="url" rel="index">
+                    <span itemprop="name">论文阅读</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/论文阅读/知识小结/" itemprop="url" rel="index">
+                    <span itemprop="name">知识小结</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/14/2018-09-14/" class="leancloud_visitors" data-flag-title="对话系统外部知识引入小结">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+				 <span>℃</span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="对话系统外部知识引入小结">对话系统外部知识引入小结</h1>
+<ul>
+<li>Augmenting End-to-End Dialogue Systems with Commonsense Knowledge AAAI-2018</li>
+<li>A Knowledge-Grounded Neural Conversation Model AAAI-2018</li>
+<li>Commonsense Knowledge Aware Conversation Generation with Graph Attention IJCAI-2018</li>
+</ul>
+<h2 id="background">Background</h2>
+<ul>
+<li>以往的方法大多数都是从语义方面进行考虑，如何利用上下文的语义信息从而使得对话的回复质量（通常分为相关性，多样性）更高，这一方面目前已经取得了不错的成就，不管是基于检索还是基于生成。尽管如此还是会出现回复缺乏逻辑性（一致性问题），回复太通用（多样性问题）。这就使得对话系统利用外部知识成为必要，因为很多上下文实体的相关知识是不存在于训练语料中的。</li>
+<li>目前已经有一些工作做了对于外部知识的探索。知识按结构分为有结构的知识（知识图谱）和无结构的知识（餐厅的评论，手册），有结构的知识因为其大规模和通用性常用于开放领域的对话，而无结构的知识常用于特定领域的对话，帮助完成特定任务。</li>
+</ul>
+<h2 id="augmenting-end-to-end-dialogue-systems-with-commonsense-knowledge">Augmenting End-to-End Dialogue Systems with Commonsense Knowledge</h2>
+<h3 id="motivation">Motivation</h3>
+<p>验证在对话中引入Commonsense Knowledge的有效性。</p>
+<p>在基于检索的对话系统中引入：</p>
+<ul>
+<li>容易验证</li>
+<li>少量训练数据即可</li>
+</ul>
+<h3 id="model">Model</h3>
+<ul>
+<li>Dual-LSTM</li>
+</ul>
+<p>以Dual-LSTM为基本架构，也就是最早的Ubuntu数据集上的模型为基本架构：</p>
+<p><span class="math inline">\(f(x,y) = \sigma (x^TWy)\)</span></p>
+<p>一个双仿射来计算上下文和回复之间的匹配得分</p>
+<ul>
+<li><p>Commonsense Knowledge Retrieval</p></li>
+<li><p>定义：对于每一个concept，与他相关的关系三元组为assertion<span class="math inline">\(&lt;c_1,r,c_2&gt;\)</span></p></li>
+<li><p>step1：预先构建好一个字典，key为每一个concept，值为与concept相关的所有assertions</p></li>
+<li><p>step2：对于每一个上下文，检索与之匹配的少于五个的concept的所有assertions</p></li>
+<li><p>Tri-LSTM Encoder</p></li>
+<li>将assertion转换成序列：<span class="math inline">\([c_{11},c_{12},c_{13},...,r,c_{21},c_{22},c_{23},...]\)</span></li>
+<li><p>用额外的LSTM对assertions进行建模，分别与候选回复做匹配，对得到的所有的匹配得分做最大化</p></li>
+<li><p>最后将最大的匹配得分与Dual-LSTM的匹配得分相加</p></li>
+</ul>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/09/14/2018-09-14/01.png" alt="01.png" title=""></p>
+</div>
+<h3 id="experiments">Experiments</h3>
+<h4 id="dataset">DataSet</h4>
+<p>Twitter Dialogue Dataset</p>
+<h4 id="baseline">Baseline</h4>
+<ul>
+<li>Supervised Word Embeddings：不用LSTM直接用Embedding</li>
+<li>Memory Networks：用断言构作为memory</li>
+</ul>
+<h4 id="results">Results</h4>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/09/14/2018-09-14/02.png" alt="02.png" title=""></p>
+</div>
+<h3 id="conclusion">Conclusion</h3>
+<p>缺点：</p>
+<ul>
+<li>模型上的创新性，用的别人的模型baseline也很老</li>
+<li>性能也不咋的</li>
+<li>实验量也不够大</li>
+</ul>
+<p>亮点：</p>
+<p>在对话上初步尝试了在开放领域融入通用知识</p>
+<h2 id="a-knowledge-grounded-neural-conversation-model">A Knowledge-Grounded Neural Conversation Model</h2>
+<h3 id="motivation-1">Motivation</h3>
+<p>这篇文章作者认为在大规模对话语料中训练的神经网络模型可以生产通用的回复但却缺乏内容性，而目标导向的对话系统却又有明确的槽需要填充而缺乏通用性，所以这篇文章的目的是想在通用对话模型的基础上引入外部知识，是的对话系统的回复既有通用性又有内容性。大量的对话数据用来学习对话模式，外部知识用来拓展实体。</p>
+<ul>
+<li><p>previous:</p></li>
+<li>models have been mostly applied to casual scenarios</li>
+<li><p>lack grounding in the real world and do not have access to external knowledge (textual or structured)</p></li>
+<li><p>ours:</p></li>
+<li>allowing the model to be versatile and applicable: conditioning responses on both conversation history and external “facts”</li>
+<li>fully data-driven models: versatility and scalability</li>
+<li>produce models that are usefully grounded in external knowledge</li>
+<li><p>Much of this information is not found in structured databases either, but is textual, and can be mined from online resources</p></li>
+</ul>
+<p>Our purpose is to explore the space of less clearly goal- directed, but nonetheless informative conversation that does not demand explicit slot-filling.</p>
+<ul>
+<li><p>dialogue datasets are still very far from containing discussions of every entry in Wikipedia, Foursquare, Goodreads, or IMDB</p></li>
+<li><p>many conversational patterns exhibited in the data (e.g., for similar entities) would be redundant</p></li>
+</ul>
+<h3 id="model-1">Model</h3>
+<ul>
+<li>准备阶段</li>
+<li>构建外部知识（事实），取无解构文本中的实体词，以命名实体为索引</li>
+<li>取对话上下文中焦点词构成query</li>
+<li>用query去外部知识中检索所有相关的事实</li>
+</ul>
+<p>得到所有上下文的相关事实，将上下文和检索到的事实分别编码</p>
+<ul>
+<li><p>multi-task learning</p></li>
+<li>one purely conversational <span class="math inline">\((S,R)\)</span></li>
+<li><p>other task exposes the full model <span class="math inline">\(({f_1, ...,f_k,S}, R)\)</span></p></li>
+<li><p>Dialog Encoder and Decoder（GRU）</p></li>
+</ul>
+<p>two-layer</p>
+<ul>
+<li>Facts Encoder</li>
+</ul>
+<p><span class="math inline">\(S = {s_1, s_2, ..., s_n}\)</span> , <span class="math inline">\(F = {f_1, f_2, ..., f_n}\)</span></p>
+<p>S: input sentence ---&gt; RNN encode ----&gt; u</p>
+<p>F: bag of words <span class="math inline">\(r_i\)</span></p>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/09/14/2018-09-14/17.png" alt="17.png" title=""></p>
+</div>
+<p>Memory Network (1-layer)</p>
+<h3 id="experiments-1">Experiments</h3>
+<h4 id="dataset-1">DataSet</h4>
+<ul>
+<li>Foursquare:</li>
+<li>comments left by customers about restaurants and other, usually commercial, establishments.</li>
+<li>1.1M tips relating to establishments in North America</li>
+<li>Twitter:</li>
+<li>23M general dataset of 3-turn conversations</li>
+<li>1M grounded dataset: on the basis of Twitter handles found in the Foursquare tip data, collected approximately 1 million two-turn conversations that contain entities that tie to Foursquare</li>
+</ul>
+<h4 id="grounded-conversation-datasets">Grounded Conversation Datasets</h4>
+<ul>
+<li><p>calculates cosine similarity between the input sentence and each of the tips and retains 10 tips with the highest score.</p></li>
+<li><p>dev and test(4K):</p></li>
+<li><p>Perplexity according to a 1-gram LM trained on all the tips containing that handle</p></li>
+<li><p>χ-square score, which measures how much content each token bears in relation to the handle.</p>
+<p>15k top-ranked conversations using the LM score and 15k using the chi-square score. A further 15k conversations were randomly sampled. then randomly sampled 10k conversations from these 45K.</p>
+<p>Crowdsourced human judges:4K</p></li>
+</ul>
+<h4 id="multi-task-learning">Multi-Task Learning</h4>
+<ul>
+<li>FACTS task: full model <span class="math inline">\(({f_1, ...,f_k,S}, R)\)</span></li>
+<li>NOFACTS task: <span class="math inline">\((S,R)\)</span></li>
+<li>AUTOENCODER task: <span class="math inline">\(({f_1, ...,f_k,S}, f_i)\)</span> replace the response with each of the facts</li>
+</ul>
+<p>AUTOENCODER tasks helps inject more factual content into the response.</p>
+<ul>
+<li>SEQ2SEQ: Trained on task NOFACTS with the 23M general conversation dataset.</li>
+<li>MTASK: Trained on two instances of the NOFACTS task, respectively with the 23M general dataset and 1M grounded dataset (but without the facts)</li>
+<li>MTASK-R: Trained on the NOFACTS task with the 23M dataset, and the FACTS task with the 1M grounded dataset.</li>
+<li>MTASK-F: Trained on the NOFACTS task with the 23M dataset, and the AUTOENCODER task with the 1M dataset.</li>
+<li>MTASK-RF: Blends MTASK-F and MTASK-R, as it incorporates 3 tasks: NOFACTS with the 23M general dataset, FACTS with the 1M grounded dataset, and AUTOENCODER again with the 1M dataset.</li>
+</ul>
+<h4 id="decoding-and-reranking">Decoding and Reranking</h4>
+<ul>
+<li>Decoder:</li>
+</ul>
+<p>beam-search decoder: 200</p>
+<ul>
+<li>Reranking:</li>
+</ul>
+<p>reranking score: <span class="math inline">\(logP(R|S,F) + \lambda logP(S|R) + \gamma |R|\)</span></p>
+<ul>
+<li><span class="math inline">\(logP(R|S,F)\)</span>: decoder</li>
+<li><span class="math inline">\(\gamma |R|\)</span>: word count</li>
+<li><span class="math inline">\(\lambda logP(S|R)\)</span>: deal with generating commonplace and generic responses (lijiwei那一套)</li>
+</ul>
+<h4 id="evaluation-metrics">Evaluation Metrics</h4>
+<p>corpus-level BLEU，perplexity and lexical diversity</p>
+<h4 id="results-1">Results</h4>
+<ul>
+<li>Automatic Evaluation:</li>
+</ul>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/09/14/2018-09-14/18.png" alt="18.png" title=""></p>
+</div>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/09/14/2018-09-14/19.png" alt="19.png" title=""></p>
+</div>
+<ul>
+<li>Human Evaluation:</li>
+</ul>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/09/14/2018-09-14/20.png" alt="20.png" title=""></p>
+</div>
+<h2 id="commonsense-knowledge-aware-conversation-generation-with-graph-attention">Commonsense Knowledge Aware Conversation Generation with Graph Attention</h2>
+<p>大家好，这是我本周讲的论文，本篇论文是发表在IJCAI2018上的一篇Distinguished Paper，本文作者在对话生成的任务上尝试使用大规模的常识知识并验证了其有效性，同时作者提出了基于图的动态和静态attention机制将知识实体关系图作为整体进行建模。</p>
+<h3 id="motivation-2">Motivation</h3>
+<ul>
+<li>previous：</li>
+<li>highly dependent on the quality of unstructured texts</li>
+<li>limited by the small-scale, domain-specific knowledge</li>
+<li>make use of knowledge triples (entities) separately and independently, instead of treating knowledge triples as a whole in a graph</li>
+<li>demonstrate how large-scale commonsense knowledge can facilitate language understanding and generation（first attempt that uses large-scale commonsense knowledge in conversation generation）</li>
+<li>our model treats each knowledge graph as a whole, which encodes more structured, connected semantic information in the graphs</li>
+</ul>
+<h3 id="model-2">Model</h3>
+<ul>
+<li>augments the semantic information of the post （编码阶段）</li>
+<li>the model attentively reads the retrieved knowledge graphs and the knowledge triples（解码阶段）</li>
+</ul>
+<h4 id="task-definition">Task Definition</h4>
+<ul>
+<li>Each word corresponds to a graph</li>
+<li>Each graph consists of a set of triples</li>
+<li>Each triple (head entity, relation, tail entity)</li>
+<li>TransE to represent the entities and relations: adopt a MLP to bridge the representation gap between knowledge base and unstructured conversational texts, a knowledge triple <span class="math inline">\(τ\)</span> is represented by <span class="math inline">\(k = (h, r, t) = MLP(TransE(h, r, t))\)</span></li>
+</ul>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/09/14/2018-09-14/03.png" alt="03.png" title=""></p>
+</div>
+<h4 id="knowledge-interpreter">Knowledge Interpreter</h4>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/09/14/2018-09-14/04.png" alt="04.png" title=""></p>
+</div>
+<h5 id="static-graph-attention">Static Graph Attention</h5>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/09/14/2018-09-14/05.png" alt="05.png" title=""></p>
+</div>
+<p>where <span class="math inline">\((h_n, r_n, t_n) = k_n\)</span></p>
+<p>The attention weight measures the association of a relation <span class="math inline">\(r_n\)</span> to a head entity <span class="math inline">\(h_n\)</span> and a tail entity <span class="math inline">\(t_n\)</span>.</p>
+<p>note: 通过关系来判断一个头结点与其尾结点有多相似，因为尾结点是图的中心结点，通过post的word检索得到的。</p>
+<p>concatenated vector <span class="math inline">\(e(x_t) = [w(x_t); g_i]\)</span> is obtained and fed to the GRU cell of the encoder</p>
+<h4 id="knowledge-aware-generator">Knowledge Aware Generator</h4>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/09/14/2018-09-14/07.png" alt="07.png" title=""></p>
+</div>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/09/14/2018-09-14/08.png" alt="08.png" title=""></p>
+</div>
+<ul>
+<li><span class="math inline">\(c_t\)</span> is the context vector</li>
+<li><span class="math inline">\(e(y_t)\)</span> is the concatenation of the word vector <span class="math inline">\(w(y_t)\)</span> and the previous knowledge triple vector <span class="math inline">\(k_j\)</span> from which the previous word <span class="math inline">\((y_t)\)</span> is selected</li>
+<li><span class="math inline">\(c_t^g\)</span> is context vectors attended on knowledge graph vectors {<span class="math inline">\(g_1, g_2, · · · , g_{N_G}\)</span>}</li>
+<li><span class="math inline">\(c_t^k\)</span> is context vectors attended on knowledge triple vectors {<span class="math inline">\(K(g_1),K(g_2), · · · ,K(g_{N_G})\)</span>}</li>
+</ul>
+<h5 id="dynamic-graph-attention">Dynamic Graph Attention</h5>
+<p>a hierarchical, top-down process:</p>
+<ul>
+<li>第一层attention：对整个图的表示做attention，整个图的表示是通过静态attention获取的</li>
+</ul>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/09/14/2018-09-14/09.png" alt="09.png" title=""></p>
+</div>
+<ul>
+<li>第二层attention：对每个图中的三元组做attention</li>
+</ul>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/09/14/2018-09-14/10.png" alt="10.png" title=""></p>
+</div>
+<ul>
+<li>Finally selects a generic word or an entity word with the following distributions:</li>
+</ul>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/09/14/2018-09-14/11.png" alt="11.png" title=""></p>
+</div>
+<p>Note: Entity words are taken from the neighboring entities of the knowledge triples. 有点类似于 Pointer-Generator Net</p>
+<h4 id="loss-function">Loss Function</h4>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/09/14/2018-09-14/12.png" alt="12.png" title=""></p>
+</div>
+<p>Additionally, we apply supervised signals on the knowledge aware generator layer to teacher-force the selection of an entity or a generic word</p>
+<h3 id="experiments-2">Experiments</h3>
+<h4 id="dataset-2">Dataset</h4>
+<ul>
+<li><p>Commonsense Knowledge Base</p></li>
+<li><p>ConceptNet</p>
+<p>we removed triples containing multi-word entities, and 120,850 triples were retained with 21,471 entities and 44 relations.</p></li>
+<li><p>Commonsense Conversation Dataset</p></li>
+<li><p>10M reddit single-round dialogs</p>
+<p>If a post-response pair can not be connected by any triple (that is, one entity appears in the post and the other in the response)</p>
+<p>sampled 10,000 pairs for validation</p>
+<p>constructed four test sets:</p>
+<ul>
+<li>high- frequency pairs</li>
+<li>medium-frequency pairs</li>
+<li>low-frequency pairs</li>
+<li>OOV pairs</li>
+</ul></li>
+</ul>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/09/14/2018-09-14/13.png" alt="13.png" title=""></p>
+</div>
+<h4 id="baselines">Baselines</h4>
+<ul>
+<li>seq2seq model (Seq2Seq)</li>
+<li>A knowledge-grounded model</li>
+<li>A copy network</li>
+</ul>
+<p>knowledge-grounded model 是用的三元组的Embedding作为memory的单元</p>
+<p>copy network是拷贝实体还是生成词</p>
+<h4 id="automatic-evaluation">Automatic Evaluation</h4>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/09/14/2018-09-14/14.png" alt="14.png" title=""></p>
+</div>
+<h4 id="manual-evaluation">Manual Evaluation</h4>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/09/14/2018-09-14/15.png" alt="15.png" title=""></p>
+</div>
+<h4 id="case-study">Case Study</h4>
+<div class="image-size-200" style="width:80%; text-align: center">
+<p>​ <img src="/2018/09/14/2018-09-14/16.png" alt="16.png" title=""></p>
+</div>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+            <a href="/tags/深度学习/" rel="tag"># 深度学习</a>
+          
+            <a href="/tags/ACL/" rel="tag"># ACL</a>
+          
+            <a href="/tags/AAAI/" rel="tag"># AAAI</a>
+          
+            <a href="/tags/Dialogue/" rel="tag"># Dialogue</a>
+          
+            <a href="/tags/Commonsense-Knowledge/" rel="tag"># Commonsense Knowledge</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/22/2018-07-22/" rel="next" title="IJCAI18-Get The Point of My Utterance! Learning Towards Effective Responses with Multi-Head Attention Mechanism">
+                <i class="fa fa-chevron-left"></i> IJCAI18-Get The Point of My Utterance! Learning Towards Effective Responses with Multi-Head Attention Mechanism
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/01/2018-10-01/" rel="prev" title="CCL2018-Task1-中移在线首届人工智能大赛">
+                CCL2018-Task1-中移在线首届人工智能大赛 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+	<div class="comment"></div>
+    <script>
+        new Valine({
+            // AV 对象来自上面引入av-min.js(老司机们不要开车➳♡゛扎心了老铁)
+            av: AV, 
+            el: '.comment', // 
+			notify: true, // 邮件提醒!!!
+			verify: true, // 验证码
+            app_id: 'XecypjdPpCg7MgoNcjp8sePj-gzGzoHsz', // 这里填写上面得到的APP ID
+            app_key: 'xFDVBlGjOSikas5RICmsp4aK', // 这里填写上面得到的APP KEY
+            placeholder: 'ヾﾉ≧∀≦)o来啊，快活啊!' // [v1.0.7 new]留言框占位提示文字
+        });
+    </script>
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/headimage.png"
+               alt="luxingwu" />
+          <p class="site-author-name" itemprop="name">luxingwu</p>
+           
+              <p class="site-description motion-element" itemprop="description">爱生活，爱动漫，爱IT</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#对话系统外部知识引入小结"><span class="nav-number">1.</span> <span class="nav-text">对话系统外部知识引入小结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#background"><span class="nav-number">1.1.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#augmenting-end-to-end-dialogue-systems-with-commonsense-knowledge"><span class="nav-number">1.2.</span> <span class="nav-text">Augmenting End-to-End Dialogue Systems with Commonsense Knowledge</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#motivation"><span class="nav-number">1.2.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#model"><span class="nav-number">1.2.2.</span> <span class="nav-text">Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#experiments"><span class="nav-number">1.2.3.</span> <span class="nav-text">Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dataset"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">DataSet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#baseline"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">Baseline</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#results"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">Results</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#conclusion"><span class="nav-number">1.2.4.</span> <span class="nav-text">Conclusion</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#a-knowledge-grounded-neural-conversation-model"><span class="nav-number">1.3.</span> <span class="nav-text">A Knowledge-Grounded Neural Conversation Model</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#motivation-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#model-1"><span class="nav-number">1.3.2.</span> <span class="nav-text">Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#experiments-1"><span class="nav-number">1.3.3.</span> <span class="nav-text">Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dataset-1"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">DataSet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#grounded-conversation-datasets"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">Grounded Conversation Datasets</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#multi-task-learning"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">Multi-Task Learning</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#decoding-and-reranking"><span class="nav-number">1.3.3.4.</span> <span class="nav-text">Decoding and Reranking</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#evaluation-metrics"><span class="nav-number">1.3.3.5.</span> <span class="nav-text">Evaluation Metrics</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#results-1"><span class="nav-number">1.3.3.6.</span> <span class="nav-text">Results</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#commonsense-knowledge-aware-conversation-generation-with-graph-attention"><span class="nav-number">1.4.</span> <span class="nav-text">Commonsense Knowledge Aware Conversation Generation with Graph Attention</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#motivation-2"><span class="nav-number">1.4.1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#model-2"><span class="nav-number">1.4.2.</span> <span class="nav-text">Model</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#task-definition"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">Task Definition</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#knowledge-interpreter"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">Knowledge Interpreter</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#static-graph-attention"><span class="nav-number">1.4.2.2.1.</span> <span class="nav-text">Static Graph Attention</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#knowledge-aware-generator"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">Knowledge Aware Generator</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#dynamic-graph-attention"><span class="nav-number">1.4.2.3.1.</span> <span class="nav-text">Dynamic Graph Attention</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#loss-function"><span class="nav-number">1.4.2.4.</span> <span class="nav-text">Loss Function</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#experiments-2"><span class="nav-number">1.4.3.</span> <span class="nav-text">Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dataset-2"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">Dataset</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#baselines"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">Baselines</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#automatic-evaluation"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">Automatic Evaluation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#manual-evaluation"><span class="nav-number">1.4.3.4.</span> <span class="nav-text">Manual Evaluation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#case-study"><span class="nav-number">1.4.3.5.</span> <span class="nav-text">Case Study</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">luxingwu</span>
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <span id="busuanzi_container_site_uv">本站总访问量<span id="busuanzi_value_site_uv"></span>次</span>
+  <script>
+	(function(){
+		var bp = document.createElement('script');
+		var curProtocol = window.location.protocol.split(':')[0];
+		if (curProtocol === 'https') {
+			bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+		}
+		else {
+			bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+		}
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+	
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("XecypjdPpCg7MgoNcjp8sePj-gzGzoHsz", "xFDVBlGjOSikas5RICmsp4aK");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

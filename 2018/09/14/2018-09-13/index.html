@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+ <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+ <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="classification,CCL2018," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="来电理由分类第一次提交结果分析 第一次来电理由分类的结果为：0.64628 (rank 2) 与第一名差了有0.015个点 这次的模型使用的是将多轮对话拼接的模型的方法通过LSTM+Attention机制来预测多标签，训练集为20000，测试集为5000，该任务相比于初赛整体都少近1个点，因为是采用的不同的省份数据集，该省份的数据噪声较大。该数据集一级标签4类，二级标签35类。而初赛的数据集有">
+<meta name="keywords" content="classification,CCL2018">
+<meta property="og:type" content="article">
+<meta property="og:title" content="来电理由分类第一次提交结果分析">
+<meta property="og:url" content="http://luxingwu.com/2018/09/14/2018-09-13/index.html">
+<meta property="og:site_name" content="宫悟桑的小屋">
+<meta property="og:description" content="来电理由分类第一次提交结果分析 第一次来电理由分类的结果为：0.64628 (rank 2) 与第一名差了有0.015个点 这次的模型使用的是将多轮对话拼接的模型的方法通过LSTM+Attention机制来预测多标签，训练集为20000，测试集为5000，该任务相比于初赛整体都少近1个点，因为是采用的不同的省份数据集，该省份的数据噪声较大。该数据集一级标签4类，二级标签35类。而初赛的数据集有">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-15T15:30:36.264Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="来电理由分类第一次提交结果分析">
+<meta name="twitter:description" content="来电理由分类第一次提交结果分析 第一次来电理由分类的结果为：0.64628 (rank 2) 与第一名差了有0.015个点 这次的模型使用的是将多轮对话拼接的模型的方法通过LSTM+Attention机制来预测多标签，训练集为20000，测试集为5000，该任务相比于初赛整体都少近1个点，因为是采用的不同的省份数据集，该省份的数据噪声较大。该数据集一级标签4类，二级标签35类。而初赛的数据集有">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://luxingwu.com/2018/09/14/2018-09-13/"/>
+
+
+
+
+
+  <title>来电理由分类第一次提交结果分析 | 宫悟桑的小屋</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">宫悟桑的小屋</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://luxingwu.com/2018/09/14/2018-09-13/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="luxingwu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/headimage.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="宫悟桑的小屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">来电理由分类第一次提交结果分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-14T14:51:02+08:00">
+                2018-09-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术小结/" itemprop="url" rel="index">
+                    <span itemprop="name">技术小结</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/09/14/2018-09-13/" class="leancloud_visitors" data-flag-title="来电理由分类第一次提交结果分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+				 <span>℃</span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h2 id="来电理由分类第一次提交结果分析">来电理由分类第一次提交结果分析</h2>
+<p>第一次来电理由分类的结果为：0.64628 (rank 2) 与第一名差了有0.015个点</p>
+<p>这次的模型使用的是将多轮对话拼接的模型的方法通过LSTM+Attention机制来预测多标签，训练集为20000，测试集为5000，该任务相比于初赛整体都少近1个点，因为是采用的不同的省份数据集，该省份的数据噪声较大。该数据集一级标签4类，二级标签35类。而初赛的数据集有一级标签4类，二级标签37类。</p>
+<ul>
+<li>减少标签：</li>
+<li>投诉（含抱怨） 电商售后问题</li>
+<li>特殊来电 骚扰电话</li>
+<li>特殊来电 无声电话</li>
+<li>新增标签：</li>
+<li>表扬及建议 表扬</li>
+</ul>
+<p>初赛的数据分布如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">投诉（含抱怨） 业务使用问题  :  1771</div><div class="line">咨询（含查询） 工单处理结果  :  80</div><div class="line">咨询（含查询） 产品/业务功能  :  1468</div><div class="line">特殊来电 无声电话  :  1</div><div class="line">咨询（含查询） 电商货品信息  :  6</div><div class="line">办理 打印/邮寄  :  152</div><div class="line">投诉（含抱怨） 信息安全问题  :  68</div><div class="line">办理 销户/重开  :  23</div><div class="line">特殊来电 骚扰电话  :  1</div><div class="line">投诉（含抱怨） 不知情定制问题  :  154</div><div class="line">咨询（含查询） 服务渠道信息  :  154</div><div class="line">投诉（含抱怨） 电商售后问题  :  1</div><div class="line">咨询（含查询） 营销活动信息  :  1127</div><div class="line">咨询（含查询） 宽带覆盖范围  :  98</div><div class="line">办理 停复机  :  314</div><div class="line">办理 移机/装机/拆机  :  280</div><div class="line">咨询（含查询） 使用方式  :  95</div><div class="line">咨询（含查询） 办理方式  :  607</div><div class="line">办理 补换卡  :  17</div><div class="line">咨询（含查询） 用户资料  :  551</div><div class="line">咨询（含查询） 业务订购信息查询  :  2368</div><div class="line">办理 缴费  :  7</div><div class="line">投诉（含抱怨） 营销问题  :  123</div><div class="line">投诉（含抱怨） 网络问题  :  137</div><div class="line">咨询（含查询） 业务资费  :  590</div><div class="line">咨询（含查询） 账户信息  :  2153</div><div class="line">投诉（含抱怨） 业务规定不满  :  97</div><div class="line">投诉（含抱怨） 费用问题  :  1211</div><div class="line">办理 开通  :  1533</div><div class="line">办理 下载/设置  :  58</div><div class="line">投诉（含抱怨） 服务问题  :  156</div><div class="line">办理 重置/修改/补发  :  194</div><div class="line">投诉（含抱怨） 业务办理问题  :  380</div><div class="line">咨询（含查询） 号码状态  :  140</div><div class="line">办理 变更  :  684</div><div class="line">咨询（含查询） 业务规定  :  2134</div><div class="line">办理 取消  :  1067</div></pre></td></tr></table></figure>
+<p>复赛的数据分布如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">投诉（含抱怨） 业务使用问题  :  1438</div><div class="line">咨询（含查询） 工单处理结果  :  39</div><div class="line">投诉（含抱怨） 营销问题  :  132</div><div class="line">投诉（含抱怨） 业务规定不满  :  183</div><div class="line">办理 移机/装机/拆机  :  19</div><div class="line">咨询（含查询） 办理方式  :  1448</div><div class="line">办理 重置/修改/补发  :  54</div><div class="line">办理 销户/重开  :  6</div><div class="line">咨询（含查询） 业务资费  :  2033</div><div class="line">投诉（含抱怨） 费用问题  :  425</div><div class="line">咨询（含查询） 营销活动信息  :  1525</div><div class="line">投诉（含抱怨） 不知情定制问题  :  715</div><div class="line">投诉（含抱怨） 服务问题  :  293</div><div class="line">办理 开通  :  1378</div><div class="line">办理 下载/设置  :  8</div><div class="line">咨询（含查询） 产品/业务功能  :  609</div><div class="line">办理 取消  :  2467</div><div class="line">投诉（含抱怨） 网络问题  :  118</div><div class="line">投诉（含抱怨） 业务办理问题  :  417</div><div class="line">咨询（含查询） 账户信息  :  1405</div><div class="line">咨询（含查询） 业务规定  :  3094</div><div class="line">办理 停复机  :  87</div><div class="line">办理 打印/邮寄  :  27</div><div class="line">表扬及建议 表扬  :  1</div><div class="line">办理 补换卡  :  7</div><div class="line">咨询（含查询） 用户资料  :  486</div><div class="line">咨询（含查询） 服务渠道信息  :  199</div><div class="line">咨询（含查询） 使用方式  :  50</div><div class="line">咨询（含查询） 宽带覆盖范围  :  26</div><div class="line">咨询（含查询） 号码状态  :  39</div><div class="line">咨询（含查询） 电商货品信息  :  1</div><div class="line">投诉（含抱怨） 信息安全问题  :  82</div><div class="line">办理 变更  :  276</div><div class="line">办理 缴费  :  9</div><div class="line">咨询（含查询） 业务订购信息查询  :  904</div></pre></td></tr></table></figure>
+<p>① 我们可以发现：原本的一级标签有四个，其中的特殊来电只有2个样本，而新增的表扬及建议也只有一个样本，但是这些少样本在测试集中几乎不会被预测，所以也不干扰。</p>
+<p>除此之外，几乎两份数据集的数据分布差不多，所以将数据集进行合并。合并之后结果没有太大变化。</p>
+<p>直接合并没有用那么原本打算通过半监督的方式训练效果也可想而知了。</p>
+<p>② 如果两个省份的数据差异过大，是否考虑通过领域自适应的方法。词表大小合并21901，不合并15241，统一采用20000。</p>
+<p>用初赛数据集预测复赛验证集结果为0.49760，用复赛数据集验证结果为0.63196</p>
+<p>用复赛数据集预测初赛验证集结果为0.54880，用初赛数据集验证结果为0.67044</p>
+<p>于是想到了在初赛的数据集上进行预训练，收敛以后再在复赛数据集上调整模型参数，最后性能达到了0.64596，提升了0.13个点！！！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/classification/" rel="tag"># classification</a>
+          
+            <a href="/tags/CCL2018/" rel="tag"># CCL2018</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/11/2018-09-11/" rel="next" title="幽默识别第一次提交分析">
+                <i class="fa fa-chevron-left"></i> 幽默识别第一次提交分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/14/2018-09-14/" rel="prev" title="2018-09-14">
+                2018-09-14 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+	<div class="comment"></div>
+    <script>
+        new Valine({
+            // AV 对象来自上面引入av-min.js(老司机们不要开车➳♡゛扎心了老铁)
+            av: AV, 
+            el: '.comment', // 
+			notify: true, // 邮件提醒!!!
+			verify: true, // 验证码
+            app_id: 'XecypjdPpCg7MgoNcjp8sePj-gzGzoHsz', // 这里填写上面得到的APP ID
+            app_key: 'xFDVBlGjOSikas5RICmsp4aK', // 这里填写上面得到的APP KEY
+            placeholder: 'ヾﾉ≧∀≦)o来啊，快活啊!' // [v1.0.7 new]留言框占位提示文字
+        });
+    </script>
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/headimage.png"
+               alt="luxingwu" />
+          <p class="site-author-name" itemprop="name">luxingwu</p>
+           
+              <p class="site-description motion-element" itemprop="description">爱生活，爱动漫，爱IT</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#来电理由分类第一次提交结果分析"><span class="nav-number">1.</span> <span class="nav-text">来电理由分类第一次提交结果分析</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">luxingwu</span>
+  <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <span id="busuanzi_container_site_uv">本站总访问量<span id="busuanzi_value_site_uv"></span>次</span>
+  <script>
+	(function(){
+		var bp = document.createElement('script');
+		var curProtocol = window.location.protocol.split(':')[0];
+		if (curProtocol === 'https') {
+			bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+		}
+		else {
+			bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+		}
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
+	
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("XecypjdPpCg7MgoNcjp8sePj-gzGzoHsz", "xFDVBlGjOSikas5RICmsp4aK");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
